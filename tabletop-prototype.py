@@ -10,17 +10,17 @@ arg_desc = '''\
       Python Pillow Module
       --------------------
       Features:
-      - tts-deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
+      - tts_deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
       '''
 
 # initial argparse argument
 parser = argparse.ArgumentParser(formatter_class = argparse.RawDescriptionHelpFormatter, description = arg_desc)
 
 # tts-deckbuilder
-parser.add_argument("-d", --directory, metavar = "DIRECTORY_IMAGE", help = "path to directory containing multiple base images")
-parser.add_argument("-i", --input, metavar = "FILE_IMAGE", help = "Path to our base image")
-parser.add_argument("-o", --output, metavar = "OUTPUT_IMAGE", help = "Path to directory where output will be placed")
-parser.add_argument("-n", --number, metavar = "NUMBER", help = "Number of cards to be made in the deck")
+parser.add_argument("-d", --directory, metavar="DIRECTORY_IMAGE", help="path to directory containing multiple base images")
+parser.add_argument("-i", --image, metavar="FILE_IMAGE", help="Path to our base image")
+parser.add_argument("-o", --output, metavar="OUTPUT_IMAGE", help="Path to directory where output will be placed")
+parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
 # parse out the arguments
 args = vars(parser.parse_args())
@@ -34,6 +34,33 @@ focus.
 
 author: Brian Vilnrotter
 """
+
+# function to build deck image
+def tts_builddeck(file, output, number):
+      
+      #<TODO>
+
+# check if "-i" arguement is called
+if args["image"]:
+      
+      # make the card deck image
+      tts_builddeck(args["image"], args["output"], args["number"])
+
+# else, check if "-o" argument is called
+elif args["directory"]:
+      
+      # iterate recursively through the directory provided
+      for subdir, dirs, files in os.walk(args["directory"]):
+            
+            # with the created values iterate through the files
+            for file in files:
+                  
+                  # make a path of each file using created values
+                  path = os.path.join(subdir, file)
+                  
+                  # make the card deck image
+                  tts_builddeck(path, args["output"], args["number"])
+
 # directory = args["secondary"]
 # resources = []
 
