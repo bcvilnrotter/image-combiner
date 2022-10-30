@@ -16,7 +16,15 @@ parser.add_argument("-s", "--secondary", metavar = "SECOND", help = "Path to the
 parser.add_argument("-o", "--output", metavar = "OUTPUT", help = "Path to output file")
 args = vars(parser.parse_args())
 
-# initial code
+"""
+This section of the code is solely focused on taking pictures from the user, and 
+combing them into a bigger picture that can be used for making decks in
+TableTop Simulator (TTS). Although most of the functionality for this script will
+be for use in TableTop Simulator, future additions may stride away from that
+focus.
+
+author: Brian Vilnrotter
+"""
 directory = args["secondary"]
 resources = []
 
