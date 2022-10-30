@@ -5,7 +5,7 @@ import random
 import datetime as dt
 from PIL import Image
 
-# argparse
+# argument parser
 arg_desc = '''\
       Python Pillow Module
       --------------------
