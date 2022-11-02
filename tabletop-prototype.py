@@ -44,7 +44,7 @@ def outpath(path):
 	filename, extension = os.path.splitext(path)
 		
 	# get current time
-	now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%m-%d")
+	now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
 	
 	# return the output path
 	return filename + "-" + now + extension
