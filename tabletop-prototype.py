@@ -13,14 +13,21 @@ Python Pillow Module
 --------------------
 Features:
 - tts_deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
+- tts_mapbuilder: takes a background image, and smaller resource images to randomly place across the background image
 '''
 
 # initial argparse argument
 parser = argparse.ArgumentParser(formatter_class = argparse.RawDescriptionHelpFormatter, description = arg_desc)
 
-# tts-deckbuilder
-parser.add_argument("-d", '--directory', metavar="DIRECTORY_IMAGE", help="path to directory containing multiple base images")
-parser.add_argument("-i", '--image', metavar="FILE_IMAGE", help="Path to our base image")
+# initialize the subparsers variable
+subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script')
+
+# initialize the subparser for tts_deckbuilder
+tts_deckbuilder = subparsers.add_parser("tts_deckbuilder")
+
+# initialize the subparser arguments for tts_deckbuilder
+tts_deckbuilder.add_argument("-d", '--directory', metavar="DIRECTORY_IMAGE", help="path to directory containing multiple base images")
+tts_deckbuilder.add_argument("-i", '--image', metavar="FILE_IMAGE", help="Path to our base image")
 # parser.add_argument("-o", '--output', metavar="OUTPUT_IMAGE", help="Path to directory where output will be placed")
 # parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
