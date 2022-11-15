@@ -39,8 +39,8 @@ tts_mapbuilder.add_argument("-i", '--image', help="path to the background image 
 # parser.add_argument("-o", '--output', metavar="OUTPUT_IMAGE", help="Path to directory where output will be placed")
 # parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
-# parse out the arguments
-args = parser.parse_args()
+# parse out the arguments for the tts_deckbuilder function
+args_tts_deckbuilder = parser.parse_args('tts_deckbuilder')
 
 """
 This section of code will be dedicated to error/log messaging. This section
@@ -190,22 +190,22 @@ Author: Brian Vilnrotter
 def main():
 
 	# check if "-i" arguement is called
-	if args.image:
+	if args_tts_deckbuilder.image:
 
 		# log the action
-		log('INFO', 'Image path provided: ' + str(args.image))
+		log('INFO', 'Image path provided: ' + str(args_tts_deckbuilder.image))
 		
 		# make the card deck image
-		tts_builddeck(args.image, outpath(args.image))
+		tts_builddeck(args_tts_deckbuilder.image, outpath(args_tts_deckbuilder.tts_deckbuiler.image))
 
 	# else, check if "-d" argument is called
 	elif args.directory:
 
 		# log the action
-		log('INFO', 'Directory path provided: ' + str(args.directory))
+		log('INFO', 'Directory path provided: ' + str(args_tts_deckbuilder.directory))
 
 		# iterate recursively through the directory provided
-		for subdir, dirs, files in os.walk(args.directory):
+		for subdir, dirs, files in os.walk(args_tts_deckbuilder.directory):
 
 			# with the created values iterate through the files
 			for file in files:
@@ -214,7 +214,7 @@ def main():
 				path = os.path.join(subdir, file)
 				
 				# make the card deck image
-				tts_builddeck(path, outpath(os.path.join(args.directory, file)))
+				tts_builddeck(path, outpath(os.path.join(args_tts_deckbuilder.directory, file)))
 
 if __name__ == "__main__":
 	main()
