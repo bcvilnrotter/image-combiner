@@ -2,8 +2,9 @@
 
 # imports
 import argparse
-import os, sys
+import os
 import random
+import sys
 from datetime import datetime, timezone
 from PIL import Image
 
@@ -34,25 +35,22 @@ tts_deckbuilder.add_argument("-i", '--image', help="Path to our base image")
 
 # initialize the subparser arguments for tts_mapbuilder
 tts_mapbuilder.add_argument("-a", '--assets', help="path to the directory containing multiple images that are assets for the map")
-tts_mapbuilder.add_argument("-i", '--image', help="path to the background image used for the map")
+tts_mapbuilder.add_argument("-b", '--background', help="path to the background image used for the map")
 
 # parser.add_argument("-o", '--output', metavar="OUTPUT_IMAGE", help="Path to directory where output will be placed")
 # parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
-# parse out the arguments
-args = parser.parse_args()
+# parse out the arguments for the tts_deckbuilder function
+args_tts_deckbuilder = parser.parse_args('tts_deckbuilder')
 
-# function to make output path
-def outpath(path):
+"""
+This section of code will be dedicated to error/log messaging. This section
+will include the function for logging, as well as functions that could be 
+used as a wrapper try/catch arguments for other clusters of functions. This
+may not be implemented, but wanted to log it here now.
 
-	# split the path to filename and extension
-	filename, extension = os.path.splitext(path)
-		
-	# get current time
-	now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
-	
-	# return the output path
-	return filename + "-" + now + extension
+Author: Brian Vilnrotter
+"""
 
 # function to log data that is happening
 def log(type, message):
@@ -65,6 +63,26 @@ def log(type, message):
 
 	# print the log entry
 	print(entry)
+
+"""
+This section of code is solely focused on misculaneous/utility functions.
+These include all the other functions that will be used to complete tasks
+from the main functions described in the tools description.
+
+Author: Brian Vilnrotter
+"""
+
+# function to make output path
+def outpath(path):
+
+	# split the path to filename and extension
+	filename, extension = os.path.splitext(path)
+		
+	# get current time
+	now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
+	
+	# return the output path
+	return filename + "-" + now + extension
 
 """
 This section of the code is solely focused on taking pictures from the user, and 
@@ -131,7 +149,7 @@ Author: Brian Vilnrotter
 """
 
 # function for creating a map
-def tts_mapbuilder(background, folder, assets = [], resize = (100,100)):
+def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 
 	# load the background image
 	image = Image.open(background)
@@ -158,30 +176,37 @@ def tts_mapbuilder(background, folder, assets = [], resize = (100,100)):
 		asset = assets[random.randint(0, len(assets) -1)]
 
 		# paste the chosen asset on the background in the chosen position
-		image.paste(asset, positions, asset)
+		image.paste(asset, position, asset)
 	
 	# save the created image out
 	image.save(outpath(background))
 
+"""
+This section of the code is solely focused on the main function, as
+well as its execution.
+
+Author: Brian Vilnrotter
+"""
+
 def main():
 
 	# check if "-i" arguement is called
-	if args.image:
+	if args_tts_deckbuilder.image:
 
 		# log the action
-		log('INFO', 'Image path provided: ' + str(args.image))
+		log('INFO', 'Image path provided: ' + str(args_tts_deckbuilder.image))
 		
 		# make the card deck image
-		tts_builddeck(args.image, outpath(args.image))
+		tts_builddeck(args_tts_deckbuilder.image, outpath(args_tts_deckbuilder.tts_deckbuiler.image))
 
 	# else, check if "-d" argument is called
-	elif args.directory:
+	elif args_tts_deckbuilder.directory:
 
 		# log the action
-		log('INFO', 'Directory path provided: ' + str(args.directory))
+		log('INFO', 'Directory path provided: ' + str(args_tts_deckbuilder.directory))
 
 		# iterate recursively through the directory provided
-		for subdir, dirs, files in os.walk(args.directory):
+		for subdir, dirs, files in os.walk(args_tts_deckbuilder.directory):
 
 			# with the created values iterate through the files
 			for file in files:
@@ -190,7 +215,7 @@ def main():
 				path = os.path.join(subdir, file)
 				
 				# make the card deck image
-				tts_builddeck(path, outpath(os.path.join(args.directory, file)))
+				tts_builddeck(path, outpath(os.path.join(args_tts_deckbuilder.directory, file)))
 
 if __name__ == "__main__":
 	main()
