@@ -1,5 +1,3 @@
-#!C:\Users\Glapthorn\.pyenv\pyenv-win\versions\3.10.8\
-
 # imports
 import argparse
 import os
