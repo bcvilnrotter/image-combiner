@@ -3,7 +3,7 @@
 # imports
 import argparse
 import os, sys
-# import random
+import random
 from datetime import datetime, timezone
 from PIL import Image
 
@@ -13,14 +13,29 @@ Python Pillow Module
 --------------------
 Features:
 - tts_deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
+- tts_mapbuilder: takes a background image, and smaller resource images to randomly place across the background image
 '''
 
 # initial argparse argument
 parser = argparse.ArgumentParser(formatter_class = argparse.RawDescriptionHelpFormatter, description = arg_desc)
 
-# tts-deckbuilder
-parser.add_argument("-d", '--directory', metavar="DIRECTORY_IMAGE", help="path to directory containing multiple base images")
-parser.add_argument("-i", '--image', metavar="FILE_IMAGE", help="Path to our base image")
+# initialize the subparsers variable
+subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script')
+
+# initialize the subparser for tts_deckbuilder
+tts_deckbuilder = subparsers.add_parser("tts_deckbuilder")
+
+# initialize the subparser for tts_mapbuilder
+tts_mapbuilder = subparsers.add_parser("tts_mapbuilder")
+
+# initialize the subparser arguments for tts_deckbuilder
+tts_deckbuilder.add_argument("-d", '--directory', help="path to directory containing multiple base images")
+tts_deckbuilder.add_argument("-i", '--image', help="Path to our base image")
+
+# initialize the subparser arguments for tts_mapbuilder
+tts_mapbuilder.add_argument("-a", '--assets', help="path to the directory containing multiple images that are assets for the map")
+tts_mapbuilder.add_argument("-i", '--image', help="path to the background image used for the map")
+
 # parser.add_argument("-o", '--output', metavar="OUTPUT_IMAGE", help="Path to directory where output will be placed")
 # parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
@@ -28,13 +43,32 @@ parser.add_argument("-i", '--image', metavar="FILE_IMAGE", help="Path to our bas
 args = parser.parse_args()
 
 """
-This section of the code is solely focused on taking pictures from the user, and 
-combining them into a bigger picture that can be used for making decks in
-TableTop Simulator (TTS). Although most of the functionality for this script will
-be for use in TableTop Simulator, future additions may stride away from that
-focus.
+This section of code will be dedicated to error/log messaging. This section
+will include the function for logging, as well as functions that could be 
+used as a wrapper try/catch arguments for other clusters of functions. This
+may not be implemented, but wanted to log it here now.
 
-author: Brian Vilnrotter
+Author: Brian Vilnrotter
+"""
+
+# function to log data that is happening
+def log(type, message):
+
+	# get the current time
+	now = datetime.now(timezone.utc)
+
+	# combine the string for the log entry
+	entry = str(now) + " [" + str(type) + "] " + str(message)
+
+	# print the log entry
+	print(entry)
+
+"""
+This section of code is solely focused on misculaneous/utility functions.
+These include all the other functions that will be used to complete tasks
+from the main functions described in the tools description.
+
+Author: Brian Vilnrotter
 """
 
 # function to make output path
@@ -49,17 +83,15 @@ def outpath(path):
 	# return the output path
 	return filename + "-" + now + extension
 
-# function to log data that is happening
-def log(type, message):
+"""
+This section of the code is solely focused on taking pictures from the user, and 
+combining them into a bigger picture that can be used for making decks in
+TableTop Simulator (TTS). Although most of the functionality for this script will
+be for use in TableTop Simulator, future additions may stride away from that
+focus.
 
-	# get the current time
-	now = datetime.now(timezone.utc)
-
-	# combine the string for the log entry
-	entry = str(now) + " [" + str(type) + "] " + str(message)
-
-	# print the log entry
-	print(entry)
+author: Brian Vilnrotter
+"""
 
 # function to build deck image
 def tts_builddeck(file, output):
@@ -106,7 +138,55 @@ def tts_builddeck(file, output):
 	# log action
 	log('INFO', '- saved the created image to location: ' + str(output))
 
-# function __main__
+"""
+This section of the code is solely dedicated to making a map for use in a
+board game through the TableTop Simulator (TTS). This currently involves
+created a map from a background image, and randomly distributing other
+asset icons around the map.
+
+Author: Brian Vilnrotter
+"""
+
+# function for creating a map
+def tts_mapbuilder(background, folder, assets = [], resize = (100,100)):
+
+	# load the background image
+	image = Image.open(background)
+
+	# log action
+	log('INFO', '- load background iamge ' + background)
+
+	# iterate through the directory provided for the assets
+	for filename in os.listdir(folder):
+
+		# build out the file path from the filename
+		filepath = os.path.join(assets, filename)
+
+		# resize the asset and appent it to the asset list
+		assets.append((Image.open(filepath)).resize(resize))
+	
+	# iterate through a random number of items to place the assets on the background map
+	for i in range(0, random.randint(5,10)):
+
+		# create the position the asset will be placed on the background map
+		position = (random.randint(0,image.width), random.randint(0, image.height))
+
+		# pick a random image from the assets list
+		asset = assets[random.randint(0, len(assets) -1)]
+
+		# paste the chosen asset on the background in the chosen position
+		image.paste(asset, positions, asset)
+	
+	# save the created image out
+	image.save(outpath(background))
+
+"""
+This section of the code is solely focused on the main function, as
+well as its execution.
+
+Author: Brian Vilnrotter
+"""
+
 def main():
 
 	# check if "-i" arguement is called
@@ -118,7 +198,7 @@ def main():
 		# make the card deck image
 		tts_builddeck(args.image, outpath(args.image))
 
-	# else, check if "-o" argument is called
+	# else, check if "-d" argument is called
 	elif args.directory:
 
 		# log the action
@@ -138,19 +218,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
-# directory = args["secondary"]
-# resources = []
-
-# image = Image.open(args["image"])
-
-# for filename in os.listdir(directory):
-#   filepath = os.path.join(directory, filename)
-#   resources.append((Image.open(filepath)).resize((100, 100)))
-
-# for i in range (o, random.randint(5,10)):
-#   position = (random.randint(o, image_copy.width), random.randint(0,image_copy.height))
-#   resource = resources[random.randint(0, len(resources) - 1)]
-#   image_copy.paste(resource, position, resource)
-
-# image_copy.save(args["output"] + dt.datetime.now().strftime("%m-%d-%YT%H-%M-%S") + ".JPG")
