@@ -18,17 +18,18 @@ Features:
 parser = argparse.ArgumentParser(formatter_class = argparse.RawDescriptionHelpFormatter, description = arg_desc)
 
 # initialize the subparsers variable
-subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script')
+subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script', dest="sub")
 
 # initialize the subparser for tts_deckbuilder
-tts_deckbuilder = subparsers.add_parser("tts_deckbuilder")
+tts_deckbuilder = subparsers.add_parser("deckbuilder")
 
 # initialize the subparser for tts_mapbuilder
-tts_mapbuilder = subparsers.add_parser("tts_mapbuilder")
+tts_mapbuilder = subparsers.add_parser("mapbuilder")
 
 # initialize the subparser arguments for tts_deckbuilder
-tts_deckbuilder.add_argument("-d", '--directory', help="path to directory containing multiple base images")
-tts_deckbuilder.add_argument("-i", '--image', help="Path to our base image")
+tts_deckbuilder.add_argument("-d", '--directory', dest='directory', help="path to directory containing multiple base images")
+tts_deckbuilder.add_argument("-i", '--image', dest='image', help="Path to our base image")
+tts_deckbuilder.add_argument("-c", '--cardback', dest='cardback', help="path to the card back that will be used with tabletop simulator (TTS)")
 
 # initialize the subparser arguments for tts_mapbuilder
 tts_mapbuilder.add_argument("-a", '--assets', help="path to the directory containing multiple images that are assets for the map")
@@ -38,7 +39,7 @@ tts_mapbuilder.add_argument("-i", '--image', help="path to the background image 
 # parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
 # parse out the arguments for the tts_deckbuilder function
-args_tts_deckbuilder = parser.parse_args('tts_deckbuilder')
+args = parser.parse_args()
 
 """
 This section of code will be dedicated to error/log messaging. This section
@@ -109,6 +110,15 @@ def tts_builddeck(file, output):
 	# create the coeficient dimensions of the new image to be created
 	nwidth, nheight = [7, 10]
 
+	# check if a card back image is provided
+	if args.cardback:
+
+		# upload the cardback image
+		cardback = Image.open(args.cardback)
+
+		# resize the image to the size of the cardback
+		image = image.resize((cardback.size))
+
 	# log metrics
 	log('METR', '- coefficient sizes for output picture will contain ' + str(nwidth) + ' pictures wide, and ' + str(nheight) + ' pictures tall')
 	
@@ -146,7 +156,7 @@ Author: Brian Vilnrotter
 """
 
 # function for creating a map
-def tts_mapbuilder(background, folder, assets = [], resize = (100,100)):
+def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 
 	# load the background image
 	image = Image.open(background)
@@ -173,7 +183,7 @@ def tts_mapbuilder(background, folder, assets = [], resize = (100,100)):
 		asset = assets[random.randint(0, len(assets) -1)]
 
 		# paste the chosen asset on the background in the chosen position
-		image.paste(asset, positions, asset)
+		image.paste(asset, position, asset)
 	
 	# save the created image out
 	image.save(outpath(background))
@@ -188,22 +198,22 @@ Author: Brian Vilnrotter
 def main():
 
 	# check if "-i" arguement is called
-	if args_tts_deckbuilder.image:
+	if args.image:
 
 		# log the action
-		log('INFO', 'Image path provided: ' + str(args_tts_deckbuilder.image))
+		log('INFO', 'Image path provided: ' + str(args.image))
 		
 		# make the card deck image
-		tts_builddeck(args_tts_deckbuilder.image, outpath(args_tts_deckbuilder.tts_deckbuiler.image))
+		tts_builddeck(args.image, outpath(args.image))
 
 	# else, check if "-d" argument is called
 	elif args.directory:
 
 		# log the action
-		log('INFO', 'Directory path provided: ' + str(args_tts_deckbuilder.directory))
+		log('INFO', 'Directory path provided: ' + str(args.directory))
 
 		# iterate recursively through the directory provided
-		for subdir, dirs, files in os.walk(args_tts_deckbuilder.directory):
+		for subdir, dirs, files in os.walk(args.directory):
 
 			# with the created values iterate through the files
 			for file in files:
@@ -212,7 +222,7 @@ def main():
 				path = os.path.join(subdir, file)
 				
 				# make the card deck image
-				tts_builddeck(path, outpath(os.path.join(args_tts_deckbuilder.directory, file)))
+				tts_builddeck(path, outpath(os.path.join(args.directory, file)))
 
 if __name__ == "__main__":
 	main()
