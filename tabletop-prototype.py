@@ -93,7 +93,7 @@ author: Brian Vilnrotter
 """
 
 # function to build deck image
-def tts_builddeck(file, output):
+def tts_builddeck(file, output, deck_coef=[7,10]):
 
 	# import the user provided image
 	image = Image.open(file)
@@ -107,9 +107,6 @@ def tts_builddeck(file, output):
 	# log metrics
 	log('METR', '- opened file has width: ' + str(width) + ' height: ' + str(height))
 
-	# create the coeficient dimensions of the new image to be created
-	nwidth, nheight = [7, 10]
-
 	# check if a card back image is provided
 	if args.cardback:
 
@@ -119,8 +116,16 @@ def tts_builddeck(file, output):
 		# resize the image to the size of the cardback
 		image = image.resize((cardback.size))
 
+		# TODO: add code to stretch the new image to the resized boundaries of the canvas
+
 	# log metrics
 	log('METR', '- coefficient sizes for output picture will contain ' + str(nwidth) + ' pictures wide, and ' + str(nheight) + ' pictures tall')
+	
+	# TODO: check if size of resulting image will have attributes greater than 10k pixels in any dimension
+	# TODO: if so, alter deck_coef to a dimension that will be within 10k pixels for any dimension
+
+	# create the coeficient dimensions of the new image to be created
+	nwidth, nheight = deck_coef
 	
 	# create new image variable
 	new = Image.new(image.mode, (nwidth*width, nheight*height))
