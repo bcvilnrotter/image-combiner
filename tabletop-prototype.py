@@ -5,6 +5,9 @@ import random
 from datetime import datetime, timezone
 from PIL import Image
 
+# global constants
+TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE = 10000
+
 # argument parser
 arg_desc = '''\
 Python Pillow Module
@@ -117,21 +120,42 @@ def tts_builddeck(file, output, deck_coef=[7,10]):
 		image = image.resize((cardback.size))
 
 		# TODO: add code to stretch the new image to the resized boundaries of the canvas
+	
+	# create the coeficient dimensions of the new image to be created
+	nwidth, nheight = deck_coef
 
 	# log metrics
 	log('METR', '- coefficient sizes for output picture will contain ' + str(nwidth) + ' pictures wide, and ' + str(nheight) + ' pictures tall')
-	
-	# TODO: check if size of resulting image will have attributes greater than 10k pixels in any dimension
-	# TODO: if so, alter deck_coef to a dimension that will be within 10k pixels for any dimension
 
-	# create the coeficient dimensions of the new image to be created
-	nwidth, nheight = deck_coef
+	# start a while loop that continues as long as the resulting image has attributes above 10k pixels
+	while any(x > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
+
+		#log activity
+		log('INFO', ' - new deck image was found to have attribute(s) greater that 10k pixels')
+	
+		# check if width of new image will be above 10k pixels
+		if nwidth*width > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
+
+			# reduce the nwidth value by 1
+			nwidth = nwidth - 1
+
+			# log activity
+			log('INFO', '  - resulting deck image width is above 10k pixels, new width value was reduced to [' + str(nwidth) + ']')
+		
+		# if the width is not above 10k pixels, check the height
+		elif nheight*height > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
+
+			# reduce the nheight value by 1
+			nheight = nheight - 1
+
+			# log activity
+			log('INFO', '  - resulting deck image height is above 10k pixels, new height value was reduced to [' + str(nheight) + ']')
 	
 	# create new image variable
 	new = Image.new(image.mode, (nwidth*width, nheight*height))
 	
 	# log action
-	log('INFO', '- created a new image that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height))
+	log('INFO', '- created a new image [' + str(nwidth) + ',' + str(nheight) + '] that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height))
 
 	# iterate through the new images height
 	for h_index in range(nheight):
