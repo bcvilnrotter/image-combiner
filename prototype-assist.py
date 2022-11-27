@@ -14,8 +14,8 @@ arg_desc = '''\
 Python Pillow Module
 --------------------
 Features:
-- tts_deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
-- tts_mapbuilder: takes a background image, and smaller resource images to randomly place across the background image
+- deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
+- mapbuilder: takes a background image, and smaller resource images to randomly place across the background image
 '''
 
 # initial argparse argument
@@ -87,6 +87,30 @@ def outpath(path):
 	# return the output path
 	return filename + "-" + now + extension
 
+# function for adjusting the size of an image provided based on max pixel value provided
+def inspect_image(image, check_value=TTS_DECK_IMAGE_MAX_CARDBACK_SIZE):
+
+	# create a flag that states whether the image provided was altered
+	altered = False
+
+	# check if any attributes in the image are over the check_value
+	if any(x > check_value for x in image.size):
+
+		# log activity
+		log('INFO', '  - image provided was larger than maximum value ' + str(check_value))
+
+		# use the thumbnail function to reduce the size of the image while maintaining aspect ratio
+		image.thumbnail((check_value, check_value))
+
+		# log activity
+		log('METR', '  - image was altered to (' + str(image.size) + ')')
+
+		# create a flag that the image was altered
+		altered = True
+
+	# return the deliverables based on the function arguments
+	return altered, image
+
 """
 This section of the code is solely focused on taking pictures from the user, and 
 combining them into a bigger picture that can be used for making decks in
@@ -98,15 +122,13 @@ author: Brian Vilnrotter
 """
 
 # function to build deck image
-def tts_builddeck(file, output, deck_coef=[7,10]):
+def tts_builddeck(file, output, deck_coef=[10,7]):
 
 	# import the user provided image
 	image = Image.open(file)
 
 	# log the action
 	log('INFO', '- opened file: ' + file)
-
-	# TODO find a way of adjusting the resulting image to keep aspect ratio while having attributes below 1000 pixels
 
 	# check if a card back image is provided
 	if args.cardback:
@@ -221,6 +243,24 @@ Author: Brian Vilnrotter
 """
 
 def main():
+
+	# check for cardback optional argument
+	if args.cardback:
+
+		# inspect the cardback image
+		altered, cardback = inspect_image(Image.open(args.cardback))
+
+		# check if the image was altered
+		if altered:
+
+			# assign the new outpath to the args.cardback variable
+			args.cardback = outpath(args.cardback)
+
+			# save the image to the destination assigned to the args.cardback variable
+			cardback.save(args.cardback)
+
+			# log activity
+			log('INFO', '- cardback image provided was altered and saved to the same directory')
 
 	# check if "-i" arguement is called
 	if args.image:
