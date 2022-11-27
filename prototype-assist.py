@@ -6,7 +6,8 @@ from datetime import datetime, timezone
 from PIL import Image
 
 # global constants
-TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE = 10000
+TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE = 10000 	# the max size TableTop Simulator (TTS) can handle for deck image attributes
+TTS_DECK_IMAGE_MAX_CARDBACK_SIZE = 1000		# the max size TableTop Simulator (TTS) can handle for cardback attributes
 
 # argument parser
 arg_desc = '''\
@@ -33,6 +34,7 @@ tts_mapbuilder = subparsers.add_parser("mapbuilder")
 tts_deckbuilder.add_argument("-d", '--directory', dest='directory', help="path to directory containing multiple base images")
 tts_deckbuilder.add_argument("-i", '--image', dest='image', help="Path to our base image")
 tts_deckbuilder.add_argument("-c", '--cardback', dest='cardback', help="path to the card back that will be used with tabletop simulator (TTS)")
+tts_deckbuilder.add_argument("-o", '--output', dest='output', help="optional path to output directory")
 
 # initialize the subparser arguments for tts_mapbuilder
 tts_mapbuilder.add_argument("-a", '--assets', help="path to the directory containing multiple images that are assets for the map")
@@ -103,12 +105,8 @@ def tts_builddeck(file, output, deck_coef=[7,10]):
 
 	# log the action
 	log('INFO', '- opened file: ' + file)
-	
-	# get specs of uploaded image
-	width, height = image.size
 
-	# log metrics
-	log('METR', '- opened file has width: ' + str(width) + ' height: ' + str(height))
+	# TODO find a way of adjusting the resulting image to keep aspect ratio while having attributes below 1000 pixels
 
 	# check if a card back image is provided
 	if args.cardback:
@@ -117,45 +115,43 @@ def tts_builddeck(file, output, deck_coef=[7,10]):
 		cardback = Image.open(args.cardback)
 
 		# resize the image to the size of the cardback
-		image = image.resize((cardback.size))
+		image = image.resize(cardback.size)
 
-		# TODO: add code to stretch the new image to the resized boundaries of the canvas
+		# log activity
+		log('INFO', ' - image resized based on cardback: ' + args.cardback)
 	
+	# get specs of uploaded image
+	width, height = image.size
+
+	# log metrics
+	log('METR', '- adjusted file has width: ' + str(width) + ' height: ' + str(height))
+
 	# create the coeficient dimensions of the new image to be created
 	nwidth, nheight = deck_coef
 
 	# log metrics
-	log('METR', '- coefficient sizes for output picture will contain ' + str(nwidth) + ' pictures wide, and ' + str(nheight) + ' pictures tall')
+	log('METR', '- initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']')
 
 	# start a while loop that continues as long as the resulting image has attributes above 10k pixels
 	while any(x > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
-
-		#log activity
-		log('INFO', ' - new deck image was found to have attribute(s) greater that 10k pixels')
 	
 		# check if width of new image will be above 10k pixels
 		if nwidth*width > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
 
 			# reduce the nwidth value by 1
 			nwidth = nwidth - 1
-
-			# log activity
-			log('INFO', '  - resulting deck image width is above 10k pixels, new width value was reduced to [' + str(nwidth) + ']')
 		
 		# if the width is not above 10k pixels, check the height
 		elif nheight*height > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
 
 			# reduce the nheight value by 1
 			nheight = nheight - 1
-
-			# log activity
-			log('INFO', '  - resulting deck image height is above 10k pixels, new height value was reduced to [' + str(nheight) + ']')
 	
 	# create new image variable
 	new = Image.new(image.mode, (nwidth*width, nheight*height))
 	
 	# log action
-	log('INFO', '- created a new image [' + str(nwidth) + ',' + str(nheight) + '] that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height))
+	log('METR', '- adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height))
 
 	# iterate through the new images height
 	for h_index in range(nheight):
@@ -230,16 +226,25 @@ def main():
 	if args.image:
 
 		# log the action
-		log('INFO', 'Image path provided: ' + str(args.image))
+		log('INFO', 'image path provided: ' + str(args.image))
 		
-		# make the card deck image
-		tts_builddeck(args.image, outpath(args.image))
+		# check if an output path is provided
+		if args.output:
+
+			# if so, then run tts_builddeck with the provided output path
+			tts_builddeck(args.image, args.output)
+		
+		# if an output path is not provided
+		else:
+
+			# make the card deck image
+			tts_builddeck(args.image, outpath(args.image))
 
 	# else, check if "-d" argument is called
 	elif args.directory:
 
 		# log the action
-		log('INFO', 'Directory path provided: ' + str(args.directory))
+		log('INFO', 'directory path provided: ' + str(args.directory))
 
 		# iterate recursively through the directory provided
 		for subdir, dirs, files in os.walk(args.directory):
@@ -250,8 +255,17 @@ def main():
 				# make a path of each file using created values
 				path = os.path.join(subdir, file)
 				
-				# make the card deck image
-				tts_builddeck(path, outpath(os.path.join(args.directory, file)))
+				# check if an output directory is provided
+				if args.output:
+
+					# then run tts_builddeck with the provided directory
+					tts_builddeck(path, outpath(os.path.join(args.output, file)))
+
+				# if not then - 
+				else:
+				
+					# place the outputted image in the same directory as the provided image
+					tts_builddeck(path, outpath(os.path.join(args.directory, file)))
 
 if __name__ == "__main__":
 	main()
