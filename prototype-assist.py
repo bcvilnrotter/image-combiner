@@ -209,13 +209,13 @@ def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 	image = Image.open(background)
 
 	# log action
-	log('INFO', '- load background iamge ' + background)
+	log('INFO', '- load background image ' + background)
 
 	# iterate through the directory provided for the assets
 	for filename in os.listdir(folder):
 
 		# build out the file path from the filename
-		filepath = os.path.join(assets, filename)
+		filepath = os.path.join(folder, filename)
 
 		# resize the asset and appent it to the asset list
 		assets.append((Image.open(filepath)).resize(resize))
@@ -244,68 +244,77 @@ Author: Brian Vilnrotter
 
 def main():
 
-	# check for cardback optional argument
-	if args.cardback:
-
-		# inspect the cardback image
-		altered, cardback = inspect_image(Image.open(args.cardback))
-
-		# check if the image was altered
-		if altered:
-
-			# assign the new outpath to the args.cardback variable
-			args.cardback = outpath(args.cardback)
-
-			# save the image to the destination assigned to the args.cardback variable
-			cardback.save(args.cardback)
-
-			# log activity
-			log('INFO', '- cardback image provided was altered and saved to the same directory')
-
-	# check if "-i" arguement is called
-	if args.image:
-
-		# log the action
-		log('INFO', 'image path provided: ' + str(args.image))
+	# check if mapbuilder or deckbuilder is called
+	if (args.sub == "deckbuilder"):
 		
-		# check if an output path is provided
-		if args.output:
+		# check for cardback optional argument
+		if args.cardback:
 
-			# if so, then run tts_builddeck with the provided output path
-			tts_builddeck(args.image, args.output)
-		
-		# if an output path is not provided
-		else:
+			# inspect the cardback image
+			altered, cardback = inspect_image(Image.open(args.cardback))
 
-			# make the card deck image
-			tts_builddeck(args.image, outpath(args.image))
+			# check if the image was altered
+			if altered:
 
-	# else, check if "-d" argument is called
-	elif args.directory:
+				# assign the new outpath to the args.cardback variable
+				args.cardback = outpath(args.cardback)
 
-		# log the action
-		log('INFO', 'directory path provided: ' + str(args.directory))
+				# save the image to the destination assigned to the args.cardback variable
+				cardback.save(args.cardback)
 
-		# iterate recursively through the directory provided
-		for subdir, dirs, files in os.walk(args.directory):
+				# log activity
+				log('INFO', '- cardback image provided was altered and saved to the same directory')
 
-			# with the created values iterate through the files
-			for file in files:
+		# check if "-i" arguement is called
+		if args.image:
 
-				# make a path of each file using created values
-				path = os.path.join(subdir, file)
-				
-				# check if an output directory is provided
-				if args.output:
+			# log the action
+			log('INFO', 'image path provided: ' + str(args.image))
+			
+			# check if an output path is provided
+			if args.output:
 
-					# then run tts_builddeck with the provided directory
-					tts_builddeck(path, outpath(os.path.join(args.output, file)))
+				# if so, then run tts_builddeck with the provided output path
+				tts_builddeck(args.image, args.output)
+			
+			# if an output path is not provided
+			else:
 
-				# if not then - 
-				else:
-				
-					# place the outputted image in the same directory as the provided image
-					tts_builddeck(path, outpath(os.path.join(args.directory, file)))
+				# make the card deck image
+				tts_builddeck(args.image, outpath(args.image))
+
+		# else, check if "-d" argument is called
+		elif args.directory:
+
+			# log the action
+			log('INFO', 'directory path provided: ' + str(args.directory))
+
+			# iterate recursively through the directory provided
+			for subdir, dirs, files in os.walk(args.directory):
+
+				# with the created values iterate through the files
+				for file in files:
+
+					# make a path of each file using created values
+					path = os.path.join(subdir, file)
+					
+					# check if an output directory is provided
+					if args.output:
+
+						# then run tts_builddeck with the provided directory
+						tts_builddeck(path, outpath(os.path.join(args.output, file)))
+
+					# if not then - 
+					else:
+					
+						# place the outputted image in the same directory as the provided image
+						tts_builddeck(path, outpath(os.path.join(args.directory, file)))
+
+	# check if mapbuilder is called
+	if args.sub == "mapbuilder":
+
+		# run the mapbuilder function
+		tts_buildmap(args.image, args.assets)
 
 if __name__ == "__main__":
 	main()
