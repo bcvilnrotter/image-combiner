@@ -5,10 +5,6 @@ import random
 from datetime import datetime, timezone
 from PIL import Image
 
-# global constants
-TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE = 10000 	# the max size TableTop Simulator (TTS) can handle for deck image attributes
-TTS_DECK_IMAGE_MAX_CARDBACK_SIZE = 1000		# the max size TableTop Simulator (TTS) can handle for cardback attributes
-
 # argument parser
 arg_desc = '''\
 Python Pillow Module
@@ -18,8 +14,24 @@ Features:
 - mapbuilder: takes a background image, and smaller resource images to randomly place across the background image
 '''
 
+# provide examples
+arg_example = '''\
+=========
+Examples:
+
+Make deck face images for TableTop Simulator (TTS) from a directory filled with images, 
+	using a cardback image reference to match size.
+
+python prototype-assist.py deckbuilder -d /path/to/directory/ -c /path/to/cardback/image
+=========
+'''
+
 # initial argparse argument
-parser = argparse.ArgumentParser(formatter_class = argparse.RawDescriptionHelpFormatter, description = arg_desc)
+parser = argparse.ArgumentParser(epilog=arg_example, formatter_class=argparse.RawDescriptionHelpFormatter, description=arg_desc)
+
+# initialize the global values
+parser.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', help="the max size TableTop Simulator (TTS) can handle for deck image attributes")
+parser.add_argument('--deck_image_max_cardback_size', default=1000, dest='TTS_DECK_IMAGE_MAX_CARDBACK_SIZE', help="the max size TableTop Simulator (TTS) can handle for cardback attributes")
 
 # initialize the subparsers variable
 subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script', dest="sub")
@@ -39,9 +51,6 @@ tts_deckbuilder.add_argument("-o", '--output', dest='output', help="optional pat
 # initialize the subparser arguments for tts_mapbuilder
 tts_mapbuilder.add_argument("-a", '--assets', help="path to the directory containing multiple images that are assets for the map")
 tts_mapbuilder.add_argument("-i", '--image', help="path to the background image used for the map")
-
-# parser.add_argument("-o", '--output', metavar="OUTPUT_IMAGE", help="Path to directory where output will be placed")
-# parser.add_argument("-n", --number, metavar="NUMBER", default=60, help = "Number of cards to be made in the deck")
 
 # parse out the arguments for the tts_deckbuilder function
 args = parser.parse_args()
@@ -88,7 +97,7 @@ def outpath(path):
 	return filename + "-" + now + extension
 
 # function for adjusting the size of an image provided based on max pixel value provided
-def inspect_image(image, check_value=TTS_DECK_IMAGE_MAX_CARDBACK_SIZE):
+def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_CARDBACK_SIZE):
 
 	# create a flag that states whether the image provided was altered
 	altered = False
@@ -155,16 +164,16 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 	log('METR', '- initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']')
 
 	# start a while loop that continues as long as the resulting image has attributes above 10k pixels
-	while any(x > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
+	while any(x > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
 	
 		# check if width of new image will be above 10k pixels
-		if nwidth*width > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
+		if nwidth*width > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
 
 			# reduce the nwidth value by 1
 			nwidth = nwidth - 1
 		
 		# if the width is not above 10k pixels, check the height
-		elif nheight*height > TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
+		elif nheight*height > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
 
 			# reduce the nheight value by 1
 			nheight = nheight - 1
