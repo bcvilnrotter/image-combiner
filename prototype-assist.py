@@ -1,7 +1,6 @@
 # imports
 import argparse
-import os, sys
-import random
+import os, random, glob
 from datetime import datetime, timezone
 from PIL import Image
 
@@ -33,6 +32,11 @@ parser = argparse.ArgumentParser(epilog=arg_example, formatter_class=argparse.Ra
 parser.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', help="the max size TableTop Simulator (TTS) can handle for deck image attributes")
 parser.add_argument('--deck_image_max_cardback_size', default=1000, dest='TTS_DECK_IMAGE_MAX_CARDBACK_SIZE', help="the max size TableTop Simulator (TTS) can handle for cardback attributes")
 
+# initialize the default values needed for most subparsers
+parser.add_argument("-g", '--glob', dest='glob', help="regex used to pull multiple files from a path")
+parser.add_argument("-d", '--directory', dest='directory', help="path to directory that images will be output")
+parser.add_argument("-i", '--image', dest='image', help="Path to our base image")
+
 # initialize the subparsers variable
 subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script', dest="sub")
 
@@ -42,15 +46,19 @@ tts_deckbuilder = subparsers.add_parser("deckbuilder")
 # initialize the subparser for tts_mapbuilder
 tts_mapbuilder = subparsers.add_parser("mapbuilder")
 
+# initialize the subparser for PDF
+pdf_actions = subparsers.add_parser("pdf")
+
 # initialize the subparser arguments for tts_deckbuilder
-tts_deckbuilder.add_argument("-d", '--directory', dest='directory', help="path to directory containing multiple base images")
-tts_deckbuilder.add_argument("-i", '--image', dest='image', help="Path to our base image")
 tts_deckbuilder.add_argument("-c", '--cardback', dest='cardback', help="path to the card back that will be used with tabletop simulator (TTS)")
-tts_deckbuilder.add_argument("-o", '--output', dest='output', help="optional path to output directory")
 
 # initialize the subparser arguments for tts_mapbuilder
-tts_mapbuilder.add_argument("-a", '--assets', help="path to the directory containing multiple images that are assets for the map")
-tts_mapbuilder.add_argument("-i", '--image', help="path to the background image used for the map")
+tts_mapbuilder.add_argument("-a", '--assets', dest='assets', help="path to the directory containing multiple images that are assets for the map")
+
+# initialize the subparser arguments for pdf
+pdf_actions.add_argument('-a', '--author', default='prototye-assist.py', dest='author', help="the author to put in the output pdf")
+pdf_actions.add_argument('-t', '--title', default='Created using prototye-assist.py', dest='title', help="the title to put in the output pdf")
+pdf_actions.add_argument('-s', '--subject', default='https://github.com/bcvilnrotter/block-pillow', dest='subject', help="the subject to put in the output pdf")
 
 # parse out the arguments for the tts_deckbuilder function
 args = parser.parse_args()
@@ -65,7 +73,7 @@ Author: Brian Vilnrotter
 """
 
 # function to log data that is happening
-def log(type, message):
+def log(message, type='INFO'):
 
 	# get the current time
 	now = datetime.now(timezone.utc)
@@ -106,19 +114,46 @@ def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_CARDBACK_SIZE):
 	if any(x > check_value for x in image.size):
 
 		# log activity
-		log('INFO', '  - image provided was larger than maximum value ' + str(check_value))
+		log('  - image provided was larger than maximum value ' + str(check_value))
 
 		# use the thumbnail function to reduce the size of the image while maintaining aspect ratio
 		image.thumbnail((check_value, check_value))
 
 		# log activity
-		log('METR', '  - image was altered to (' + str(image.size) + ')')
+		log('  - image was altered to (' + str(image.size) + ')', 'METR')
 
 		# create a flag that the image was altered
 		altered = True
 
 	# return the deliverables based on the function arguments
 	return altered, image
+
+"""
+This section is dedicated to the functions that are used soleley within the
+PDF subparser features. The goal of this is to make it so the instruction
+manual can be easily converted into a PDF document for download on the
+respective site that the eventual game will be hosted on.
+
+author: Brian Vilnrotter
+"""
+
+# function to handle pdf files
+def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
+
+	# initialize the pages list
+	pages = []
+
+	# glob through the filepath provided to start iterate through files found
+	for file in glob.glob(glob_path):
+
+		# log activity - found file to add to pdf
+		log(file + " was found, and will be added to the created pdf.")
+		
+		# append the file to the pages list by using Image
+		pages.append(Image.open(file))
+	
+	# save the collected pdf files as a pdf
+	pages[0].save(outpath, save_all=True, append_images=pages[1:], title=pdf_title, author=pdf_author, subject=pdf_subject)
 
 """
 This section of the code is solely focused on taking pictures from the user, and 
@@ -137,7 +172,7 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 	image = Image.open(file)
 
 	# log the action
-	log('INFO', '- opened file: ' + file)
+	log('- opened file: ' + file)
 
 	# check if a card back image is provided
 	if args.cardback:
@@ -149,19 +184,19 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 		image = image.resize(cardback.size)
 
 		# log activity
-		log('INFO', ' - image resized based on cardback: ' + args.cardback)
+		log(' - image resized based on cardback: ' + args.cardback)
 	
 	# get specs of uploaded image
 	width, height = image.size
 
 	# log metrics
-	log('METR', '- adjusted file has width: ' + str(width) + ' height: ' + str(height))
+	log('- adjusted file has width: ' + str(width) + ' height: ' + str(height), 'METR')
 
 	# create the coeficient dimensions of the new image to be created
 	nwidth, nheight = deck_coef
 
 	# log metrics
-	log('METR', '- initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']')
+	log('- initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']', 'METR')
 
 	# start a while loop that continues as long as the resulting image has attributes above 10k pixels
 	while any(x > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
@@ -182,7 +217,7 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 	new = Image.new(image.mode, (nwidth*width, nheight*height))
 	
 	# log action
-	log('METR', '- adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height))
+	log('- adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height), 'METR')
 
 	# iterate through the new images height
 	for h_index in range(nheight):
@@ -194,13 +229,13 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 			new.paste(image, (width*w_index, height*h_index))
 		 
 	# log action
-	log('INFO', '- pasted images together')
+	log('- pasted images together')
 	
 	# save created image to the designated output path
 	new.save(output)
 	
 	# log action
-	log('INFO', '- saved the created image to location: ' + str(output))
+	log('- saved the created image to location: ' + str(output))
 
 """
 This section of the code is solely dedicated to making a map for use in a
@@ -218,7 +253,7 @@ def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 	image = Image.open(background)
 
 	# log action
-	log('INFO', '- load background image ' + background)
+	log('- load background image ' + background)
 
 	# iterate through the directory provided for the assets
 	for filename in os.listdir(folder):
@@ -272,19 +307,19 @@ def main():
 				cardback.save(args.cardback)
 
 				# log activity
-				log('INFO', '- cardback image provided was altered and saved to the same directory')
+				log('- cardback image provided was altered and saved to the same directory')
 
 		# check if "-i" arguement is called
 		if args.image:
 
 			# log the action
-			log('INFO', 'image path provided: ' + str(args.image))
+			log('image path provided: ' + str(args.image))
 			
 			# check if an output path is provided
-			if args.output:
+			if args.directory:
 
 				# if so, then run tts_builddeck with the provided output path
-				tts_builddeck(args.image, args.output)
+				tts_builddeck(args.image, args.directory)
 			
 			# if an output path is not provided
 			else:
@@ -293,37 +328,28 @@ def main():
 				tts_builddeck(args.image, outpath(args.image))
 
 		# else, check if "-d" argument is called
-		elif args.directory:
+		elif args.glob:
 
 			# log the action
-			log('INFO', 'directory path provided: ' + str(args.directory))
+			log('glob regex provided: ' + str(args.glob))
 
-			# iterate recursively through the directory provided
-			for subdir, dirs, files in os.walk(args.directory):
-
-				# with the created values iterate through the files
-				for file in files:
-
-					# make a path of each file using created values
-					path = os.path.join(subdir, file)
-					
-					# check if an output directory is provided
-					if args.output:
-
-						# then run tts_builddeck with the provided directory
-						tts_builddeck(path, outpath(os.path.join(args.output, file)))
-
-					# if not then - 
-					else:
-					
-						# place the outputted image in the same directory as the provided image
-						tts_builddeck(path, outpath(os.path.join(args.directory, file)))
+			# iterate recursively through the glob regex provided
+			for file in glob.glob(args.glob):
+				
+				# place the outputted image in the same directory as the provided image
+				tts_builddeck(file, outpath(os.path.join(args.directory, os.path.basename(file))))
 
 	# check if mapbuilder is called
 	if args.sub == "mapbuilder":
 
 		# run the mapbuilder function
 		tts_buildmap(args.image, args.assets)
+	
+	# check if pdf is called
+	if args.sub == "pdf":
+
+		# run the pdf converter function
+		convert_to_pdf(args.glob, outpath(os.path.join(args.directory, "output.pdf")), args.title, args.author, args.subject)
 
 if __name__ == "__main__":
 	main()
