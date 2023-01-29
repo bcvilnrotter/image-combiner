@@ -1,8 +1,18 @@
-# imports
-import argparse
-import os, random, glob
+# native imports
+import os, glob, io
+import argparse, random
 from datetime import datetime, timezone
+
+# pillow import
 from PIL import Image
+
+# google-api imports
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaIoBaseDownload
+from googleapiclient.errors import HttpError
 
 # argument parser
 arg_desc = '''\
@@ -21,7 +31,7 @@ Examples:
 Make deck face images for TableTop Simulator (TTS) from a directory filled with images, 
 	using a cardback image reference to match size.
 
-python prototype-assist.py mosaic -g /path/to/directory/ -r /path/to/reference/image
+python prototype-assist.py mosaic --glob /path/to/directory/ --reference /path/to/reference/image
 =========
 '''
 
@@ -33,9 +43,16 @@ parser.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_
 parser.add_argument('--deck_image_max_reference_size', default=1000, dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', help="the max size TableTop Simulator (TTS) can handle for reference attributes")
 
 # initialize the default values needed for most subparsers
-parser.add_argument("-g", '--glob', dest='glob', help="regex used to pull multiple files from a path")
-parser.add_argument("-d", '--directory', dest='directory', help="path to directory that images will be output")
-parser.add_argument("-i", '--image', dest='image', help="Path to our base image")
+parser.add_argument('--directory', dest='directory', help="path to directory that images will be output")
+parser.add_argument('--gcreds', dest='gcreds', help="path to the credential.json file for google-api access")
+parser.add_argument('--keep_creds', dest='keep_creds', default=False, action='store_true', help="tell the script to delete any tokens it generates during processing")
+
+# initialize the mutually exclusive group of arguments to tell the script what data it will manipulate
+source = parser.add_mutually_exclusive_group(required=True)
+
+source.add_argument('--glob', dest='glob', help="regex used to pull multiple files from a path")
+source.add_argument('--file', dest='file', help="path to a single file that will be used by the script")
+source.add_argument("--google_link", dest='link', help="link pointing to a file in a google drive")
 
 # initialize the subparsers variable
 subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script', dest="sub")
@@ -49,16 +66,22 @@ tts_mapbuilder = subparsers.add_parser("mapbuilder")
 # initialize the subparser for PDF
 pdf_actions = subparsers.add_parser("pdf")
 
+# initialize the subparser for creating an instruction manual
+instruction_manual = subparsers.add_parser("instruction_manual")
+
 # initialize the subparser arguments for mosaic
-mosaic.add_argument("-r", '--refernce', dest='reference', help="path to the card back that will be used with tabletop simulator (TTS)")
+mosaic.add_argument('--refernce', dest='reference', help="path to the card back that will be used with tabletop simulator (TTS)")
 
 # initialize the subparser arguments for tts_mapbuilder
-tts_mapbuilder.add_argument("-a", '--assets', dest='assets', help="path to the directory containing multiple images that are assets for the map")
+tts_mapbuilder.add_argument('--assets', dest='assets', help="path to the directory containing multiple images that are assets for the map")
 
 # initialize the subparser arguments for pdf
-pdf_actions.add_argument('-a', '--author', default='prototye-assist.py', dest='author', help="the author to put in the output pdf")
-pdf_actions.add_argument('-t', '--title', default='Created using prototye-assist.py', dest='title', help="the title to put in the output pdf")
-pdf_actions.add_argument('-s', '--subject', default='https://github.com/bcvilnrotter/block-pillow', dest='subject', help="the subject to put in the output pdf")
+pdf_actions.add_argument('--author', default='prototye-assist.py', dest='author', help="the author to put in the output pdf")
+pdf_actions.add_argument('--title', default='Created using prototye-assist.py', dest='title', help="the title to put in the output pdf")
+pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/block-pillow', dest='subject', help="the subject to put in the output pdf")
+
+# initialize the subparser arguments for instruction_manual
+#TODO the segment for creating the instruction manual during the next coding session
 
 # parse out the arguments for the mosaic function
 args = parser.parse_args()
@@ -128,6 +151,73 @@ def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_REFERANCE_SIZE):
 	# return the deliverables based on the function arguments
 	return altered, image
 
+# function to connect to a google drive account, and pull down a file
+def retrieve_google_drive_file(file_id, args):
+
+	# check if path to credentials.json was provided by the user
+	if not args.gcreds:
+
+		# log that credential.json is needed for this function
+		log("No google api credentials were found. Use the --gcreds flag. exiting.")
+
+		# exit
+		exit()
+	
+	# define the scope. May make this dynamic later
+	SCOPES=['https://www.googleapis.com/auth/documents.readonly']
+
+	# initialize the None variable for the creds
+	creds = None
+
+	# check if a token exists
+	if os.path.exists('token.json'):
+
+		# grab the creds with the found token
+		creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+	
+	# check if creds is empty, and if creds are not valid
+	if not creds or not creds.valid:
+
+		# see if the creds just need a quick refresh
+		if creds and creds.expired and creds.refresh_token:
+			creds.refresh(Request())
+
+		else:
+			flow = InstalledAppFlow.from_client_secrets_file(args.gcreds, SCOPES)
+			creds = flow.run_local_server(port=0)
+		
+		# save the token that was just created in the output location for later use
+		with open('token.json', 'w') as token:
+			token.write(creds.to_json())
+	
+	# pull the file object
+	try:
+
+		# try building the gdrive service object
+		service = build('drive', 'v3', credentials=creds)
+
+		# request data from drive api
+		request = service.files().get_media(fileId=file_id)
+
+		# initialize the data variable
+		file = io.BytesIO()
+		
+		# initialize downloader object
+		downloader = MediaIoBaseDownload(file, request)
+
+		# download the data, and keep status up-to-date
+		done = False
+		while done is False:
+			status, done = downloader.next_chunk()
+			log("Download %d%%." % int(status.progress() * 100))
+		
+	except HttpError as error:
+		log(F'An error occurred downloading the file: {error}', 'ERROR')
+		return None
+
+	# return the file object, don't forget to rewind
+	return file.seek(0)
+
 """
 This section is dedicated to the functions that are used soleley within the
 PDF subparser features. The goal of this is to make it so the instruction
@@ -156,6 +246,28 @@ def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
 	pages[0].save(outpath, save_all=True, append_images=pages[1:], title=pdf_title, author=pdf_author, subject=pdf_subject)
 
 """
+This section of the code is solely focused on creating an "instruction manual" by
+taking text from a document, and pasting the information on a series of template
+images. This codes complete product will hopefully be smart enough to keep formatting
+elements (e.g. paragraphs, font size, font style, and embeded images) while
+consistently keeping the text in the images within indicies that are defined
+by the user.
+"""
+
+# tiller function to help determine how to collect and process data to make instruction manuals
+def tiller_instruction_manual(args):
+
+	# check if a google api link is provided
+	if args.link:
+
+		# pull a file object from a google drive
+		file = retrieve_google_drive_file((args.link).split('/')[-2], args)
+
+		# run the instruction_manual function while passing the file object collected
+		#TODO the instruction_manual function. It will probably look like the following:
+		# instruction_manual(file, args)
+
+"""
 This section of the code is solely focused on taking pictures from the user, and 
 combining them into a bigger picture that can be used for making decks in
 TableTop Simulator (TTS). Although most of the functionality for this script will
@@ -164,6 +276,57 @@ focus.
 
 author: Brian Vilnrotter
 """
+
+# function for tilling out exactly how the tt_builddeck function should work
+def tiller_builddeck(args):
+
+	# check for reference optional argument
+	if args.reference:
+
+		# inspect the reference image
+		altered, reference = inspect_image(Image.open(args.reference))
+
+		# check if the image was altered
+		if altered:
+
+			# assign the new outpath to the args.reference variable
+			args.reference = outpath(args.reference)
+
+			# save the image to the destination assigned to the args.reference variable
+			reference.save(args.reference)
+
+			# log activity
+			log('- reference image provided was altered and saved to the same directory')
+
+	# check if "-i" arguement is called
+	if args.file:
+
+		# log the action
+		log('image path provided: ' + str(args.file))
+		
+		# check if an output path is provided
+		if args.directory:
+
+			# if so, then run tts_builddeck with the provided output path
+			tts_builddeck(args.file, args.directory)
+		
+		# if an output path is not provided
+		else:
+
+			# make the card deck image
+			tts_builddeck(args.file, outpath(args.file))
+
+	# else, check if "-d" argument is called
+	elif args.glob:
+
+		# log the action
+		log('glob regex provided: ' + str(args.glob))
+
+		# iterate recursively through the glob regex provided
+		for file in glob.glob(args.glob):
+			
+			# place the outputted image in the same directory as the provided image
+			tts_builddeck(file, outpath(os.path.join(args.directory, os.path.basename(file))))
 
 # function to build deck image
 def tts_builddeck(file, output, deck_coef=[10,7]):
@@ -281,7 +444,16 @@ def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 
 """
 This section of the code is solely focused on the main function, as
-well as its execution.
+well as its execution. In my current thinking the main function should
+predominately be used for parsing out user triggers, and telling
+which functions should be processed. The big functions should be
+doing the heavy lifting once it is given all the data.
+
+It looks like it will be important to have 'tiller' functions for each
+subparsor main function to help process some of the user triggers. The
+triggeres found in the main function, however, should be focused on
+making sure the output of the script is as the user expects it to look
+(e.g. setting up the jobs folder)
 
 Author: Brian Vilnrotter
 """
@@ -289,67 +461,28 @@ Author: Brian Vilnrotter
 def main():
 
 	# check if mapbuilder or deckbuilder is called
-	if (args.sub == "mosaic"):
-		
-		# check for reference optional argument
-		if args.reference:
+	if args.sub == "mosaic":
 
-			# inspect the reference image
-			altered, reference = inspect_image(Image.open(args.reference))
-
-			# check if the image was altered
-			if altered:
-
-				# assign the new outpath to the args.reference variable
-				args.reference = outpath(args.reference)
-
-				# save the image to the destination assigned to the args.reference variable
-				reference.save(args.reference)
-
-				# log activity
-				log('- reference image provided was altered and saved to the same directory')
-
-		# check if "-i" arguement is called
-		if args.image:
-
-			# log the action
-			log('image path provided: ' + str(args.image))
-			
-			# check if an output path is provided
-			if args.directory:
-
-				# if so, then run tts_builddeck with the provided output path
-				tts_builddeck(args.image, args.directory)
-			
-			# if an output path is not provided
-			else:
-
-				# make the card deck image
-				tts_builddeck(args.image, outpath(args.image))
-
-		# else, check if "-d" argument is called
-		elif args.glob:
-
-			# log the action
-			log('glob regex provided: ' + str(args.glob))
-
-			# iterate recursively through the glob regex provided
-			for file in glob.glob(args.glob):
-				
-				# place the outputted image in the same directory as the provided image
-				tts_builddeck(file, outpath(os.path.join(args.directory, os.path.basename(file))))
+		# run the tiller function for the deck builder
+		tiller_builddeck(args)
 
 	# check if mapbuilder is called
 	if args.sub == "mapbuilder":
 
 		# run the mapbuilder function
-		tts_buildmap(args.image, args.assets)
+		tts_buildmap(args.file, args.assets)
 	
 	# check if pdf is called
 	if args.sub == "pdf":
 
 		# run the pdf converter function
 		convert_to_pdf(args.glob, outpath(os.path.join(args.directory, "output.pdf")), args.title, args.author, args.subject)
+	
+	# check if instruction_manual is called
+	if args.sub == "instruction_manual":
+
+		# run the tiller function for the instruction manual
+		tiller_instruction_manual(args)
 
 if __name__ == "__main__":
 	main()
