@@ -21,7 +21,7 @@ Examples:
 Make deck face images for TableTop Simulator (TTS) from a directory filled with images, 
 	using a cardback image reference to match size.
 
-python prototype-assist.py deckbuilder -d /path/to/directory/ -c /path/to/cardback/image
+python prototype-assist.py mosaic -g /path/to/directory/ -r /path/to/reference/image
 =========
 '''
 
@@ -30,7 +30,7 @@ parser = argparse.ArgumentParser(epilog=arg_example, formatter_class=argparse.Ra
 
 # initialize the global values
 parser.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', help="the max size TableTop Simulator (TTS) can handle for deck image attributes")
-parser.add_argument('--deck_image_max_cardback_size', default=1000, dest='TTS_DECK_IMAGE_MAX_CARDBACK_SIZE', help="the max size TableTop Simulator (TTS) can handle for cardback attributes")
+parser.add_argument('--deck_image_max_reference_size', default=1000, dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', help="the max size TableTop Simulator (TTS) can handle for reference attributes")
 
 # initialize the default values needed for most subparsers
 parser.add_argument("-g", '--glob', dest='glob', help="regex used to pull multiple files from a path")
@@ -40,8 +40,8 @@ parser.add_argument("-i", '--image', dest='image', help="Path to our base image"
 # initialize the subparsers variable
 subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script', dest="sub")
 
-# initialize the subparser for tts_deckbuilder
-tts_deckbuilder = subparsers.add_parser("deckbuilder")
+# initialize the subparser for mosaic
+mosaic = subparsers.add_parser("mosaic")
 
 # initialize the subparser for tts_mapbuilder
 tts_mapbuilder = subparsers.add_parser("mapbuilder")
@@ -49,8 +49,8 @@ tts_mapbuilder = subparsers.add_parser("mapbuilder")
 # initialize the subparser for PDF
 pdf_actions = subparsers.add_parser("pdf")
 
-# initialize the subparser arguments for tts_deckbuilder
-tts_deckbuilder.add_argument("-c", '--cardback', dest='cardback', help="path to the card back that will be used with tabletop simulator (TTS)")
+# initialize the subparser arguments for mosaic
+mosaic.add_argument("-r", '--refernce', dest='reference', help="path to the card back that will be used with tabletop simulator (TTS)")
 
 # initialize the subparser arguments for tts_mapbuilder
 tts_mapbuilder.add_argument("-a", '--assets', dest='assets', help="path to the directory containing multiple images that are assets for the map")
@@ -60,7 +60,7 @@ pdf_actions.add_argument('-a', '--author', default='prototye-assist.py', dest='a
 pdf_actions.add_argument('-t', '--title', default='Created using prototye-assist.py', dest='title', help="the title to put in the output pdf")
 pdf_actions.add_argument('-s', '--subject', default='https://github.com/bcvilnrotter/block-pillow', dest='subject', help="the subject to put in the output pdf")
 
-# parse out the arguments for the tts_deckbuilder function
+# parse out the arguments for the mosaic function
 args = parser.parse_args()
 
 """
@@ -105,7 +105,7 @@ def outpath(path):
 	return filename + "-" + now + extension
 
 # function for adjusting the size of an image provided based on max pixel value provided
-def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_CARDBACK_SIZE):
+def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_REFERANCE_SIZE):
 
 	# create a flag that states whether the image provided was altered
 	altered = False
@@ -175,16 +175,16 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 	log('- opened file: ' + file)
 
 	# check if a card back image is provided
-	if args.cardback:
+	if args.reference:
 
-		# upload the cardback image
-		cardback = Image.open(args.cardback)
+		# upload the reference image
+		reference = Image.open(args.reference)
 
-		# resize the image to the size of the cardback
-		image = image.resize(cardback.size)
+		# resize the image to the size of the reference
+		image = image.resize(reference.size)
 
 		# log activity
-		log(' - image resized based on cardback: ' + args.cardback)
+		log(' - image resized based on reference: ' + args.reference)
 	
 	# get specs of uploaded image
 	width, height = image.size
@@ -289,25 +289,25 @@ Author: Brian Vilnrotter
 def main():
 
 	# check if mapbuilder or deckbuilder is called
-	if (args.sub == "deckbuilder"):
+	if (args.sub == "mosaic"):
 		
-		# check for cardback optional argument
-		if args.cardback:
+		# check for reference optional argument
+		if args.reference:
 
-			# inspect the cardback image
-			altered, cardback = inspect_image(Image.open(args.cardback))
+			# inspect the reference image
+			altered, reference = inspect_image(Image.open(args.reference))
 
 			# check if the image was altered
 			if altered:
 
-				# assign the new outpath to the args.cardback variable
-				args.cardback = outpath(args.cardback)
+				# assign the new outpath to the args.reference variable
+				args.reference = outpath(args.reference)
 
-				# save the image to the destination assigned to the args.cardback variable
-				cardback.save(args.cardback)
+				# save the image to the destination assigned to the args.reference variable
+				reference.save(args.reference)
 
 				# log activity
-				log('- cardback image provided was altered and saved to the same directory')
+				log('- reference image provided was altered and saved to the same directory')
 
 		# check if "-i" arguement is called
 		if args.image:
