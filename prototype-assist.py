@@ -107,6 +107,23 @@ def log(message, type='INFO'):
 	# print the log entry
 	print(entry)
 
+# function to log that a feature is under construction, and point the user to the github repo
+def under_construction():
+
+	# log the "under construction" ascii art (really make it stick out)
+	log("______________________________________________________________________________________________")
+	log("|      ____  |  ###                                                              |      ____  |")
+	log("| \  i | o|  | #      ##   #  #  ###  ###  ###  #   #   ###  ###  #   ###   #  # | \  i | o|  |")
+	log("| |>#######  | #     #  #  ## #  ###   #   #    #   #  #      #   #  #   #  ## # | |>#######  |")
+	log("| /(_______) |  ###   ##   # ##  ###   #   #     ###    ###   #   #   ###   # ## | /(_______) |")
+	log("|____________|___________________________________________________________________|____________|")
+	
+	# give the user in the log information on where to get more information
+	log("This feature is not yet implemented. please go to https://github.com/bcvilnrotter/prototype-assist for more information")
+	
+	# exit the script
+	exit()
+
 """
 This section of code is solely focused on misculaneous/utility functions.
 These include all the other functions that will be used to complete tasks
@@ -226,6 +243,30 @@ respective site that the eventual game will be hosted on.
 
 author: Brian Vilnrotter
 """
+
+# tiller function to determine how to run the convert_to_pdf function
+def tiller_convert_to_pdf(args):
+
+	# check if file argument wasa called
+	if args.file:
+
+		#TODO: add code for telling the script how to print a pdf with only a single image file
+		# for now, just run the under_construction function that logs this activity, and exit
+		under_construction()
+	
+	# check if a file needs to be pulled using google-api
+	if args.google_link:
+	
+		#TODO: add code for telling the script how to print a pdf with only a single image file
+		# file that needs to be pulled from google drive using the google-api
+		# for now, just run the under_construction function that logs this activity, and exit
+		under_construction()
+
+	# check if the glob argument was called
+	if args.glob:
+	
+		# run the convert_to_pdf using the glob argument
+		convert_to_pdf(args.glob, outpath(os.path.join(args.directory, "output.pdf")), args.title, args.author, args.subject)
 
 # function to handle pdf files
 def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
@@ -476,7 +517,7 @@ def main():
 	if args.sub == "pdf":
 
 		# run the pdf converter function
-		convert_to_pdf(args.glob, outpath(os.path.join(args.directory, "output.pdf")), args.title, args.author, args.subject)
+		tiller_convert_to_pdf(args)
 	
 	# check if instruction_manual is called
 	if args.sub == "instruction_manual":
