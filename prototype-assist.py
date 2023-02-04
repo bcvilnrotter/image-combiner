@@ -35,42 +35,60 @@ python prototype-assist.py mosaic --glob /path/to/directory/ --reference /path/t
 =========
 '''
 
+# initialize common arguments
+common_args = argparse.ArgumentParser(add_help=False)
+
+# initialize the global values
+common_args.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', help="the max size TableTop Simulator (TTS) can handle for deck image attributes")
+common_args.add_argument('--deck_image_max_reference_size', default=1000, dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', help="the max size TableTop Simulator (TTS) can handle for reference attributes")
+
+# initialize the default values needed for most subparsers
+common_args.add_argument('--directory', dest='directory', help="path to directory that images will be output")
+common_args.add_argument('--gcreds', dest='gcreds', help="path to the credential.json file for google-api access")
+common_args.add_argument('--keep_creds', dest='keep_creds', default=False, action='store_true', help="tell the script to delete any tokens it generates during processing")
+
+# initialize the default arguments for source input (one of these is required for the script to function)
+common_args.add_argument('--glob', dest='glob', help="regex used to pull multiple files from a path")
+common_args.add_argument('--file', dest='file', help="path to a single file that will be used by the script")
+common_args.add_argument('--glink', dest='glink', help="link pointing to a file in a google drive")
+
 # initial argparse argument
 parser = argparse.ArgumentParser(epilog=arg_example, formatter_class=argparse.RawDescriptionHelpFormatter, description=arg_desc)
 
-# initialize the global values
-parser.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', help="the max size TableTop Simulator (TTS) can handle for deck image attributes")
-parser.add_argument('--deck_image_max_reference_size', default=1000, dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', help="the max size TableTop Simulator (TTS) can handle for reference attributes")
-
-# initialize the default values needed for most subparsers
-parser.add_argument('--directory', dest='directory', help="path to directory that images will be output")
-parser.add_argument('--gcreds', dest='gcreds', help="path to the credential.json file for google-api access")
-parser.add_argument('--keep_creds', dest='keep_creds', default=False, action='store_true', help="tell the script to delete any tokens it generates during processing")
-
-# initialize the mutually exclusive group of arguments to tell the script what data it will manipulate
-source = parser.add_mutually_exclusive_group(required=True)
-
-source.add_argument('--glob', dest='glob', help="regex used to pull multiple files from a path")
-source.add_argument('--file', dest='file', help="path to a single file that will be used by the script")
-source.add_argument("--google_link", dest='link', help="link pointing to a file in a google drive")
-
 # initialize the subparsers variable
-subparsers = parser.add_subparsers(help='used to organize the different sub functions of the script', dest="sub")
+subparsers = parser.add_subparsers(
+	title='actions', 
+	help='used to organize the different sub functions of the script', 
+	dest="sub",
+	required=True
+	)
 
 # initialize the subparser for mosaic
-mosaic = subparsers.add_parser("mosaic")
+mosaic = subparsers.add_parser(
+	"mosaic",
+	parents=[common_args]
+	)
 
 # initialize the subparser for tts_mapbuilder
-tts_mapbuilder = subparsers.add_parser("mapbuilder")
+tts_mapbuilder = subparsers.add_parser(
+	"mapbuilder",
+	parents=[common_args]
+	)
 
 # initialize the subparser for PDF
-pdf_actions = subparsers.add_parser("pdf")
+pdf_actions = subparsers.add_parser(
+	"pdf",
+	parents=[common_args]
+	)
 
 # initialize the subparser for creating an instruction manual
-instruction_manual = subparsers.add_parser("instruction_manual")
+instruction_manual = subparsers.add_parser(
+	"instruction_manual",
+	parents=[common_args]
+	)
 
 # initialize the subparser arguments for mosaic
-mosaic.add_argument('--refernce', dest='reference', help="path to the card back that will be used with tabletop simulator (TTS)")
+mosaic.add_argument('--reference', dest='reference', help="path to the card back that will be used with tabletop simulator (TTS)")
 
 # initialize the subparser arguments for tts_mapbuilder
 tts_mapbuilder.add_argument('--assets', dest='assets', help="path to the directory containing multiple images that are assets for the map")
@@ -85,6 +103,12 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 
 # parse out the arguments for the mosaic function
 args = parser.parse_args()
+
+# check to ensure one of the required arguments are provided by the user
+if not args.glink and not args.file and not args.glob:
+
+	# provide a argparse error
+	parser.error("please provide one of the following flags: --file, --glob, --glink")
 
 """
 This section of code will be dedicated to error/log messaging. This section
@@ -111,7 +135,7 @@ def log(message, type='INFO'):
 def under_construction():
 
 	# log the "under construction" ascii art (really make it stick out)
-	log("______________________________________________________________________________________________")
+	log("_______________________________________________________________________________________________")
 	log("|      ____  |  ###                                                              |      ____  |")
 	log("| \  i | o|  | #      ##   #  #  ###  ###  ###  #   #   ###  ###  #   ###   #  # | \  i | o|  |")
 	log("| |>#######  | #     #  #  ## #  ###   #   #    #   #  #      #   #  #   #  ## # | |>#######  |")
@@ -255,7 +279,7 @@ def tiller_convert_to_pdf(args):
 		under_construction()
 	
 	# check if a file needs to be pulled using google-api
-	if args.google_link:
+	if args.glink:
 	
 		#TODO: add code for telling the script how to print a pdf with only a single image file
 		# file that needs to be pulled from google drive using the google-api
@@ -357,8 +381,8 @@ def tiller_builddeck(args):
 			# make the card deck image
 			tts_builddeck(args.file, outpath(args.file))
 
-	# else, check if "-d" argument is called
-	elif args.glob:
+	# check if user provided glob argument
+	if args.glob:
 
 		# log the action
 		log('glob regex provided: ' + str(args.glob))
@@ -368,6 +392,13 @@ def tiller_builddeck(args):
 			
 			# place the outputted image in the same directory as the provided image
 			tts_builddeck(file, outpath(os.path.join(args.directory, os.path.basename(file))))
+	
+	# check if a google link is provided
+	if args.glink:
+
+		#TODO: add code here to deal with a google_link
+		# for now, just point to under_construction function
+		under_construction()
 
 # function to build deck image
 def tts_builddeck(file, output, deck_coef=[10,7]):
@@ -450,6 +481,29 @@ asset icons around the map.
 Author: Brian Vilnrotter
 """
 
+# tiller function for the tts_buildmap subparser function
+def tiller_buildmap(args):
+
+	# check if a file is provided
+	if args.file:
+
+		# run the mapbuilder function
+		tts_buildmap(args.file, args.assets)
+	
+	# check if a glob is provided
+	if args.glob:
+
+		#TODO: add code to provide the necessary information to tt_buildmap function
+		# for now, just add the under_construction function, and exit
+		under_construction()
+	
+	# check if a google_link is provided
+	if args.glink:
+
+		# TODO: add code to provide the necessary information to tt_buildmap function
+		# for now, just add the under_construction function, and exit
+		under_construction()
+
 # function for creating a map
 def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 
@@ -510,20 +564,22 @@ def main():
 	# check if mapbuilder is called
 	if args.sub == "mapbuilder":
 
-		# run the mapbuilder function
-		tts_buildmap(args.file, args.assets)
+		# send the args attribute to the tiller_buildmap function
+		tiller_buildmap(args)
 	
 	# check if pdf is called
 	if args.sub == "pdf":
 
-		# run the pdf converter function
+		# send the args attributes to the tiller pdf function
 		tiller_convert_to_pdf(args)
 	
 	# check if instruction_manual is called
 	if args.sub == "instruction_manual":
 
-		# run the tiller function for the instruction manual
-		tiller_instruction_manual(args)
+		# run the tiller function for the instruction_manual subparser
+		#TODO: This will eventually lead to the instruction_manual functions,
+		# but for now it will just lead to the under_construction function
+		under_construction()
 
 if __name__ == "__main__":
 	main()
