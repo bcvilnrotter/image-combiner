@@ -1,3 +1,23 @@
+#region imports 
+"""
+SECTION.IMPORTS
+
+The below section is specific to importing all libraries that are required
+for the normal working of the script. These libraries should require a low
+amount of dependancies. (e.g. mostly native libraries with some libraries
+the user will have to download and maintain)
+
+so far the breakdown of native / special libraries are as follows:
+
+Current:
+- native
+- pillow 				(pip install pillow)
+- google-api libraries	(pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib)
+
+Future:
+- TableTopSimulator API
+"""
+
 # native imports
 import os, glob, io
 import argparse, random
@@ -13,6 +33,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseDownload
 from googleapiclient.errors import HttpError
+
+#endregion
+#region examples
 
 # argument parser
 arg_desc = '''\
@@ -35,6 +58,9 @@ python prototype-assist.py mosaic --glob /path/to/directory/ --reference /path/t
 =========
 '''
 
+#endregion
+#region common_args
+
 # initialize common arguments
 common_args = argparse.ArgumentParser(add_help=False)
 
@@ -51,6 +77,9 @@ common_args.add_argument('--keep_creds', dest='keep_creds', default=False, actio
 common_args.add_argument('--glob', dest='glob', help="regex used to pull multiple files from a path")
 common_args.add_argument('--file', dest='file', help="path to a single file that will be used by the script")
 common_args.add_argument('--glink', dest='glink', help="link pointing to a file in a google drive")
+
+#endregion
+#region parser_initializing
 
 # initial argparse argument
 parser = argparse.ArgumentParser(epilog=arg_example, formatter_class=argparse.RawDescriptionHelpFormatter, description=arg_desc)
@@ -87,6 +116,9 @@ instruction_manual = subparsers.add_parser(
 	parents=[common_args]
 	)
 
+#endregion
+#region subparser_arguments
+
 # initialize the subparser arguments for mosaic
 mosaic.add_argument('--reference', dest='reference', help="path to the card back that will be used with tabletop simulator (TTS)")
 
@@ -101,6 +133,9 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 # initialize the subparser arguments for instruction_manual
 #TODO the segment for creating the instruction manual during the next coding session
 
+#endregion
+#region parser_process_and_conditions
+
 # parse out the arguments for the mosaic function
 args = parser.parse_args()
 
@@ -110,13 +145,14 @@ if not args.glink and not args.file and not args.glob:
 	# provide a argparse error
 	parser.error("please provide one of the following flags: --file, --glob, --glink")
 
+#endregion
+#region admin_functions
+
 """
 This section of code will be dedicated to error/log messaging. This section
 will include the function for logging, as well as functions that could be 
 used as a wrapper try/catch arguments for other clusters of functions. This
 may not be implemented, but wanted to log it here now.
-
-Author: Brian Vilnrotter
 """
 
 # function to log data that is happening
@@ -148,14 +184,6 @@ def under_construction():
 	# exit the script
 	exit()
 
-"""
-This section of code is solely focused on misculaneous/utility functions.
-These include all the other functions that will be used to complete tasks
-from the main functions described in the tools description.
-
-Author: Brian Vilnrotter
-"""
-
 # function to make output path
 def outpath(path):
 
@@ -167,6 +195,15 @@ def outpath(path):
 	
 	# return the output path
 	return filename + "-" + now + extension
+
+#endregion
+#region secondary_functions
+
+"""
+This section of code is solely focused on misculaneous/utility functions.
+These include all the other functions that will be used to complete tasks
+from the main functions described in the tools description.
+"""
 
 # function for adjusting the size of an image provided based on max pixel value provided
 def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_REFERANCE_SIZE):
@@ -259,13 +296,14 @@ def retrieve_google_drive_file(file_id, args):
 	# return the file object, don't forget to rewind
 	return file.seek(0)
 
+#endregion
+#region pdf_tiller_processor_functions
+
 """
 This section is dedicated to the functions that are used soleley within the
 PDF subparser features. The goal of this is to make it so the instruction
 manual can be easily converted into a PDF document for download on the
 respective site that the eventual game will be hosted on.
-
-author: Brian Vilnrotter
 """
 
 # tiller function to determine how to run the convert_to_pdf function
@@ -310,6 +348,9 @@ def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
 	# save the collected pdf files as a pdf
 	pages[0].save(outpath, save_all=True, append_images=pages[1:], title=pdf_title, author=pdf_author, subject=pdf_subject)
 
+#endregion
+#region instruction_manual_tiller_processing_functions
+
 """
 This section of the code is solely focused on creating an "instruction manual" by
 taking text from a document, and pasting the information on a series of template
@@ -332,14 +373,15 @@ def tiller_instruction_manual(args):
 		#TODO the instruction_manual function. It will probably look like the following:
 		# instruction_manual(file, args)
 
+#endregion
+#region tiller_mosaic_tiller_processor_functions
+
 """
 This section of the code is solely focused on taking pictures from the user, and 
 combining them into a bigger picture that can be used for making decks in
 TableTop Simulator (TTS). Although most of the functionality for this script will
 be for use in TableTop Simulator, future additions may stride away from that
 focus.
-
-author: Brian Vilnrotter
 """
 
 # function for tilling out exactly how the tt_builddeck function should work
@@ -472,13 +514,14 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 	# log action
 	log('- saved the created image to location: ' + str(output))
 
+#endregion
+#region mapbuilder_tiller_processing_functions
+
 """
 This section of the code is solely dedicated to making a map for use in a
 board game through the TableTop Simulator (TTS). This currently involves
 created a map from a background image, and randomly distributing other
 asset icons around the map.
-
-Author: Brian Vilnrotter
 """
 
 # tiller function for the tts_buildmap subparser function
@@ -537,6 +580,9 @@ def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 	# save the created image out
 	image.save(outpath(background))
 
+#endregion
+#region main_function
+
 """
 This section of the code is solely focused on the main function, as
 well as its execution. In my current thinking the main function should
@@ -549,8 +595,6 @@ subparsor main function to help process some of the user triggers. The
 triggeres found in the main function, however, should be focused on
 making sure the output of the script is as the user expects it to look
 (e.g. setting up the jobs folder)
-
-Author: Brian Vilnrotter
 """
 
 def main():
@@ -580,6 +624,8 @@ def main():
 		#TODO: This will eventually lead to the instruction_manual functions,
 		# but for now it will just lead to the under_construction function
 		under_construction()
+
+#endregion
 
 if __name__ == "__main__":
 	main()
