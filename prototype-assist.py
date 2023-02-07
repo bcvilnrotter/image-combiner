@@ -204,6 +204,15 @@ def log(message, type='INFO'):
 	# combine the string for the log entry
 	entry = str(get_now()) + " [" + str(type) + "] " + str(message)
 
+	# build a file path to check
+	logpath = os.path.join(vehicle["jobsfolder"], "log.txt")
+
+	# open or create a log file
+	with open(logpath, "a") as f:
+
+		# write the entry to the file
+		f.write(entry + "\n")
+
 	# print the log entry
 	print(entry)
 
