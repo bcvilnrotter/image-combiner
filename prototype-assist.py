@@ -1,7 +1,5 @@
 #region imports 
 """
-SECTION.IMPORTS
-
 The below section is specific to importing all libraries that are required
 for the normal working of the script. These libraries should require a low
 amount of dependancies. (e.g. mostly native libraries with some libraries
@@ -37,6 +35,13 @@ from googleapiclient.errors import HttpError
 #endregion
 #region examples
 
+"""
+The below section is specific to all descriptions and examples
+that will be used within argparse. The description should be
+updated regularly, and there should be examples for main use of
+the script that is commonly used by the developer.
+"""
+
 # argument parser
 arg_desc = '''\
 Python Pillow Module
@@ -44,6 +49,8 @@ Python Pillow Module
 Features:
 - deckbuilder: takes an original image and converts it into a deck image for us in TTS prototypes
 - mapbuilder: takes a background image, and smaller resource images to randomly place across the background image
+- pdf: takes a group of images and combines them into a single pdf document (for an instruction manual)
+- instruction_manual: 
 '''
 
 # provide examples
