@@ -68,6 +68,9 @@ python prototype-assist.py mosaic --glob /path/to/directory/ --reference /path/t
 #endregion
 #region common_args
 
+# initiazlie the global vehicular transport that treats all values within globally
+vehicle = {}
+
 # initialize common arguments
 common_args = argparse.ArgumentParser(add_help=False)
 
@@ -162,14 +165,44 @@ used as a wrapper try/catch arguments for other clusters of functions. This
 may not be implemented, but wanted to log it here now.
 """
 
+# function to get current date-time for consistent results
+def get_now():
+
+	# return the time with a consistent datetime function
+	return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
+
+# function that sets up the output environment
+def setup_jobsfolder(args):
+
+	# check if the args contains a user defined folder location
+	if args.directory:
+
+		# check if the directory does not exist
+		if not os.path.exists(args.directory):
+
+			# make the folder
+			os.mkdir(args.directory)
+
+		# return the user inputted directory
+		return args.directory
+
+	# else, make a directory at the root of the script location
+	else:
+
+		# define the varible to hold the folder path
+		jobsfolder = os.path.join(os.getcwd(), get_now())
+		
+		# create the folder path
+		os.mkdir(jobsfolder)
+
+		# return the folder path created
+		return jobsfolder
+
 # function to log data that is happening
 def log(message, type='INFO'):
 
-	# get the current time
-	now = datetime.now(timezone.utc)
-
 	# combine the string for the log entry
-	entry = str(now) + " [" + str(type) + "] " + str(message)
+	entry = str(get_now()) + " [" + str(type) + "] " + str(message)
 
 	# print the log entry
 	print(entry)
@@ -195,13 +228,13 @@ def under_construction():
 def outpath(path):
 
 	# split the path to filename and extension
-	filename, extension = os.path.splitext(path)
-		
-	# get current time
-	now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
+	root, extension = os.path.splitext(path)
+
+	# pull the filename from the root
+	filename = os.path.basename(root)
 	
 	# return the output path
-	return filename + "-" + now + extension
+	return str(vehicle["jobsfolder"]) + filename + "-" + get_now() + extension
 
 #endregion
 #region secondary_functions
@@ -335,7 +368,7 @@ def tiller_convert_to_pdf(args):
 	if args.glob:
 	
 		# run the convert_to_pdf using the glob argument
-		convert_to_pdf(args.glob, outpath(os.path.join(args.directory, "output.pdf")), args.title, args.author, args.subject)
+		convert_to_pdf(args.glob, outpath(os.path.join("output.pdf")), args.title, args.author, args.subject)
 
 # function to handle pdf files
 def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
@@ -440,7 +473,7 @@ def tiller_builddeck(args):
 		for file in glob.glob(args.glob):
 			
 			# place the outputted image in the same directory as the provided image
-			tts_builddeck(file, outpath(os.path.join(args.directory, os.path.basename(file))))
+			tts_builddeck(file, outpath(os.path.basename(file)))
 	
 	# check if a google link is provided
 	if args.glink:
@@ -514,6 +547,9 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 		 
 	# log action
 	log('- pasted images together')
+	
+	# get new outpath
+	output = outpath(output)
 	
 	# save created image to the designated output path
 	new.save(output)
@@ -605,6 +641,9 @@ making sure the output of the script is as the user expects it to look
 """
 
 def main():
+
+	# setup the jobs folder
+	vehicle.update({"jobsfolder":setup_jobsfolder(args)})
 
 	# check if mapbuilder or deckbuilder is called
 	if args.sub == "mosaic":
