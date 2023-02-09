@@ -10,6 +10,7 @@ so far the breakdown of native / special libraries are as follows:
 Current:
 - native
 - pillow 				(pip install pillow)
+- docx					(pip install docx)
 - google-api libraries	(pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib)
 
 Future:
@@ -23,6 +24,9 @@ from datetime import datetime, timezone
 
 # pillow import
 from PIL import Image
+
+# docx import
+import docx
 
 # google-api imports
 from google.auth.transport.requests import Request
@@ -79,7 +83,7 @@ common_args.add_argument('--deck_image_max_attribute_size', default=10000, dest=
 common_args.add_argument('--deck_image_max_reference_size', default=1000, dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', help="the max size TableTop Simulator (TTS) can handle for reference attributes")
 
 # initialize the default values needed for most subparsers
-common_args.add_argument('--directory', dest='directory', help="path to directory that images will be output")
+common_args.add_argument('--job', dest='job', help="path to output folder")
 common_args.add_argument('--gcreds', dest='gcreds', help="path to the credential.json file for google-api access")
 common_args.add_argument('--keep_creds', dest='keep_creds', default=False, action='store_true', help="tell the script to delete any tokens it generates during processing")
 
@@ -121,8 +125,8 @@ pdf_actions = subparsers.add_parser(
 	)
 
 # initialize the subparser for creating an instruction manual
-instruction_manual = subparsers.add_parser(
-	"instruction_manual",
+text2image = subparsers.add_parser(
+	"text2image",
 	parents=[common_args]
 	)
 
@@ -152,8 +156,14 @@ args = parser.parse_args()
 # check to ensure one of the required arguments are provided by the user
 if not args.glink and not args.file and not args.glob:
 
-	# provide a argparse error
+	# provide an argparse error
 	parser.error("please provide one of the following flags: --file, --glob, --glink")
+
+# if glink is provided, must check if the creds are not provided
+if args.glink and not args.gcreds:
+
+	# provide an argparse error
+	parser.error("Please provide the google creds using --gcreds when providing a google link")
 
 #endregion
 #region admin_functions
@@ -175,16 +185,19 @@ def get_now():
 def setup_jobsfolder(args):
 
 	# check if the args contains a user defined folder location
-	if args.directory:
+	if args.job:
 
+		# assign args.job to a new variable to make scaling easier
+		path = args.job
+		
 		# check if the directory does not exist
-		if not os.path.exists(args.directory):
+		if not os.path.exists(path):
 
 			# make the folder
-			os.mkdir(args.directory)
+			os.mkdir(path)
 
 		# return the user inputted directory
-		return args.directory
+		return path
 
 	# else, make a directory at the root of the script location
 	else:
@@ -234,7 +247,7 @@ def under_construction():
 	exit()
 
 # function to make output path
-def outpath(path):
+def outpath(path, dated=True):
 
 	# split the path to filename and extension
 	root, extension = os.path.splitext(path)
@@ -242,8 +255,16 @@ def outpath(path):
 	# pull the filename from the root
 	filename = os.path.basename(root)
 	
-	# return the output path
-	return str(vehicle["jobsfolder"]) + filename + "-" + get_now() + extension
+	# check if the script call wants a unique date identifier in the filename
+	if dated == True:
+	
+		# return the output path
+		return str(vehicle["jobsfolder"]) + filename + "-" + get_now() + extension
+
+	# else, return a non-unique dated filename path string
+	else:
+
+		return str(vehicle['jobsfolder'] + filename + extension)
 
 #endregion
 #region secondary_functions
@@ -294,13 +315,16 @@ def retrieve_google_drive_file(file_id, args):
 	SCOPES=['https://www.googleapis.com/auth/documents.readonly']
 
 	# initialize the None variable for the creds
-	creds = None
+	creds = args.gcreds
+
+	# initialize what the path for the token should be
+	token = outpath('token.json', dated=False)
 
 	# check if a token exists
-	if os.path.exists('token.json'):
+	if os.path.exists(token):
 
 		# grab the creds with the found token
-		creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+		creds = Credentials.from_authorized_user_file(token, SCOPES)
 	
 	# check if creds is empty, and if creds are not valid
 	if not creds or not creds.valid:
@@ -310,11 +334,11 @@ def retrieve_google_drive_file(file_id, args):
 			creds.refresh(Request())
 
 		else:
-			flow = InstalledAppFlow.from_client_secrets_file(args.gcreds, SCOPES)
+			flow = InstalledAppFlow.from_client_secrets_file(creds, SCOPES)
 			creds = flow.run_local_server(port=0)
 		
 		# save the token that was just created in the output location for later use
-		with open('token.json', 'w') as token:
+		with open(token, 'w') as token:
 			token.write(creds.to_json())
 	
 	# pull the file object
@@ -377,7 +401,7 @@ def tiller_convert_to_pdf(args):
 	if args.glob:
 	
 		# run the convert_to_pdf using the glob argument
-		convert_to_pdf(args.glob, outpath(os.path.join("output.pdf")), args.title, args.author, args.subject)
+		convert_to_pdf(args.glob, outpath("output.pdf"), args.title, args.author, args.subject)
 
 # function to handle pdf files
 def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
@@ -410,17 +434,22 @@ by the user.
 """
 
 # tiller function to help determine how to collect and process data to make instruction manuals
-def tiller_instruction_manual(args):
+def tiller_text2image(args):
 
 	# check if a google api link is provided
-	if args.link:
+	if args.glink:
 
 		# pull a file object from a google drive
-		file = retrieve_google_drive_file((args.link).split('/')[-2], args)
+		file = retrieve_google_drive_file((args.glink).split('/')[-2], args)
 
 		# run the instruction_manual function while passing the file object collected
 		#TODO the instruction_manual function. It will probably look like the following:
 		# instruction_manual(file, args)
+
+# function to add text to images
+def text2image(text, image=None):
+
+	exit()
 
 #endregion
 #region tiller_mosaic_tiller_processor_functions
@@ -459,18 +488,9 @@ def tiller_builddeck(args):
 
 		# log the action
 		log('image path provided: ' + str(args.file))
-		
-		# check if an output path is provided
-		if args.directory:
 
-			# if so, then run tts_builddeck with the provided output path
-			tts_builddeck(args.file, args.directory)
-		
-		# if an output path is not provided
-		else:
-
-			# make the card deck image
-			tts_builddeck(args.file, outpath(args.file))
+		# if so, then run tts_builddeck with the provided output path
+		tts_builddeck(args.file)
 
 	# check if user provided glob argument
 	if args.glob:
@@ -492,7 +512,7 @@ def tiller_builddeck(args):
 		under_construction()
 
 # function to build deck image
-def tts_builddeck(file, output, deck_coef=[10,7]):
+def tts_builddeck(file, deck_coef=[10,7]):
 
 	# import the user provided image
 	image = Image.open(file)
@@ -558,7 +578,7 @@ def tts_builddeck(file, output, deck_coef=[10,7]):
 	log('- pasted images together')
 	
 	# get new outpath
-	output = outpath(output)
+	output = outpath(vehicle['jobsfolder'])
 	
 	# save created image to the designated output path
 	new.save(output)
@@ -673,7 +693,7 @@ def main():
 		tiller_convert_to_pdf(args)
 	
 	# check if instruction_manual is called
-	if args.sub == "instruction_manual":
+	if args.sub == "text2image":
 
 		# run the tiller function for the instruction_manual subparser
 		#TODO: This will eventually lead to the instruction_manual functions,
