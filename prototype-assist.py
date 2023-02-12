@@ -23,7 +23,7 @@ import argparse, random
 from datetime import datetime, timezone
 
 # pillow import
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 # docx import
 import docx
@@ -125,8 +125,8 @@ pdf_actions = subparsers.add_parser(
 	)
 
 # initialize the subparser for creating an instruction manual
-text2image = subparsers.add_parser(
-	"text2image",
+textadd = subparsers.add_parser(
+	"textadd",
 	parents=[common_args]
 	)
 
@@ -259,12 +259,12 @@ def outpath(path, dated=True):
 	if dated == True:
 	
 		# return the output path
-		return str(vehicle["jobsfolder"]) + filename + "-" + get_now() + extension
+		return str(vehicle["jobsfolder"]) + "\\" + filename + "-" + get_now() + extension
 
 	# else, return a non-unique dated filename path string
 	else:
 
-		return str(vehicle['jobsfolder'] + filename + extension)
+		return str(vehicle["jobsfolder"] + "\\" + filename + extension)
 
 #endregion
 #region secondary_functions
@@ -312,10 +312,11 @@ def retrieve_google_drive_file(file_id, args):
 		exit()
 	
 	# define the scope. May make this dynamic later
-	SCOPES=['https://www.googleapis.com/auth/documents.readonly']
+	#SCOPES=['https://www.googleapis.com/auth/documents.readonly']
+	SCOPES=['https://www.googleapis.com/auth/drive']
 
 	# initialize the None variable for the creds
-	creds = args.gcreds
+	creds = None
 
 	# initialize what the path for the token should be
 	token = outpath('token.json', dated=False)
@@ -334,7 +335,7 @@ def retrieve_google_drive_file(file_id, args):
 			creds.refresh(Request())
 
 		else:
-			flow = InstalledAppFlow.from_client_secrets_file(creds, SCOPES)
+			flow = InstalledAppFlow.from_client_secrets_file(args.gcreds, SCOPES)
 			creds = flow.run_local_server(port=0)
 		
 		# save the token that was just created in the output location for later use
@@ -367,7 +368,7 @@ def retrieve_google_drive_file(file_id, args):
 		return None
 
 	# return the file object, don't forget to rewind
-	return file.seek(0)
+	return file
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -442,14 +443,34 @@ def tiller_text2image(args):
 		# pull a file object from a google drive
 		file = retrieve_google_drive_file((args.glink).split('/')[-2], args)
 
-		# run the instruction_manual function while passing the file object collected
-		#TODO the instruction_manual function. It will probably look like the following:
-		# instruction_manual(file, args)
+		doc = docx.Document(file)
+		
+		text = []
+
+		for paragraph in doc.paragraphs:
+			text.append(paragraph.text)
+
+		# send the text object to the text2image function for processing
+		text2image(text)
 
 # function to add text to images
-def text2image(text, image=None):
+def text2image(text, template=None):
 
-	exit()
+	image = Image.new(mode="RGBA", size=(640,480), color='orange')
+
+	draw = ImageDraw.Draw(image)
+
+	number = 0
+	
+	for line in text:
+	
+		draw.text((0,number), line)
+
+		number += 10
+
+	image.save(outpath("output.png"))
+
+
 
 #endregion
 #region tiller_mosaic_tiller_processor_functions
@@ -693,12 +714,10 @@ def main():
 		tiller_convert_to_pdf(args)
 	
 	# check if instruction_manual is called
-	if args.sub == "text2image":
+	if args.sub == "textadd":
 
 		# run the tiller function for the instruction_manual subparser
-		#TODO: This will eventually lead to the instruction_manual functions,
-		# but for now it will just lead to the under_construction function
-		under_construction()
+		tiller_text2image(args)
 
 #endregion
 
