@@ -312,7 +312,6 @@ def retrieve_google_drive_file(file_id, args):
 		exit()
 	
 	# define the scope. May make this dynamic later
-	#SCOPES=['https://www.googleapis.com/auth/documents.readonly']
 	SCOPES=['https://www.googleapis.com/auth/drive']
 
 	# initialize the None variable for the creds
@@ -321,14 +320,26 @@ def retrieve_google_drive_file(file_id, args):
 	# initialize what the path for the token should be
 	token = outpath('token.json', dated=False)
 
+	# log activity
+	log(" - checking if a previously made token exists in jobs path")
+
 	# check if a token exists
 	if os.path.exists(token):
+
+		# log activity
+		log(" - token found, pulling credentials from token")
 
 		# grab the creds with the found token
 		creds = Credentials.from_authorized_user_file(token, SCOPES)
 	
+	# log activity
+	log(" - checking if google-api creds are useable")
+	
 	# check if creds is empty, and if creds are not valid
 	if not creds or not creds.valid:
+
+		# log activity
+		log(" - creds found do not work, troubleshooting...")
 
 		# see if the creds just need a quick refresh
 		if creds and creds.expired and creds.refresh_token:
@@ -338,6 +349,9 @@ def retrieve_google_drive_file(file_id, args):
 			flow = InstalledAppFlow.from_client_secrets_file(args.gcreds, SCOPES)
 			creds = flow.run_local_server(port=0)
 		
+		# log activity
+		log(" - writing token contents")
+
 		# save the token that was just created in the output location for later use
 		with open(token, 'w') as token:
 			token.write(creds.to_json())
@@ -348,6 +362,9 @@ def retrieve_google_drive_file(file_id, args):
 		# try building the gdrive service object
 		service = build('drive', 'v3', credentials=creds)
 
+		# log the activity
+		log(" - attempting to download the file with file_id:" + str(file_id))
+		
 		# request data from drive api
 		request = service.files().get_media(fileId=file_id)
 
@@ -361,7 +378,7 @@ def retrieve_google_drive_file(file_id, args):
 		done = False
 		while done is False:
 			status, done = downloader.next_chunk()
-			log("Download %d%%." % int(status.progress() * 100))
+			log(" - Download %d%%." % int(status.progress() * 100))
 		
 	except HttpError as error:
 		log(F'An error occurred downloading the file: {error}', 'ERROR')
