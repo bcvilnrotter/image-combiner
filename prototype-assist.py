@@ -473,10 +473,16 @@ def tiller_text2image(args):
 # function to add text to images
 def text2image(text, template=None):
 
-	image = Image.new(mode="RGBA", size=(640,480), color='orange')
+	if template == None:
+
+		image = Image.new(mode="RGBA", size=(640,480), color='orange')
+	
+	else:
+
+		image = Image.open(template)
 
 	draw = ImageDraw.Draw(image)
-
+	
 	number = 0
 	
 	for line in text:
