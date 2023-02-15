@@ -125,8 +125,8 @@ pdf_actions = subparsers.add_parser(
 	)
 
 # initialize the subparser for creating an instruction manual
-textadd = subparsers.add_parser(
-	"textadd",
+instruction_manual = subparsers.add_parser(
+	"instruction_manual",
 	parents=[common_args]
 	)
 
@@ -145,6 +145,7 @@ pdf_actions.add_argument('--title', default='Created using prototye-assist.py', 
 pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/block-pillow', dest='subject', help="the subject to put in the output pdf")
 
 # initialize the subparser arguments for instruction_manual
+instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
 #TODO the segment for creating the instruction manual during the next coding session
 
 #endregion
@@ -452,7 +453,7 @@ by the user.
 """
 
 # tiller function to help determine how to collect and process data to make instruction manuals
-def tiller_text2image(args):
+def tiller_make_manual(args):
 
 	# check if a google api link is provided
 	if args.glink:
@@ -467,11 +468,19 @@ def tiller_text2image(args):
 		for paragraph in doc.paragraphs:
 			text.append(paragraph.text)
 
-		# send the text object to the text2image function for processing
-		text2image(text)
+		# check if a template image was provided by the user
+		if args.template:
+
+			# send the text object to the make_manual function with a template image
+			make_manual(text, args.template)
+		
+		else:
+
+			# send the text object to the text2image function for processing
+			make_manual(text)
 
 # function to add text to images
-def text2image(text, template=None):
+def make_manual(text, template=None):
 
 	if template == None:
 
@@ -489,6 +498,8 @@ def text2image(text, template=None):
 	
 		draw.text((0,number), line)
 
+		# this is the number that indicates line spacing.
+		# TODO: Make this more dynamic in the future
 		number += 10
 
 	image.save(outpath("output.png"))
@@ -737,10 +748,10 @@ def main():
 		tiller_convert_to_pdf(args)
 	
 	# check if instruction_manual is called
-	if args.sub == "textadd":
+	if args.sub == "instruction_manual":
 
 		# run the tiller function for the instruction_manual subparser
-		tiller_text2image(args)
+		tiller_make_manual(args)
 
 #endregion
 
