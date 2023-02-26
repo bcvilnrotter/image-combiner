@@ -146,6 +146,10 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 
 # initialize the subparser arguments for instruction_manual
 instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
+instruction_manual.add_argument('--font', default='arial.ttf', dest='font', help='the font that the script will use to add text to pages')
+instruction_manual.add_argument('--lines', default=30, dest='lines', help='the number of lines per page')
+instruction_manual.add_argument('--spacing', default=10, dest='spacing', help='the number of pixel spacing between lines')
+instruction_manual.add_argument('--color', default='black', dest='color', help='the color of the text to be added to the page')
 #TODO the segment for creating the instruction manual during the next coding session
 
 #endregion
@@ -491,16 +495,20 @@ def make_manual(text, template=None):
 		image = Image.open(template)
 
 	draw = ImageDraw.Draw(image)
-	
+
+	fontsize = int(image.height / args.lines)
+
+	font = ImageFont.truetype(args.font, size=fontsize)
+
 	number = 0
 	
 	for line in text:
 	
-		draw.text((0,number), line)
+		draw.text((0,number), line, args.color, font=font)
 
 		# this is the number that indicates line spacing.
 		# TODO: Make this more dynamic in the future
-		number += 10
+		number += (fontsize + args.spacing)
 
 	image.save(outpath("output.png"))
 
