@@ -25,6 +25,10 @@ from datetime import datetime, timezone
 # pillow import
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 
+# extra 3rd party import modules
+import shapely
+import numpy as np
+
 # docx import
 import docx
 
@@ -65,7 +69,7 @@ Examples:
 Make deck face images for TableTop Simulator (TTS) from a directory filled with images, 
 	using a cardback image reference to match size.
 
-python prototype-assist.py mosaic --glob /path/to/directory/ --reference /path/to/reference/image
+python prototype-assist.py mosaic --glob '/path/to/directory/*' --reference /path/to/reference/image
 =========
 '''
 
@@ -148,8 +152,9 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
 instruction_manual.add_argument('--font', default='arial.ttf', dest='font', help='the font that the script will use to add text to pages')
 instruction_manual.add_argument('--lines', default=30, dest='lines', help='the number of lines per page')
-instruction_manual.add_argument('--spacing', default=10, dest='spacing', help='the number of pixel spacing between lines')
+instruction_manual.add_argument('--spacing', default=3, dest='spacing', help='the number of pixel spacing between lines')
 instruction_manual.add_argument('--color', default='black', dest='color', help='the color of the text to be added to the page')
+instruction_manual.add_argument('--margin', default=0.1, dest='margin', help='the % of the image the margin should take up')
 #TODO the segment for creating the instruction manual during the next coding session
 
 #endregion
@@ -496,18 +501,36 @@ def make_manual(text, template=None):
 
 	draw = ImageDraw.Draw(image)
 
-	fontsize = int(image.height / args.lines)
+	margin_width = int(image.width * args.margin)
+	margin_height = int(image.height * args.margin - 10)
+
+	marginbox = shapely.Polygon(
+		[
+			(margin_width, margin_height), 
+			(image.width - margin_width, margin_height),
+			(image.width - margin_width, image.height - margin_height),
+			(margin_width, image.height - margin_height),
+			(margin_width, margin_height)
+		]
+	)
+
+	minx, miny, maxx, maxy = marginbox.bounds
+
+	fontsize = int(maxy / args.lines)
 
 	font = ImageFont.truetype(args.font, size=fontsize)
 
-	number = 0
+	number = margin_height
 	
 	for line in text:
 	
-		draw.text((0,number), line, args.color, font=font)
+		cursor = shapely.Point(margin_width, number)
+		
+		if cursor.intersects(marginbox):
+		
+			draw.text((cursor.x, cursor.y), line, args.color, font=font)
 
 		# this is the number that indicates line spacing.
-		# TODO: Make this more dynamic in the future
 		number += (fontsize + args.spacing)
 
 	image.save(outpath("output.png"))
