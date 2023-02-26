@@ -10,6 +10,7 @@ so far the breakdown of native / special libraries are as follows:
 Current:
 - native
 - pillow 				(pip install pillow)
+- shapely				(pip install shapely)
 - docx					(pip install docx)
 - google-api libraries	(pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib)
 
@@ -155,6 +156,7 @@ instruction_manual.add_argument('--lines', default=30, dest='lines', help='the n
 instruction_manual.add_argument('--spacing', default=3, dest='spacing', help='the number of pixel spacing between lines')
 instruction_manual.add_argument('--color', default='black', dest='color', help='the color of the text to be added to the page')
 instruction_manual.add_argument('--margin', default=0.1, dest='margin', help='the % of the image the margin should take up')
+instruction_manual.add_argument('--margin_offset', default='0,0', dest='margin_offset', help='custom x, y offset values for custom margin placement')
 #TODO the segment for creating the instruction manual during the next coding session
 
 #endregion
@@ -397,6 +399,19 @@ def retrieve_google_drive_file(file_id, args):
 	# return the file object, don't forget to rewind
 	return file
 
+# function to return a shapely box
+def make_marginbox(image, width, height):
+
+	return shapely.Polygon(
+		[
+			(width, height), 
+			(image.width - width, height),
+			(image.width - width, image.height - height),
+			(width, image.height - height),
+			(width, height)
+		]
+	)
+
 #endregion
 #region pdf_tiller_processor_functions
 
@@ -477,42 +492,28 @@ def tiller_make_manual(args):
 		for paragraph in doc.paragraphs:
 			text.append(paragraph.text)
 
-		# check if a template image was provided by the user
-		if args.template:
-
-			# send the text object to the make_manual function with a template image
-			make_manual(text, args.template)
-		
-		else:
-
-			# send the text object to the text2image function for processing
-			make_manual(text)
+		# send the text object to the make_manual function with a template image
+		make_manual(text, args)
 
 # function to add text to images
-def make_manual(text, template=None):
+def make_manual(text, args):
 
-	if template == None:
+	if not args.template:
 
 		image = Image.new(mode="RGBA", size=(640,480), color='orange')
 	
 	else:
 
-		image = Image.open(template)
+		image = Image.open(args.template)
 
 	draw = ImageDraw.Draw(image)
 
-	margin_width = int(image.width * args.margin)
-	margin_height = int(image.height * args.margin - 10)
+	offsetx, offsety = args.margin_offset.split(',')
 
-	marginbox = shapely.Polygon(
-		[
-			(margin_width, margin_height), 
-			(image.width - margin_width, margin_height),
-			(image.width - margin_width, image.height - margin_height),
-			(margin_width, image.height - margin_height),
-			(margin_width, margin_height)
-		]
-	)
+	margin_width = int(image.width * args.margin + int(offsetx))
+	margin_height = int(image.height * args.margin + int(offsety))
+
+	marginbox = make_marginbox(image, margin_width, margin_height)
 
 	minx, miny, maxx, maxy = marginbox.bounds
 
