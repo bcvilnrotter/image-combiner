@@ -400,9 +400,9 @@ def retrieve_google_drive_file(file_id, args):
 	return file
 
 # function to return a shapely box
-def make_marginbox(image, width, height):
+def setup_manual_workspace(image, width, height, lines, font):
 
-	return shapely.Polygon(
+	marginbox = shapely.Polygon(
 		[
 			(width, height), 
 			(image.width - width, height),
@@ -411,6 +411,16 @@ def make_marginbox(image, width, height):
 			(width, height)
 		]
 	)
+
+	a, b, maxy, d = marginbox.bounds
+	
+	fontsize = int(maxy / lines)
+
+	font = ImageFont.truetype(font, size=fontsize)
+
+	a1, b1, space_rightbb, d1 = font.getbbox(" ")
+
+	return marginbox, font, fontsize, space_rightbb
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -510,33 +520,44 @@ def make_manual(text, args):
 
 	offsetx, offsety = args.margin_offset.split(',')
 
-	margin_width = int(image.width * args.margin + int(offsetx))
-	margin_height = int(image.height * args.margin + int(offsety))
+	margin_width, margin_height = (int(image.width * args.margin + int(offsetx)), int(image.height * args.margin + int(offsety)))
 
-	marginbox = make_marginbox(image, margin_width, margin_height)
-
-	minx, miny, maxx, maxy = marginbox.bounds
-
-	fontsize = int(maxy / args.lines)
-
-	font = ImageFont.truetype(args.font, size=fontsize)
+	marginbox, font, fontsize, space_rightbb = setup_manual_workspace(image, margin_width, margin_height, args.lines, args.font)
 
 	number = margin_height
 	
+	cursor = shapely.Point(margin_width, number)
+
 	for line in text:
+
+		for word in line.split(" "):
+		
+			if cursor.intersects(marginbox):
+
+				draw.text((cursor.x, cursor.y), word, args.color, font=font)				
+				
+				a, b, word_rightbb, d = font.getbbox(word)
 	
-		cursor = shapely.Point(margin_width, number)
-		
-		if cursor.intersects(marginbox):
-		
-			draw.text((cursor.x, cursor.y), line, args.color, font=font)
+				cursor = shapely.Point(cursor.x + word_rightbb + space_rightbb, number)
+			
+			else:				
+				
+				number += (fontsize + args.spacing)
+				
+				cursor = shapely.Point(margin_width, number)
+
+				a, b, word_rightbb, d = font.getbbox(word)
+
+				draw.text((cursor.x, cursor.y), word, args.color, font=font)
+
+				cursor = shapely.Point(cursor.x + word_rightbb + space_rightbb, number)
 
 		# this is the number that indicates line spacing.
 		number += (fontsize + args.spacing)
 
+		cursor = shapely.Point(margin_width, number)
+
 	image.save(outpath("output.png"))
-
-
 
 #endregion
 #region tiller_mosaic_tiller_processor_functions
