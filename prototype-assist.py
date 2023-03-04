@@ -11,7 +11,7 @@ Current:
 - native
 - pillow 				(pip install pillow)
 - shapely				(pip install shapely)
-- docx					(pip install docx)
+- docx					(pip install python-docx)
 - google-api libraries	(pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib)
 
 Future:
@@ -400,9 +400,9 @@ def retrieve_google_drive_file(file_id, args):
 	return file
 
 # function to return a shapely box
-def setup_manual_workspace(image, width, height, lines, font):
+def setup_marginbox(image, width, height):
 
-	marginbox = shapely.Polygon(
+	return shapely.Polygon(
 		[
 			(width, height), 
 			(image.width - width, height),
@@ -412,15 +412,37 @@ def setup_manual_workspace(image, width, height, lines, font):
 		]
 	)
 
-	a, b, maxy, d = marginbox.bounds
+# function for writing lines on an instruction manual page
+def write_line(line, cursor, marginbox, draw, font_stats):
+
+	number = cursor.y
 	
-	fontsize = int(maxy / lines)
+	for word in line.split(" "):
+	
+		if cursor.intersects(marginbox):
 
-	font = ImageFont.truetype(font, size=fontsize)
+			draw.text((cursor.x, cursor.y), word, font_stats['color'], font=font_stats['font'])				
+			
+			wordbox = font_stats['font'].getbbox(word)
 
-	a1, b1, space_rightbb, d1 = font.getbbox(" ")
+			cursor = shapely.Point(cursor.x + wordbox[2] + font_stats['spacebox'][2], number)
+		
+		else:				
+			
+			number += (font_stats['fontsize'] + font_stats['spacing'])
+			
+			cursor = shapely.Point(marginbox.bounds[0], number)
 
-	return marginbox, font, fontsize, space_rightbb
+			wordbox = font_stats['font'].getbbox(word)
+
+			draw.text((cursor.x, cursor.y), word, font_stats['color'], font=font_stats['font'])
+
+			cursor = shapely.Point(cursor.x + wordbox[2] + font_stats['spacebox'][2], number)
+
+	# this is the number that indicates line spacing.
+	number += (font_stats['fontsize'] + font_stats['spacing'])
+
+	return shapely.Point(marginbox.bounds[0], number)
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -502,12 +524,7 @@ def tiller_make_manual(args):
 		for paragraph in doc.paragraphs:
 			text.append(paragraph.text)
 
-		# send the text object to the make_manual function with a template image
-		make_manual(text, args)
-
-# function to add text to images
-def make_manual(text, args):
-
+	# once the text is collected, make an image object for the page
 	if not args.template:
 
 		image = Image.new(mode="RGBA", size=(640,480), color='orange')
@@ -516,46 +533,49 @@ def make_manual(text, args):
 
 		image = Image.open(args.template)
 
+	# assign the ImageDraw object so that each page can be editted
 	draw = ImageDraw.Draw(image)
 
+	# adjust the marginbox with offset values if the user provided any
 	offsetx, offsety = args.margin_offset.split(',')
 
-	margin_width, margin_height = (int(image.width * args.margin + int(offsetx)), int(image.height * args.margin + int(offsety)))
-
-	marginbox, font, fontsize, space_rightbb = setup_manual_workspace(image, margin_width, margin_height, args.lines, args.font)
-
-	number = margin_height
+	# create the marginbox based on the created page image and user input
+	marginbox = setup_marginbox(
+		image, 
+		int(image.width * args.margin + int(offsetx)), 
+		int(image.height * args.margin + int(offsety))
+	)
 	
-	cursor = shapely.Point(margin_width, number)
+	# dynamically adjust the fontsize based on the height of the created marginbox
+	fontsize = int(marginbox.bounds[2] / args.lines)
+
+	# create the font object to use on the manual pages
+	font = ImageFont.truetype(args.font, size=fontsize)
+
+	# create the shapely box of the space based on the chosen font and size
+	spacebox = font.getbbox(" ")
+
+	# create a font dictionary to send to the make_manual function
+	font_stats = {
+		'font' : font,
+		'fontsize' : fontsize,
+		'color' : args.color,
+		'spacing' : args.spacing,
+		'spacebox' : spacebox
+	}
+	
+	# send the text object to the make_manual function with a template image
+	make_manual(text, image, marginbox, draw, font_stats)
+
+# function to add text to images
+def make_manual(text, image, marginbox, draw, font_stats):
+	
+	# setup the initial cursor point to send to the write_line function
+	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
 
 	for line in text:
 
-		for word in line.split(" "):
-		
-			if cursor.intersects(marginbox):
-
-				draw.text((cursor.x, cursor.y), word, args.color, font=font)				
-				
-				a, b, word_rightbb, d = font.getbbox(word)
-	
-				cursor = shapely.Point(cursor.x + word_rightbb + space_rightbb, number)
-			
-			else:				
-				
-				number += (fontsize + args.spacing)
-				
-				cursor = shapely.Point(margin_width, number)
-
-				a, b, word_rightbb, d = font.getbbox(word)
-
-				draw.text((cursor.x, cursor.y), word, args.color, font=font)
-
-				cursor = shapely.Point(cursor.x + word_rightbb + space_rightbb, number)
-
-		# this is the number that indicates line spacing.
-		number += (fontsize + args.spacing)
-
-		cursor = shapely.Point(margin_width, number)
+		cursor = write_line(line, cursor, marginbox, draw, font_stats)
 
 	image.save(outpath("output.png"))
 
