@@ -517,29 +517,41 @@ def tiller_make_manual(args):
 		# pull a file object from a google drive
 		file = retrieve_google_drive_file((args.glink).split('/')[-2], args)
 
+		# assign the collected file to the right variable
+		#TODO add more robust way to determine which type of file format was collected
 		doc = docx.Document(file)
 		
+		# make a list that will house the data
 		text = []
 
+		# assign data collected from the file to the list above
 		for paragraph in doc.paragraphs:
 			text.append(paragraph.text)
 
 	# once the text is collected, make an image object for the page
 	if not args.template:
 
+		# default image for making a manual
+		#TODO identify a better way default setup for manual pages than the below
 		image = Image.new(mode="RGBA", size=(640,480), color='orange')
 	
 	else:
 
+		# create the image object out of the user inputted template path
 		image = Image.open(args.template)
-
-	# assign the ImageDraw object so that each page can be editted
-	draw = ImageDraw.Draw(image)
 
 	# adjust the marginbox with offset values if the user provided any
 	offsetx, offsety = args.margin_offset.split(',')
 
 	# create the marginbox based on the created page image and user input
+	# marginbox has a object called .bounds that contains 4 values.
+	# (min x value, min y value, max x value, max y value) in that order
+	
+	# .bounds[0] = min x
+	# .bounds[1] = min y
+	# .bounds[2] = max x
+	# .bounds[3] = max y
+	
 	marginbox = setup_marginbox(
 		image, 
 		int(image.width * args.margin + int(offsetx)), 
@@ -547,13 +559,15 @@ def tiller_make_manual(args):
 	)
 	
 	# dynamically adjust the fontsize based on the height of the created marginbox
+	
+	#TODO have a less dynamic value. Instead, the fontsize should be taken from
+	# the file object, and adjusted as needed to fit within the page properly.
+	# this value should then be adjusted to a human readable value, which should
+	# be provided in the logs
 	fontsize = int(marginbox.bounds[2] / args.lines)
 
 	# create the font object to use on the manual pages
 	font = ImageFont.truetype(args.font, size=fontsize)
-
-	# create the shapely box of the space based on the chosen font and size
-	spacebox = font.getbbox(" ")
 
 	# create a font dictionary to send to the make_manual function
 	font_stats = {
@@ -561,11 +575,11 @@ def tiller_make_manual(args):
 		'fontsize' : fontsize,
 		'color' : args.color,
 		'spacing' : args.spacing,
-		'spacebox' : spacebox
+		'spacebox' : font.getbbox(" ")
 	}
 	
 	# send the text object to the make_manual function with a template image
-	make_manual(text, image, marginbox, draw, font_stats)
+	make_manual(text, image, marginbox, ImageDraw.Draw(image), font_stats)
 
 # function to add text to images
 def make_manual(text, image, marginbox, draw, font_stats):
@@ -573,10 +587,13 @@ def make_manual(text, image, marginbox, draw, font_stats):
 	# setup the initial cursor point to send to the write_line function
 	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
 
+	# iterate through the lines of the text collected
 	for line in text:
 
+		# for each line, write the line to the template image
 		cursor = write_line(line, cursor, marginbox, draw, font_stats)
 
+	# afterwards save the image
 	image.save(outpath("output.png"))
 
 #endregion
