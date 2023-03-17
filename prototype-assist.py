@@ -151,10 +151,10 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 
 # initialize the subparser arguments for instruction_manual
 instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
-instruction_manual.add_argument('--font', default='arial.ttf', dest='font', help='the font that the script will use to add text to pages')
-instruction_manual.add_argument('--lines', default=30, dest='lines', help='the number of lines per page')
+instruction_manual.add_argument('--font_name', default='arial.ttf', dest='font_name', help='the font that the script will use to add text to pages')
+instruction_manual.add_argument('--font_size', default=12, dest='font_size', help='the number of lines per page')
 instruction_manual.add_argument('--spacing', default=3, dest='spacing', help='the number of pixel spacing between lines')
-instruction_manual.add_argument('--color', default='black', dest='color', help='the color of the text to be added to the page')
+instruction_manual.add_argument('--font_color', default='black', dest='font_color', help='the color of the text to be added to the page')
 instruction_manual.add_argument('--margin', default=0.1, dest='margin', help='the % of the image the margin should take up')
 instruction_manual.add_argument('--margin_offset', default='0,0', dest='margin_offset', help='custom x, y offset values for custom margin placement')
 #TODO the segment for creating the instruction manual during the next coding session
@@ -413,34 +413,34 @@ def setup_marginbox(image, width, height):
 	)
 
 # function for writing lines on an instruction manual page
-def write_line(line, cursor, marginbox, draw, font_stats):
+def write_line(line, cursor, marginbox, draw, font_dict):
 
 	number = cursor.y
 	
-	for word in line.split(" "):
+	for word in (line.text).split(" "):
 	
 		if cursor.intersects(marginbox):
 
-			draw.text((cursor.x, cursor.y), word, font_stats['color'], font=font_stats['font'])				
+			draw.text((cursor.x, cursor.y), word, font_dict['font_color'], font=font_dict['font_obj'])				
 			
-			wordbox = font_stats['font'].getbbox(word)
+			wordbox = font_dict['font_obj'].getbbox(word)
 
-			cursor = shapely.Point(cursor.x + wordbox[2] + font_stats['spacebox'][2], number)
+			cursor = shapely.Point(cursor.x + wordbox[2] + font_dict['space_obj'][2], number)
 		
 		else:				
 			
-			number += (font_stats['fontsize'] + font_stats['spacing'])
+			number += (font_dict['font_size'] + font_dict['line_spacing'])
 			
 			cursor = shapely.Point(marginbox.bounds[0], number)
 
-			wordbox = font_stats['font'].getbbox(word)
+			wordbox = font_dict['font_obj'].getbbox(word)
 
-			draw.text((cursor.x, cursor.y), word, font_stats['color'], font=font_stats['font'])
+			draw.text((cursor.x, cursor.y), word, font_dict['font_color'], font=font_dict['font_obj'])
 
-			cursor = shapely.Point(cursor.x + wordbox[2] + font_stats['spacebox'][2], number)
+			cursor = shapely.Point(cursor.x + wordbox[2] + font_dict['space_obj'][2], number)
 
 	# this is the number that indicates line spacing.
-	number += (font_stats['fontsize'] + font_stats['spacing'])
+	number += (font_dict['font_size'] + font_dict['line_spacing'])
 
 	return shapely.Point(marginbox.bounds[0], number)
 
@@ -521,12 +521,14 @@ def tiller_make_manual(args):
 		#TODO add more robust way to determine which type of file format was collected
 		doc = docx.Document(file)
 		
+		"""
 		# make a list that will house the data
 		text = []
-
+		
 		# assign data collected from the file to the list above
 		for paragraph in doc.paragraphs:
 			text.append(paragraph.text)
+		"""
 
 	# once the text is collected, make an image object for the page
 	if not args.template:
@@ -552,11 +554,13 @@ def tiller_make_manual(args):
 	# .bounds[2] = max x
 	# .bounds[3] = max y
 	
+	"""
 	marginbox = setup_marginbox(
 		image, 
 		int(image.width * args.margin + int(offsetx)), 
 		int(image.height * args.margin + int(offsety))
 	)
+	"""
 	
 	# dynamically adjust the fontsize based on the height of the created marginbox
 	
@@ -564,35 +568,108 @@ def tiller_make_manual(args):
 	# the file object, and adjusted as needed to fit within the page properly.
 	# this value should then be adjusted to a human readable value, which should
 	# be provided in the logs
-	fontsize = int(marginbox.bounds[2] / args.lines)
+	#fontsize = int(marginbox.bounds[2] / args.lines)
 
 	# create the font object to use on the manual pages
-	font = ImageFont.truetype(args.font, size=fontsize)
+	#font = ImageFont.truetype(args.font, size=fontsize)
 
 	# create a font dictionary to send to the make_manual function
-	font_stats = {
-		'font' : font,
-		'fontsize' : fontsize,
-		'color' : args.color,
-		'spacing' : args.spacing,
-		'spacebox' : font.getbbox(" ")
-	}
-	
+
 	# send the text object to the make_manual function with a template image
-	make_manual(text, image, marginbox, ImageDraw.Draw(image), font_stats)
+	make_manual(
+		doc, 
+		image, 
+		setup_marginbox(
+			image,
+			int(image.width * args.margin + int(offsetx)), 
+			int(image.height * args.margin + int(offsety)),
+				
+		), 
+		ImageDraw.Draw(image),
+		{
+			'font_name'		:	args.font_name,
+			'font_size'		:	args.font_size,
+			'font_color'	:	args.font_color,
+			'line_spacing'	:	args.spacing 
+		}
+	)
 
 # function to add text to images
-def make_manual(text, image, marginbox, draw, font_stats):
-	
+def make_manual(doc, image, marginbox, draw, user_input):
+
 	# setup the initial cursor point to send to the write_line function
 	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
 
 	# iterate through the lines of the text collected
-	for line in text:
+	for paragraph in doc.paragraphs:
+		
+		style = paragraph.style
 
+		if style is not None:
+
+			font_dict = {
+				'style_name'	:	style.name
+			}
+
+			if style.font.name is not None:
+				font_dict['font_name'] = style.font.name
+			else:
+				font_dict['font_name'] = user_input['font_name']
+
+			if style.font.size is not None:
+				font_dict['font_size'] = style.font.size.pt
+			else:
+				font_dict['font_size'] = user_input['font_size']
+			
+			if style.font.color.rgb is not None:
+				font_dict['font_color'] = style.font.color.rgb
+			else:
+				font_dict['font_color'] = user_input['font_color']			
+
+			"""
+			if paragraph.paragraph_format is not None:
+				font_dict['line_spacing'] = paragraph.paragraph_format.line_spacing
+			else:
+				font_dict['line_spacing'] = user_input['line_spacing']
+			"""
+			font_dict['line_spacing'] = user_input['line_spacing']
+			
+		else:
+
+			# create a font dictionary to send to the write_line function
+			font_dict = {
+				'style_name'	:	style.name,
+				'font_name' 	: 	user_input['font_name'],
+				'font_size'		:	user_input['font_name'],
+				'font_color'	: 	user_input['font_color'],
+				'line_spacing' 	: 	user_input['line_spacing']
+			}
+
+		# create the font object
+		font = ImageFont.truetype(user_input['font_name'], size=int(font_dict['font_size']))
+
+		font_dict['font_obj'] = font
+		font_dict['space_obj'] = font.getbbox(" ")
+
+		# log activity
+		log('style_name: ' + str(font_dict['style_name']))
+		log('paragraph font name: ' + str(font_dict['font_name']))
+		log('pulled font size: ' + str(font_dict['font_size']))
+		log('pulled font color: ' + str(font_dict['font_color']))
+		log('line_spacing: ' + str(font_dict['line_spacing']))
+			
 		# for each line, write the line to the template image
-		cursor = write_line(line, cursor, marginbox, draw, font_stats)
+		cursor = write_line(paragraph, cursor, marginbox, draw, font_dict)
+		"""
+		style = paragraph.style
 
+		if style != None:
+			log(f'Style:{style.name}, font name:{style.font.name}, font size:{style.font.size}, font color:{style.font.color}')
+
+		for word in (paragraph.text).split(" "):
+			log(f'Word:{word}')
+		"""
+			
 	# afterwards save the image
 	image.save(outpath("output.png"))
 
