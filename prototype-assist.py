@@ -413,36 +413,68 @@ def setup_marginbox(image, width, height):
 	)
 
 # function for writing lines on an instruction manual page
-def write_line(line, cursor, marginbox, draw, font_dict):
+def write_line(paragraph, cursor, marginbox, draw, font_dict):
 
-	number = cursor.y
+	# initialize a variable to track the y value of the lines
+	line_height = cursor.y
+
+	# assign a variable to adjust the marginbox for style indentation
+	indent = 0	
+
+	if font_dict['style_name'] == 'List Paragraph':
+
+		# draw the word onto the page template
+		draw.text((cursor.x, cursor.y), " - ", font_dict['font_color'], font=font_dict['font_obj'])				
+		
+		# get the shapely box of the word, and update the cursor
+		cursor = shapely.Point(
+			cursor.x + (font_dict['font_obj'].getbbox(" - "))[2] + font_dict['space_obj'][2], 
+			line_height
+		)		
+		
+		# adjust the indent value so it gets updated after the first line is drawn
+		indent = font_dict['font_obj'].getbbox(" - ")[2]
 	
-	for word in (line.text).split(" "):
+	for word in paragraph.runs:
 	
+		# assign the run object text into a variable to use
+		word_text = word.text
+		
+		# check if the word position being drawn is outside the marginbox
 		if cursor.intersects(marginbox):
 
-			draw.text((cursor.x, cursor.y), word, font_dict['font_color'], font=font_dict['font_obj'])				
+			# draw the word onto the page template
+			draw.text((cursor.x, cursor.y), word_text, font_dict['font_color'], font=font_dict['font_obj'])				
 			
-			wordbox = font_dict['font_obj'].getbbox(word)
-
-			cursor = shapely.Point(cursor.x + wordbox[2] + font_dict['space_obj'][2], number)
+			# get the shapely box of the word, and update the cursor
+			cursor = shapely.Point(
+				cursor.x + (font_dict['font_obj'].getbbox(word_text))[2] + font_dict['space_obj'][2], 
+				line_height
+			)
 		
+		# if the word surpases the edge of the marginbox
 		else:				
 			
-			number += (font_dict['font_size'] + font_dict['line_spacing'])
+			# update the line height using the font size and line spacing used in the function call
+			line_height += (font_dict['font_size'] + font_dict['line_spacing'])
 			
-			cursor = shapely.Point(marginbox.bounds[0], number)
+			# update the cursor position using the minimum x value of the marginbox and the indent
+			# as well as the hight of the line value determined above.
+			cursor = shapely.Point(marginbox.bounds[0] + indent, line_height)
 
-			wordbox = font_dict['font_obj'].getbbox(word)
+			# draw the word text
+			draw.text((cursor.x, cursor.y), word_text, font_dict['font_color'], font=font_dict['font_obj'])
 
-			draw.text((cursor.x, cursor.y), word, font_dict['font_color'], font=font_dict['font_obj'])
-
-			cursor = shapely.Point(cursor.x + wordbox[2] + font_dict['space_obj'][2], number)
+			# update the cursor using the wordbox bounds
+			cursor = shapely.Point(
+				cursor.x + (font_dict['font_obj'].getbbox(word_text))[2] + font_dict['space_obj'][2], 
+				line_height
+			)
 
 	# this is the number that indicates line spacing.
-	number += (font_dict['font_size'] + font_dict['line_spacing'])
+	line_height += (font_dict['font_size'] + font_dict['line_spacing'])
 
-	return shapely.Point(marginbox.bounds[0], number)
+	return shapely.Point(marginbox.bounds[0], line_height)
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -520,15 +552,6 @@ def tiller_make_manual(args):
 		# assign the collected file to the right variable
 		#TODO add more robust way to determine which type of file format was collected
 		doc = docx.Document(file)
-		
-		"""
-		# make a list that will house the data
-		text = []
-		
-		# assign data collected from the file to the list above
-		for paragraph in doc.paragraphs:
-			text.append(paragraph.text)
-		"""
 
 	# once the text is collected, make an image object for the page
 	if not args.template:
@@ -553,29 +576,10 @@ def tiller_make_manual(args):
 	# .bounds[1] = min y
 	# .bounds[2] = max x
 	# .bounds[3] = max y
-	
-	"""
-	marginbox = setup_marginbox(
-		image, 
-		int(image.width * args.margin + int(offsetx)), 
-		int(image.height * args.margin + int(offsety))
-	)
-	"""
-	
-	# dynamically adjust the fontsize based on the height of the created marginbox
-	
-	#TODO have a less dynamic value. Instead, the fontsize should be taken from
-	# the file object, and adjusted as needed to fit within the page properly.
-	# this value should then be adjusted to a human readable value, which should
-	# be provided in the logs
-	#fontsize = int(marginbox.bounds[2] / args.lines)
 
-	# create the font object to use on the manual pages
-	#font = ImageFont.truetype(args.font, size=fontsize)
+	# this marginbox is created with the function setup_marginbox within the
+	# make_manual function for clean coding.
 
-	# create a font dictionary to send to the make_manual function
-
-	# send the text object to the make_manual function with a template image
 	make_manual(
 		doc, 
 		image, 
@@ -660,15 +664,6 @@ def make_manual(doc, image, marginbox, draw, user_input):
 			
 		# for each line, write the line to the template image
 		cursor = write_line(paragraph, cursor, marginbox, draw, font_dict)
-		"""
-		style = paragraph.style
-
-		if style != None:
-			log(f'Style:{style.name}, font name:{style.font.name}, font size:{style.font.size}, font color:{style.font.color}')
-
-		for word in (paragraph.text).split(" "):
-			log(f'Word:{word}')
-		"""
 			
 	# afterwards save the image
 	image.save(outpath("output.png"))
