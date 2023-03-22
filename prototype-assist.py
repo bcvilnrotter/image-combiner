@@ -151,7 +151,12 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 
 # initialize the subparser arguments for instruction_manual
 instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
-instruction_manual.add_argument('--font_name', default='arial.ttf', dest='font_name', help='the font that the script will use to add text to pages')
+instruction_manual.add_argument('--font_name', default={
+	'bold'		:	'arialbd.tff',
+	'italic'	:	'ariali.tff',
+	'bolditalic':	'arialbi.ttf',
+	'regular'	:	'arial.ttf'
+}, dest='font_name', help='the font that the script will use to add text to pages')
 instruction_manual.add_argument('--font_size', default=12, dest='font_size', help='the number of lines per page')
 instruction_manual.add_argument('--spacing', default=3, dest='spacing', help='the number of pixel spacing between lines')
 instruction_manual.add_argument('--font_color', default='black', dest='font_color', help='the color of the text to be added to the page')
@@ -419,7 +424,11 @@ def write_line(paragraph, cursor, marginbox, draw, font_dict):
 	line_height = cursor.y
 
 	# assign a variable to adjust the marginbox for style indentation
-	indent = 0	
+	indent = 0
+
+	log('marginbox: ' + str(marginbox.bounds))
+
+	log('cursor: ' + str(cursor))
 
 	if font_dict['style_name'] == 'List Paragraph':
 
@@ -428,52 +437,86 @@ def write_line(paragraph, cursor, marginbox, draw, font_dict):
 		
 		# get the shapely box of the word, and update the cursor
 		cursor = shapely.Point(
-			cursor.x + (font_dict['font_obj'].getbbox(" - "))[2] + font_dict['space_obj'][2], 
+			cursor.x + (font_dict['font_obj'].getbbox(" - "))[2] + font_dict['font_obj'].getbbox(" ")[2], 
 			line_height
 		)		
 		
 		# adjust the indent value so it gets updated after the first line is drawn
 		indent = font_dict['font_obj'].getbbox(" - ")[2]
 	
-	for word in paragraph.runs:
+	# iterate through the run objects in the paragraph
+	for run in paragraph.runs:
 	
-		# assign the run object text into a variable to use
-		word_text = word.text
+		# determine whether basic word values have None value, if so use presented values
+		if run.font.size is None:
+			run_size = font_dict['font_size']
+		else:
+			run_size = run.font.size.pt
+		log('run_size: ' + str(run_size))
+
+		# cycle through the values collected to determine which font file to use
+		if [run.font.bold,run.font.italic] == [True, True]:
+			run_name = font_dict['font_name']['bolditalic']
+		elif [run.font.bold,run.font.italic] == (True,False):
+			run_name = font_dict['font_name']['bold']
+		elif [run.font.bold,run.font.italic] == (False,True):
+			run_name == font_dict['font_name']['italic']
+		else:
+			run_name = font_dict['font_name']['regular']
+		log('run_name: ' + run_name)
 		
-		# check if the word position being drawn is outside the marginbox
-		if cursor.intersects(marginbox):
-
-			# draw the word onto the page template
-			draw.text((cursor.x, cursor.y), word_text, font_dict['font_color'], font=font_dict['font_obj'])				
-			
-			# get the shapely box of the word, and update the cursor
-			cursor = shapely.Point(
-				cursor.x + (font_dict['font_obj'].getbbox(word_text))[2] + font_dict['space_obj'][2], 
-				line_height
-			)
+		if run.font.color.rgb is None:
+			run_color = font_dict['font_color']
+		else:
+			run_color = run.font.color.rgb
+		log('run_color: ' + str(run_color))
 		
-		# if the word surpases the edge of the marginbox
-		else:				
-			
-			# update the line height using the font size and line spacing used in the function call
-			line_height += (font_dict['font_size'] + font_dict['line_spacing'])
-			
-			# update the cursor position using the minimum x value of the marginbox and the indent
-			# as well as the hight of the line value determined above.
-			cursor = shapely.Point(marginbox.bounds[0] + indent, line_height)
+		# assign a font object for the specific word
+		font = ImageFont.truetype(run_name, size=int(run_size))
 
-			# draw the word text
-			draw.text((cursor.x, cursor.y), word_text, font_dict['font_color'], font=font_dict['font_obj'])
+		for word in (run.text).split(" "):
+		
+			# check if the word position being drawn is outside the marginbox
+			if (cursor.x + font.getbbox(word)[2]) < marginbox.bounds[2]:
 
-			# update the cursor using the wordbox bounds
-			cursor = shapely.Point(
-				cursor.x + (font_dict['font_obj'].getbbox(word_text))[2] + font_dict['space_obj'][2], 
-				line_height
-			)
+				log(str((cursor.x + font.getbbox(word)[2])) + ' < ' + str(marginbox.bounds[2]))
+				
+				# draw the word onto the page template
+				draw.text((cursor.x, cursor.y), word, run_color, font=font)				
+				
+				# get the shapely box of the word, and update the cursor
+				cursor = shapely.Point(
+					cursor.x + \
+						font.getbbox(word)[2] + \
+						font.getbbox(" ")[2], 
+					line_height
+				)
+			
+			# if the word surpases the edge of the marginbox
+			else:		
+
+				log(str((cursor.x + font.getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
+				
+				# update the line height using the font size and line spacing used in the function call
+				line_height += (run_size + font_dict['line_spacing'])
+				
+				# update the cursor position using the minimum x value of the marginbox and the indent
+				# as well as the hight of the line value determined above.
+				cursor = shapely.Point(marginbox.bounds[0] + indent, line_height)
+
+				# draw the word text
+				draw.text((cursor.x, cursor.y), word, run_color, font=font)
+
+				# update the cursor using the wordbox bounds
+				cursor = shapely.Point(
+					cursor.x + font.getbbox(word)[2] + font.getbbox(" ")[2], 
+					line_height
+				)
 
 	# this is the number that indicates line spacing.
-	line_height += (font_dict['font_size'] + font_dict['line_spacing'])
+	line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
 
+	# return an up-to-date cursor shapely object so that the cursor object can be updated for then ext paragraph
 	return shapely.Point(marginbox.bounds[0], line_height)
 
 #endregion
@@ -614,52 +657,40 @@ def make_manual(doc, image, marginbox, draw, user_input):
 			font_dict = {
 				'style_name'	:	style.name
 			}
-
-			if style.font.name is not None:
-				font_dict['font_name'] = style.font.name
-			else:
-				font_dict['font_name'] = user_input['font_name']
+			
+			font_dict['font_name'] = user_input['font_name']
 
 			if style.font.size is not None:
 				font_dict['font_size'] = style.font.size.pt
 			else:
 				font_dict['font_size'] = user_input['font_size']
 			
-			if style.font.color.rgb is not None:
+			if style.font.color is not None:
 				font_dict['font_color'] = style.font.color.rgb
 			else:
 				font_dict['font_color'] = user_input['font_color']			
 
-			"""
-			if paragraph.paragraph_format is not None:
-				font_dict['line_spacing'] = paragraph.paragraph_format.line_spacing
-			else:
-				font_dict['line_spacing'] = user_input['line_spacing']
-			"""
 			font_dict['line_spacing'] = user_input['line_spacing']
 			
 		else:
 
 			# create a font dictionary to send to the write_line function
 			font_dict = {
-				'style_name'	:	style.name,
+				'style_name'	:	None,
 				'font_name' 	: 	user_input['font_name'],
-				'font_size'		:	user_input['font_name'],
+				'font_size'		:	user_input['font_size'],
 				'font_color'	: 	user_input['font_color'],
 				'line_spacing' 	: 	user_input['line_spacing']
 			}
 
 		# create the font object
-		font = ImageFont.truetype(user_input['font_name'], size=int(font_dict['font_size']))
+		font = ImageFont.truetype(font_dict['font_name']['regular'], size=int(font_dict['font_size']))
 
 		font_dict['font_obj'] = font
-		font_dict['space_obj'] = font.getbbox(" ")
+		#font_dict['space_obj'] = font.getbbox(" ")
 
 		# log activity
 		log('style_name: ' + str(font_dict['style_name']))
-		log('paragraph font name: ' + str(font_dict['font_name']))
-		log('pulled font size: ' + str(font_dict['font_size']))
-		log('pulled font color: ' + str(font_dict['font_color']))
 		log('line_spacing: ' + str(font_dict['line_spacing']))
 			
 		# for each line, write the line to the template image
