@@ -418,13 +418,16 @@ def setup_marginbox(image, width, height):
 	)
 
 # function for writing lines on an instruction manual page
-def write_line(paragraph, cursor, marginbox, draw, font_dict):
+def write_line(paragraph, image_default, image, cursor, marginbox, draw, font_dict):
 
 	# initialize a variable to track the y value of the lines
 	line_height = cursor.y
 
 	# assign a variable to adjust the marginbox for style indentation
 	indent = 0
+
+	# assign the page number
+	pagenum = 1
 
 	log('marginbox: ' + str(marginbox.bounds))
 
@@ -477,25 +480,9 @@ def write_line(paragraph, cursor, marginbox, draw, font_dict):
 		for word in (run.text).split(" "):
 		
 			# check if the word position being drawn is outside the marginbox
-			if (cursor.x + font.getbbox(word)[2]) < marginbox.bounds[2]:
+			if (cursor.x + font.getbbox(word)[2]) > marginbox.bounds[2]:
 
-				log(str((cursor.x + font.getbbox(word)[2])) + ' < ' + str(marginbox.bounds[2]))
-				
-				# draw the word onto the page template
-				draw.text((cursor.x, cursor.y), word, run_color, font=font)				
-				
-				# get the shapely box of the word, and update the cursor
-				cursor = shapely.Point(
-					cursor.x + \
-						font.getbbox(word)[2] + \
-						font.getbbox(" ")[2], 
-					line_height
-				)
-			
-			# if the word surpases the edge of the marginbox
-			else:		
-
-				log(str((cursor.x + font.getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
+				log(str(cursor.x + font.getbbox(word)[2]) + ' <= ' + str(marginbox.bounds[2]))		
 				
 				# update the line height using the font size and line spacing used in the function call
 				line_height += (run_size + font_dict['line_spacing'])
@@ -512,12 +499,54 @@ def write_line(paragraph, cursor, marginbox, draw, font_dict):
 					cursor.x + font.getbbox(word)[2] + font.getbbox(" ")[2], 
 					line_height
 				)
+			
+			# check if the word position being drawn is below the marginbox
+			elif (cursor.y + font.getbbox(word)[3]) > marginbox.bounds[3]:
+
+				log(str(cursor.y + font.getbbox(word)[3]) + ' <= ' + str(marginbox.bounds[3]))
+
+				#TODO: save the page with unique filename that dictates pagenumber
+				#TODO: create a new page and generate the marginbox
+				#TODO: reset the cursor position on the new page
+				#TODO: draw the word
+
+				image.save(outpath(str(pagenum) + "-output.png"))
+				
+				image = image_default.copy()
+
+				cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1] + font.getbbox(word)[3])
+
+				pagenum += 1
+
+				draw.text((cursor.x, cursor.y), word, run_color, font=font)
+
+				# update the cursor using the wordbox bounds
+				cursor = shapely.Point(
+					cursor.x + font.getbbox(word)[2] + font.getbbox(" ")[2], 
+					line_height
+				)				
+			
+			# if the word surpases the edge of the marginbox
+			else:
+
+				log(str((cursor.x + font.getbbox(word)[2])) + ' < ' + str(marginbox.bounds[2]))
+				
+				# draw the word onto the page template
+				draw.text((cursor.x, cursor.y), word, run_color, font=font)				
+				
+				# get the shapely box of the word, and update the cursor
+				cursor = shapely.Point(
+					cursor.x + \
+						font.getbbox(word)[2] + \
+						font.getbbox(" ")[2], 
+					line_height
+				)		
 
 	# this is the number that indicates line spacing.
 	line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
 
 	# return an up-to-date cursor shapely object so that the cursor object can be updated for then ext paragraph
-	return shapely.Point(marginbox.bounds[0], line_height)
+	return shapely.Point(marginbox.bounds[0], line_height), image
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -642,13 +671,16 @@ def tiller_make_manual(args):
 	)
 
 # function to add text to images
-def make_manual(doc, image, marginbox, draw, user_input):
+def make_manual(doc, image_default, marginbox, draw, user_input):
 
 	# setup the initial cursor point to send to the write_line function
 	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
 
 	# iterate through the lines of the text collected
 	for paragraph in doc.paragraphs:
+		
+		# assign a new default object
+		image = image_default.copy()
 		
 		style = paragraph.style
 
@@ -682,20 +714,20 @@ def make_manual(doc, image, marginbox, draw, user_input):
 				'font_color'	: 	user_input['font_color'],
 				'line_spacing' 	: 	user_input['line_spacing']
 			}
-
-		# create the font object
-		font = ImageFont.truetype(font_dict['font_name']['regular'], size=int(font_dict['font_size']))
-
-		font_dict['font_obj'] = font
-		#font_dict['space_obj'] = font.getbbox(" ")
+		
+		# create the default font object and add it to the font dictionary
+		font_dict['font_obj'] = ImageFont.truetype(
+			font_dict['font_name']['regular'], 
+			size=int(font_dict['font_size'])
+		)
 
 		# log activity
 		log('style_name: ' + str(font_dict['style_name']))
 		log('line_spacing: ' + str(font_dict['line_spacing']))
 			
 		# for each line, write the line to the template image
-		cursor = write_line(paragraph, cursor, marginbox, draw, font_dict)
-			
+		cursor, image = write_line(paragraph, image_default, image, cursor, marginbox, draw, font_dict)
+
 	# afterwards save the image
 	image.save(outpath("output.png"))
 
