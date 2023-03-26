@@ -540,7 +540,7 @@ def step_word(word, line_height, cursor, draw, run_dict):
 	)
 
 # function to update a new line when the word surpasses the marginbox
-def new_line(word, line_height, cursor, marginbox, run_dict):
+def new_line(line_height, cursor, marginbox, run_dict):
 
 	# update the line height using the font size and line spacing used in the function call
 	line_height += int(run_dict['run_size'] + run_dict['line_spacing'])
@@ -576,10 +576,14 @@ def write_word(word, line_height, cursor, draw, marginbox, run_dict):
 		#image = image_default.copy()
 		#pagenum += 1
 
-		cursor = shapely.Point(
-			marginbox.bounds[0] + run_dict['indent'], 
-			marginbox.bounds[1] + run_dict['font_obj'].getbbox(word)[3]
-		)
+		# reset cursor
+		cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
+
+		line_height = cursor.y
+
+		# add new line with current word
+		#TODO expand on new_line so that it resets the cursor value, and makes a new page
+		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
 		cursor = step_word(word, line_height, cursor, draw, run_dict)				
 	
@@ -589,7 +593,7 @@ def write_word(word, line_height, cursor, draw, marginbox, run_dict):
 		log(str((cursor.x + run_dict['font_obj'].getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
 		
 		# add new line with current word
-		line_height, cursor = new_line(word, line_height, cursor, marginbox, run_dict)
+		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
 		cursor = step_word(word, line_height, cursor, draw, run_dict)
 
