@@ -417,19 +417,56 @@ def setup_marginbox(image, width, height):
 		]
 	)
 
-# function for writing lines on an instruction manual page
-def write_line(paragraph, cursor, marginbox, draw, font_dict):
+def collect_font_details(paragraph, user_input):
 
-	# initialize a variable to track the y value of the lines
-	line_height = cursor.y
+	style = paragraph.style
 
-	# assign a variable to adjust the marginbox for style indentation
-	indent = 0
+	if style is not None:
 
-	log('marginbox: ' + str(marginbox.bounds))
+		font_dict = {
+			'style_name'	:	style.name
+		}
+		
+		font_dict['font_name'] = user_input['font_name']
 
-	log('cursor: ' + str(cursor))
+		if style.font.size is not None:
+			font_dict['font_size'] = style.font.size.pt
+		else:
+			font_dict['font_size'] = user_input['font_size']
+		
+		if style.font.color is not None:
+			font_dict['font_color'] = style.font.color.rgb
+		else:
+			font_dict['font_color'] = user_input['font_color']			
 
+		font_dict['line_spacing'] = user_input['line_spacing']
+		
+	else:
+
+		# create a font dictionary to send to the write_line function
+		font_dict = {
+			'style_name'	:	None,
+			'font_name' 	: 	user_input['font_name'],
+			'font_size'		:	user_input['font_size'],
+			'font_color'	: 	user_input['font_color'],
+			'line_spacing' 	: 	user_input['line_spacing']
+		}
+
+	font_dict['font_obj'] = ImageFont.truetype(
+		font_dict['font_name']['regular'], 
+		size=int(font_dict['font_size'])
+	)
+
+	# log activity
+	log('style_name: ' + str(font_dict['style_name']))
+	log('line_spacing: ' + str(font_dict['line_spacing']))
+
+	return font_dict
+	
+# function which deals with different styles for paragraph objects
+def stylize_line(indent, line_height, cursor, draw, font_dict):
+
+	# check for the paragraph style
 	if font_dict['style_name'] == 'List Paragraph':
 
 		# draw the word onto the page template
@@ -444,80 +481,146 @@ def write_line(paragraph, cursor, marginbox, draw, font_dict):
 		# adjust the indent value so it gets updated after the first line is drawn
 		indent = font_dict['font_obj'].getbbox(" - ")[2]
 	
+	# return the necesary items
+	return indent, cursor
+
+# function to collect the details of a run to dictate how to draw them
+def collect_run_details(run, font_dict):
+
+	# initialize run_dict object to return at end of function
+	run_dict = {}
+	
+	# determine whether basic word values have None value, if so use presented values
+	if run.font.size is None:
+		run_dict['run_size'] = font_dict['font_size']
+	else:
+		run_dict['run_size'] = run.font.size.pt
+	log('run_size: ' + str(run_dict['run_size']))
+
+	# cycle through the values collected to determine which font file to use
+	if [run.font.bold,run.font.italic] == [True, True]:
+		run_dict['run_name'] = font_dict['font_name']['bolditalic']
+	elif [run.font.bold,run.font.italic] == (True,False):
+		run_dict['run_name'] = font_dict['font_name']['bold']
+	elif [run.font.bold,run.font.italic] == (False,True):
+		run_dict['run_name'] == font_dict['font_name']['italic']
+	else:
+		run_dict['run_name'] = font_dict['font_name']['regular']
+	log('run_name: ' + run_dict['run_name'])
+	
+	if run.font.color.rgb is None:
+		run_dict['run_color'] = font_dict['font_color']
+	else:
+		run_dict['run_color'] = run.font.color.rgb
+	log('run_color: ' + str(run_dict['run_color']))
+	
+	# assign a font object for the specific word
+	run_dict['font_obj'] = ImageFont.truetype(
+		run_dict['run_name'], 
+		size=int(run_dict['run_size'])
+	)
+
+	# assign the font spacing
+	run_dict['line_spacing'] = font_dict['line_spacing']
+
+	return run_dict
+
+# function to draw the words within runs
+def write_word(word, line_height, cursor, draw, marginbox, run_dict):
+
+	# check if the word position being drawn is outside the marginbox
+	if (cursor.x + run_dict['font_obj'].getbbox(word)[2]) < marginbox.bounds[2]:
+		
+		# draw the word onto the page template
+		draw.text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])				
+		
+		# get the shapely box of the word, and update the cursor
+		return line_height, shapely.Point(
+			cursor.x + \
+				run_dict['font_obj'].getbbox(word)[2] + \
+				run_dict['font_obj'].getbbox(" ")[2], 
+			line_height
+		)
+	
+	# if the word surpases the edge of the marginbox
+	else:		
+
+		log(str((cursor.x + run_dict['font_obj'].getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
+		
+		# update the line height using the font size and line spacing used in the function call
+		line_height += int(run_dict['run_size'] + run_dict['line_spacing'])
+		
+		# update the cursor position using the minimum x value of the marginbox and the indent
+		# as well as the hight of the line value determined above.
+		cursor = shapely.Point(marginbox.bounds[0] + run_dict['indent'], line_height)
+
+		# draw the word text
+		draw.text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])
+
+		# update the cursor using the wordbox bounds
+		return line_height, shapely.Point(
+			cursor.x + run_dict['font_obj'].getbbox(word)[2] + run_dict['font_obj'].getbbox(" ")[2], 
+			line_height
+		)
+
+# function for writing lines on an instruction manual page
+def write_line(paragraph, cursor, draw, marginbox, font_dict):
+
+	# initialize a variable to track the y value of the lines
+	line_height = cursor.y
+
+	# assign a variable to adjust the marginbox for style indentation
+	indent = 0
+
+	log('marginbox: ' + str(marginbox.bounds))
+
+	log('cursor: ' + str(cursor))
+
+	# stylzing the paragh as necessary based on the style value
+	indent, cursor = stylize_line(indent, line_height, cursor, draw, font_dict)
+	
 	# iterate through the run objects in the paragraph
 	for run in paragraph.runs:
 	
-		# determine whether basic word values have None value, if so use presented values
-		if run.font.size is None:
-			run_size = font_dict['font_size']
-		else:
-			run_size = run.font.size.pt
-		log('run_size: ' + str(run_size))
+		# create the run dictionary to determine how to write it
+		run_dict = collect_run_details(run, font_dict)
 
-		# cycle through the values collected to determine which font file to use
-		if [run.font.bold,run.font.italic] == [True, True]:
-			run_name = font_dict['font_name']['bolditalic']
-		elif [run.font.bold,run.font.italic] == (True,False):
-			run_name = font_dict['font_name']['bold']
-		elif [run.font.bold,run.font.italic] == (False,True):
-			run_name == font_dict['font_name']['italic']
-		else:
-			run_name = font_dict['font_name']['regular']
-		log('run_name: ' + run_name)
-		
-		if run.font.color.rgb is None:
-			run_color = font_dict['font_color']
-		else:
-			run_color = run.font.color.rgb
-		log('run_color: ' + str(run_color))
-		
-		# assign a font object for the specific word
-		font = ImageFont.truetype(run_name, size=int(run_size))
+		# add the indent value to the dictionary
+		#TODO find a better way to transfer the indent value to other functions
+		run_dict['indent'] = indent
 
+		# iterate through the words in each run
 		for word in (run.text).split(" "):
-		
-			# check if the word position being drawn is outside the marginbox
-			if (cursor.x + font.getbbox(word)[2]) < marginbox.bounds[2]:
 
-				log(str((cursor.x + font.getbbox(word)[2])) + ' < ' + str(marginbox.bounds[2]))
-				
-				# draw the word onto the page template
-				draw.text((cursor.x, cursor.y), word, run_color, font=font)				
-				
-				# get the shapely box of the word, and update the cursor
-				cursor = shapely.Point(
-					cursor.x + \
-						font.getbbox(word)[2] + \
-						font.getbbox(" ")[2], 
-					line_height
-				)
-			
-			# if the word surpases the edge of the marginbox
-			else:		
-
-				log(str((cursor.x + font.getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
-				
-				# update the line height using the font size and line spacing used in the function call
-				line_height += (run_size + font_dict['line_spacing'])
-				
-				# update the cursor position using the minimum x value of the marginbox and the indent
-				# as well as the hight of the line value determined above.
-				cursor = shapely.Point(marginbox.bounds[0] + indent, line_height)
-
-				# draw the word text
-				draw.text((cursor.x, cursor.y), word, run_color, font=font)
-
-				# update the cursor using the wordbox bounds
-				cursor = shapely.Point(
-					cursor.x + font.getbbox(word)[2] + font.getbbox(" ")[2], 
-					line_height
-				)
+			line_height, cursor = write_word(word, line_height, cursor, draw, marginbox, run_dict)
 
 	# this is the number that indicates line spacing.
 	line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
 
 	# return an up-to-date cursor shapely object so that the cursor object can be updated for then ext paragraph
 	return shapely.Point(marginbox.bounds[0], line_height)
+
+# function which makes pages while iterating through paragraph objects
+def write_pages(doc, image, draw, marginbox, user_input):
+
+	# setup the initial cursor point to send to the write_line function
+	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
+	
+	# iterate through the lines of the text collected
+	for paragraph in doc.paragraphs:
+			
+		# for each line, write the line to the template image
+		cursor = write_line(
+			paragraph, 
+			cursor, 
+			draw,
+			marginbox, 
+			collect_font_details(paragraph, user_input)
+		)
+	
+	# afterwards save the image
+	#TODO this image.save function may need to be put in a different part of the script
+	image.save(outpath("output.png"))
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -626,13 +729,13 @@ def tiller_make_manual(args):
 	make_manual(
 		doc, 
 		image, 
+		ImageDraw.Draw(image),
 		setup_marginbox(
 			image,
 			int(image.width * args.margin + int(offsetx)), 
 			int(image.height * args.margin + int(offsety)),
 				
 		), 
-		ImageDraw.Draw(image),
 		{
 			'font_name'		:	args.font_name,
 			'font_size'		:	args.font_size,
@@ -642,62 +745,12 @@ def tiller_make_manual(args):
 	)
 
 # function to add text to images
-def make_manual(doc, image, marginbox, draw, user_input):
-
-	# setup the initial cursor point to send to the write_line function
-	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
-
-	# iterate through the lines of the text collected
-	for paragraph in doc.paragraphs:
-		
-		style = paragraph.style
-
-		if style is not None:
-
-			font_dict = {
-				'style_name'	:	style.name
-			}
+def make_manual(doc, image, draw, marginbox, user_input):
 			
-			font_dict['font_name'] = user_input['font_name']
+	# create the different images needed for the pages of the manual
+	write_pages(doc, image, draw, marginbox, user_input)
 
-			if style.font.size is not None:
-				font_dict['font_size'] = style.font.size.pt
-			else:
-				font_dict['font_size'] = user_input['font_size']
-			
-			if style.font.color is not None:
-				font_dict['font_color'] = style.font.color.rgb
-			else:
-				font_dict['font_color'] = user_input['font_color']			
-
-			font_dict['line_spacing'] = user_input['line_spacing']
-			
-		else:
-
-			# create a font dictionary to send to the write_line function
-			font_dict = {
-				'style_name'	:	None,
-				'font_name' 	: 	user_input['font_name'],
-				'font_size'		:	user_input['font_size'],
-				'font_color'	: 	user_input['font_color'],
-				'line_spacing' 	: 	user_input['line_spacing']
-			}
-
-		# create the font object
-		font = ImageFont.truetype(font_dict['font_name']['regular'], size=int(font_dict['font_size']))
-
-		font_dict['font_obj'] = font
-		#font_dict['space_obj'] = font.getbbox(" ")
-
-		# log activity
-		log('style_name: ' + str(font_dict['style_name']))
-		log('line_spacing: ' + str(font_dict['line_spacing']))
-			
-		# for each line, write the line to the template image
-		cursor = write_line(paragraph, cursor, marginbox, draw, font_dict)
-			
-	# afterwards save the image
-	image.save(outpath("output.png"))
+	#TODO combine pages into a pdf
 
 #endregion
 #region tiller_mosaic_tiller_processor_functions
