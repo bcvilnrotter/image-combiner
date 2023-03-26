@@ -525,43 +525,76 @@ def collect_run_details(run, font_dict):
 
 	return run_dict
 
+# function to draw specific word, and then update what is necessary to continue
+def step_word(word, line_height, cursor, draw, run_dict):
+
+	draw.text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])
+	
+	log('word drawn: ' + word)
+
+	return shapely.Point(
+		cursor.x + \
+			run_dict['font_obj'].getbbox(word)[2] + \
+			run_dict['font_obj'].getbbox(" ")[2], 
+		line_height
+	)
+
+# function to update a new line when the word surpasses the marginbox
+def new_line(word, line_height, cursor, marginbox, run_dict):
+
+	# update the line height using the font size and line spacing used in the function call
+	line_height += int(run_dict['run_size'] + run_dict['line_spacing'])
+	
+	# update the cursor position using the minimum x value of the marginbox and the indent
+	# as well as the hight of the line value determined above.
+	cursor = shapely.Point(marginbox.bounds[0] + run_dict['indent'], line_height)
+
+	# return the updated line_height and cursor variables
+	return line_height, cursor
+
 # function to draw the words within runs
 def write_word(word, line_height, cursor, draw, marginbox, run_dict):
 
-	# check if the word position being drawn is outside the marginbox
+	# check if the word position being drawn is inside the marginbox
 	if (cursor.x + run_dict['font_obj'].getbbox(word)[2]) < marginbox.bounds[2]:
 		
-		# draw the word onto the page template
-		draw.text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])				
+		log(str(cursor.x + run_dict['font_obj'].getbbox(word)[2]) + ' < ' + str(marginbox.bounds[2]))
 		
-		# get the shapely box of the word, and update the cursor
-		return line_height, shapely.Point(
-			cursor.x + \
-				run_dict['font_obj'].getbbox(word)[2] + \
-				run_dict['font_obj'].getbbox(" ")[2], 
-			line_height
+		cursor = step_word(word, line_height, cursor, draw, run_dict)			
+
+	# check if the word position being drawn is below the marginbox
+	elif (cursor.y + run_dict['font_obj'].getbbox(word)[3]) > marginbox.bounds[3]:
+
+		log(str(cursor.y + run_dict['font_obj'].getbbox(word)[3]) + ' > ' + str(marginbox.bounds[3]))
+
+		#TODO: save the page with unique filename that dictates pagenumber
+		#TODO: create a new page and generate the marginbox
+		#TODO: reset the cursor position on the new page
+		#TODO: draw the word
+
+		#image.save(outpath(str(pagenum) + "-output.png"))
+		#image = image_default.copy()
+		#pagenum += 1
+
+		cursor = shapely.Point(
+			marginbox.bounds[0] + run_dict['indent'], 
+			marginbox.bounds[1] + run_dict['font_obj'].getbbox(word)[3]
 		)
+
+		cursor = step_word(word, line_height, cursor, draw, run_dict)				
 	
 	# if the word surpases the edge of the marginbox
 	else:		
 
 		log(str((cursor.x + run_dict['font_obj'].getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
 		
-		# update the line height using the font size and line spacing used in the function call
-		line_height += int(run_dict['run_size'] + run_dict['line_spacing'])
-		
-		# update the cursor position using the minimum x value of the marginbox and the indent
-		# as well as the hight of the line value determined above.
-		cursor = shapely.Point(marginbox.bounds[0] + run_dict['indent'], line_height)
+		# add new line with current word
+		line_height, cursor = new_line(word, line_height, cursor, marginbox, run_dict)
 
-		# draw the word text
-		draw.text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])
+		cursor = step_word(word, line_height, cursor, draw, run_dict)
 
-		# update the cursor using the wordbox bounds
-		return line_height, shapely.Point(
-			cursor.x + run_dict['font_obj'].getbbox(word)[2] + run_dict['font_obj'].getbbox(" ")[2], 
-			line_height
-		)
+	# return appropriate values
+	return line_height, cursor
 
 # function for writing lines on an instruction manual page
 def write_line(paragraph, cursor, draw, marginbox, font_dict):
