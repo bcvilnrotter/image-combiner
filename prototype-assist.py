@@ -77,20 +77,33 @@ python prototype-assist.py mosaic --glob '/path/to/directory/*' --reference /pat
 #endregion
 #region common_args
 
-# initiazlie the global vehicular transport that treats all values within globally
-vehicle = {}
-
 # initialize common arguments
 common_args = argparse.ArgumentParser(add_help=False)
 
 # initialize the global values
-common_args.add_argument('--deck_image_max_attribute_size', default=10000, dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', help="the max size TableTop Simulator (TTS) can handle for deck image attributes")
-common_args.add_argument('--deck_image_max_reference_size', default=1000, dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', help="the max size TableTop Simulator (TTS) can handle for reference attributes")
+common_args.add_argument(
+	'--deck_image_max_attribute_size', 
+	default=10000, 
+	dest='TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE', 
+	help="the max size TableTop Simulator (TTS) can handle for deck image attributes"
+)
+common_args.add_argument(
+	'--deck_image_max_reference_size', 
+	default=1000, 
+	dest='TTS_DECK_IMAGE_MAX_REFERANCE_SIZE', 
+	help="the max size TableTop Simulator (TTS) can handle for reference attributes"
+)
 
 # initialize the default values needed for most subparsers
 common_args.add_argument('--job', dest='job', help="path to output folder")
 common_args.add_argument('--gcreds', dest='gcreds', help="path to the credential.json file for google-api access")
-common_args.add_argument('--keep_creds', dest='keep_creds', default=False, action='store_true', help="tell the script to delete any tokens it generates during processing")
+common_args.add_argument(
+	'--keep_creds', 
+	dest='keep_creds', 
+	default=False, 
+	action='store_true', 
+	help="tell the script to delete any tokens it generates during processing"
+)
 
 # initialize the default arguments for source input (one of these is required for the script to function)
 common_args.add_argument('--glob', dest='glob', help="regex used to pull multiple files from a path")
@@ -101,7 +114,11 @@ common_args.add_argument('--glink', dest='glink', help="link pointing to a file 
 #region parser_initializing
 
 # initial argparse argument
-parser = argparse.ArgumentParser(epilog=arg_example, formatter_class=argparse.RawDescriptionHelpFormatter, description=arg_desc)
+parser = argparse.ArgumentParser(
+	epilog=arg_example, 
+	formatter_class=argparse.RawDescriptionHelpFormatter, 
+	description=arg_desc
+)
 
 # initialize the subparsers variable
 subparsers = parser.add_subparsers(
@@ -181,6 +198,12 @@ if args.glink and not args.gcreds:
 
 	# provide an argparse error
 	parser.error("Please provide the google creds using --gcreds when providing a google link")
+
+# initiazlie the global vehicular transport that treats all values within globally
+vehicle = {}
+
+# add the args variable to the vehicle
+vehicle.update({'args': args})
 
 #endregion
 #region admin_functions
@@ -464,13 +487,13 @@ def collect_font_details(paragraph, user_input):
 	return font_dict
 	
 # function which deals with different styles for paragraph objects
-def stylize_line(indent, line_height, cursor, draw, font_dict):
+def stylize_line(indent, line_height, cursor, font_dict):
 
 	# check for the paragraph style
 	if font_dict['style_name'] == 'List Paragraph':
 
 		# draw the word onto the page template
-		draw.text((cursor.x, cursor.y), " - ", font_dict['font_color'], font=font_dict['font_obj'])				
+		vehicle['draw'].text((cursor.x, cursor.y), " - ", font_dict['font_color'], font=font_dict['font_obj'])				
 		
 		# get the shapely box of the word, and update the cursor
 		cursor = shapely.Point(
@@ -526,9 +549,9 @@ def collect_run_details(run, font_dict):
 	return run_dict
 
 # function to draw specific word, and then update what is necessary to continue
-def step_word(word, line_height, cursor, draw, run_dict):
+def step_word(word, line_height, cursor, run_dict):
 
-	draw.text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])
+	vehicle['draw'].text((cursor.x, cursor.y), word, run_dict['run_color'], font=run_dict['font_obj'])
 	
 	log('word drawn: ' + word)
 
@@ -553,14 +576,14 @@ def new_line(line_height, cursor, marginbox, run_dict):
 	return line_height, cursor
 
 # function to draw the words within runs
-def write_word(word, line_height, cursor, draw, marginbox, run_dict):
+def write_word(word, line_height, cursor, marginbox, run_dict):
 
 	# check if the word position being drawn is inside the marginbox
 	if (cursor.x + run_dict['font_obj'].getbbox(word)[2]) < marginbox.bounds[2]:
 		
-		log(str(cursor.x + run_dict['font_obj'].getbbox(word)[2]) + ' < ' + str(marginbox.bounds[2]))
+		#log(str(cursor.x + run_dict['font_obj'].getbbox(word)[2]) + ' < ' + str(marginbox.bounds[2]))
 		
-		cursor = step_word(word, line_height, cursor, draw, run_dict)			
+		cursor = step_word(word, line_height, cursor, run_dict)			
 
 	# check if the word position being drawn is below the marginbox
 	elif (cursor.y + run_dict['font_obj'].getbbox(word)[3]) > marginbox.bounds[3]:
@@ -572,6 +595,18 @@ def write_word(word, line_height, cursor, draw, marginbox, run_dict):
 		#TODO: reset the cursor position on the new page
 		#TODO: draw the word
 
+		# save the current image
+		vehicle['image'].save(outpath('output.png'))
+
+		log('saved page...')
+		
+		# make a new  image object to the vehicle
+		vehicle.update({'image': Image.open(args.template)})
+
+		vehicle.update({'draw': ImageDraw.Draw(vehicle['image'])})
+
+		log('created new page...')
+		
 		#image.save(outpath(str(pagenum) + "-output.png"))
 		#image = image_default.copy()
 		#pagenum += 1
@@ -581,11 +616,17 @@ def write_word(word, line_height, cursor, draw, marginbox, run_dict):
 
 		line_height = cursor.y
 
+		log('new cursor: x' + str(cursor.x) + ' y' + str(cursor.y))
+		log('new line_height: ' + str(line_height))
+
 		# add new line with current word
 		#TODO expand on new_line so that it resets the cursor value, and makes a new page
 		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
-		cursor = step_word(word, line_height, cursor, draw, run_dict)				
+		cursor = step_word(word, line_height, cursor, run_dict)	
+
+		log('new cursor: x' + str(cursor.x) + ' y' + str(cursor.y))
+		log('new line_height: ' + str(line_height))			
 	
 	# if the word surpases the edge of the marginbox
 	else:		
@@ -595,13 +636,13 @@ def write_word(word, line_height, cursor, draw, marginbox, run_dict):
 		# add new line with current word
 		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
-		cursor = step_word(word, line_height, cursor, draw, run_dict)
+		cursor = step_word(word, line_height, cursor, run_dict)
 
 	# return appropriate values
 	return line_height, cursor
 
 # function for writing lines on an instruction manual page
-def write_line(paragraph, cursor, draw, marginbox, font_dict):
+def write_line(paragraph, cursor, marginbox, font_dict):
 
 	# initialize a variable to track the y value of the lines
 	line_height = cursor.y
@@ -614,7 +655,7 @@ def write_line(paragraph, cursor, draw, marginbox, font_dict):
 	log('cursor: ' + str(cursor))
 
 	# stylzing the paragh as necessary based on the style value
-	indent, cursor = stylize_line(indent, line_height, cursor, draw, font_dict)
+	indent, cursor = stylize_line(indent, line_height, cursor, font_dict)
 	
 	# iterate through the run objects in the paragraph
 	for run in paragraph.runs:
@@ -629,7 +670,7 @@ def write_line(paragraph, cursor, draw, marginbox, font_dict):
 		# iterate through the words in each run
 		for word in (run.text).split(" "):
 
-			line_height, cursor = write_word(word, line_height, cursor, draw, marginbox, run_dict)
+			line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)
 
 	# this is the number that indicates line spacing.
 	line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
@@ -638,7 +679,7 @@ def write_line(paragraph, cursor, draw, marginbox, font_dict):
 	return shapely.Point(marginbox.bounds[0], line_height)
 
 # function which makes pages while iterating through paragraph objects
-def write_pages(doc, image, draw, marginbox, user_input):
+def write_pages(doc, marginbox, user_input):
 
 	# setup the initial cursor point to send to the write_line function
 	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
@@ -649,15 +690,14 @@ def write_pages(doc, image, draw, marginbox, user_input):
 		# for each line, write the line to the template image
 		cursor = write_line(
 			paragraph, 
-			cursor, 
-			draw,
+			cursor,
 			marginbox, 
 			collect_font_details(paragraph, user_input)
 		)
 	
 	# afterwards save the image
 	#TODO this image.save function may need to be put in a different part of the script
-	image.save(outpath("output.png"))
+	vehicle['image'].save(outpath("output.png"))
 
 #endregion
 #region pdf_tiller_processor_functions
@@ -741,15 +781,17 @@ def tiller_make_manual(args):
 
 		# default image for making a manual
 		#TODO identify a better way default setup for manual pages than the below
-		image = Image.new(mode="RGBA", size=(640,480), color='orange')
+		vehicle.update({'image': Image.new(mode="RGBA", size=(640,480), color='orange')})
 	
 	else:
 
 		# create the image object out of the user inputted template path
-		image = Image.open(args.template)
+		vehicle.update({'image': Image.open(args.template)})
 
 	# adjust the marginbox with offset values if the user provided any
 	offsetx, offsety = args.margin_offset.split(',')
+
+	vehicle.update({'draw': ImageDraw.Draw(vehicle['image'])})
 
 	# create the marginbox based on the created page image and user input
 	# marginbox has a object called .bounds that contains 4 values.
@@ -764,13 +806,11 @@ def tiller_make_manual(args):
 	# make_manual function for clean coding.
 
 	make_manual(
-		doc, 
-		image, 
-		ImageDraw.Draw(image),
+		doc,
 		setup_marginbox(
-			image,
-			int(image.width * args.margin + int(offsetx)), 
-			int(image.height * args.margin + int(offsety)),
+			vehicle['image'],
+			int(vehicle['image'].width * args.margin + int(offsetx)), 
+			int(vehicle['image'].height * args.margin + int(offsety)),
 				
 		), 
 		{
@@ -782,10 +822,10 @@ def tiller_make_manual(args):
 	)
 
 # function to add text to images
-def make_manual(doc, image, draw, marginbox, user_input):
+def make_manual(doc, marginbox, user_input):
 			
 	# create the different images needed for the pages of the manual
-	write_pages(doc, image, draw, marginbox, user_input)
+	write_pages(doc, marginbox, user_input)
 
 	#TODO combine pages into a pdf
 
@@ -901,7 +941,8 @@ def tts_builddeck(file, deck_coef=[10,7]):
 	new = Image.new(image.mode, (nwidth*width, nheight*height))
 	
 	# log action
-	log('- adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height), 'METR')
+	log('- adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] \
+    	that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height), 'METR')
 
 	# iterate through the new images height
 	for h_index in range(nheight):
