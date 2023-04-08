@@ -616,6 +616,7 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 	shapely_word = get_shapely_word(cursor, word, run_dict)
 
 	if shapely_word.within(marginbox):
+		vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
 		cursor = step_word(word, line_height, cursor, run_dict)
 	
 	vehicle['draw'].polygon(marginbox.exterior.coords, outline='blue')
@@ -625,6 +626,7 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 
 		if vehicle['args'].debug:
 			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+			log(str(shapely_word.bounds[2]) + ' > ' + str(marginbox.bounds[2]))
 		
 		# add new line with current word
 		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
@@ -632,11 +634,11 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		cursor = step_word(word, line_height, cursor, run_dict)		
 
 	# check if the word position being drawn is below the marginbox
-	elif shapely_word.bounds[3] > marginbox.bounds[3]:
+	elif line_height > marginbox.bounds[3]:
 
 		if vehicle['args'].debug:
 			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
-			log(str(cursor.y + shapely_word.bounds[3]) + ' > ' + str(marginbox.bounds[3]))
+			log(str(line_height) + ' > ' + str(marginbox.bounds[3]))
 
 		# save the current image
 		vehicle['image'].save(outpath('output.png'))
