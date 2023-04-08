@@ -110,6 +110,14 @@ common_args.add_argument('--glob', dest='glob', help="regex used to pull multipl
 common_args.add_argument('--file', dest='file', help="path to a single file that will be used by the script")
 common_args.add_argument('--glink', dest='glink', help="link pointing to a file in a google drive")
 
+# initialize other common args
+common_args.add_argument(
+	'--debug', 
+	action='store_true', 
+	dest='debug', 
+	help="a flag to add extra insight for debugging purposes"
+)
+
 #endregion
 #region parser_initializing
 
@@ -222,13 +230,13 @@ def get_now():
 	return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H-%M-%S")
 
 # function that sets up the output environment
-def setup_jobsfolder(args):
+def setup_jobsfolder():
 
 	# check if the args contains a user defined folder location
-	if args.job:
+	if vehicle['args'].job:
 
 		# assign args.job to a new variable to make scaling easier
-		path = args.job
+		path = vehicle['args'].job
 		
 		# check if the directory does not exist
 		if not os.path.exists(path):
@@ -316,7 +324,7 @@ from the main functions described in the tools description.
 """
 
 # function for adjusting the size of an image provided based on max pixel value provided
-def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_REFERANCE_SIZE):
+def inspect_image(image, check_value=vehicle['args'].TTS_DECK_IMAGE_MAX_REFERANCE_SIZE):
 
 	# create a flag that states whether the image provided was altered
 	altered = False
@@ -340,10 +348,10 @@ def inspect_image(image, check_value=args.TTS_DECK_IMAGE_MAX_REFERANCE_SIZE):
 	return altered, image
 
 # function to connect to a google drive account, and pull down a file
-def retrieve_google_drive_file(file_id, args):
+def retrieve_google_drive_file(file_id):
 
 	# check if path to credentials.json was provided by the user
-	if not args.gcreds:
+	if not vehicle['args'].gcreds:
 
 		# log that credential.json is needed for this function
 		log("No google api credentials were found. Use the --gcreds flag. exiting.")
@@ -386,7 +394,7 @@ def retrieve_google_drive_file(file_id, args):
 			creds.refresh(Request())
 
 		else:
-			flow = InstalledAppFlow.from_client_secrets_file(args.gcreds, SCOPES)
+			flow = InstalledAppFlow.from_client_secrets_file(vehicle['args'].gcreds, SCOPES)
 			creds = flow.run_local_server(port=0)
 		
 		# log activity
@@ -427,15 +435,32 @@ def retrieve_google_drive_file(file_id, args):
 	# return the file object, don't forget to rewind
 	return file
 
-# function to return a shapely box
-def setup_marginbox(image, width, height):
+def get_manual_page():
 
+	# once the text is collected, make an image object for the page
+	if not vehicle['args'].template:
+
+		# default image for making a manual
+		#TODO identify a better way default setup for manual pages than the below
+		vehicle.update({'image': Image.new(mode="RGBA", size=(640,480), color='orange')})
+	
+	else:
+
+		# create the image object out of the user inputted template path
+		vehicle.update({'image': Image.open(vehicle['args'].template)})
+
+		log('added template object to vehicle dictionary.')
+
+# function to return a shapely box
+def setup_marginbox(width, height):
+
+	# make the shapely polygon for the marginbox
 	return shapely.Polygon(
 		[
 			(width, height), 
-			(image.width - width, height),
-			(image.width - width, image.height - height),
-			(width, image.height - height),
+			(vehicle['image'].width - width, height),
+			(vehicle['image'].width - width, vehicle['image'].height - height),
+			(width, vehicle['image'].height - height),
 			(width, height)
 		]
 	)
@@ -575,25 +600,43 @@ def new_line(line_height, cursor, marginbox, run_dict):
 	# return the updated line_height and cursor variables
 	return line_height, cursor
 
+# function to return a shapely polygon of a word using font.getbbox()
+def get_shapely_word(cursor, word, run_dict):
+
+	bbox = run_dict['font_obj'].getbbox(word)
+
+	return shapely.geometry.Polygon(
+		[(cursor.x + x, cursor.y + y) for x, y in shapely.geometry.box(*bbox).exterior.coords]
+	)
+
 # function to draw the words within runs
 def write_word(word, line_height, cursor, marginbox, run_dict):
 
+	# get a shapely polygon box that is similar to marginbox for comparisons
+	shapely_word = get_shapely_word(cursor, word, run_dict)
+
+	if shapely_word.within(marginbox):
+		cursor = step_word(word, line_height, cursor, run_dict)
+	
+	vehicle['draw'].polygon(marginbox.exterior.coords, outline='blue')
+
 	# check if the word position being drawn is inside the marginbox
-	if (cursor.x + run_dict['font_obj'].getbbox(word)[2]) < marginbox.bounds[2]:
+	if shapely_word.bounds[2] > marginbox.bounds[2]:
+
+		if vehicle['args'].debug:
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
 		
-		#log(str(cursor.x + run_dict['font_obj'].getbbox(word)[2]) + ' < ' + str(marginbox.bounds[2]))
-		
-		cursor = step_word(word, line_height, cursor, run_dict)			
+		# add new line with current word
+		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
+
+		cursor = step_word(word, line_height, cursor, run_dict)		
 
 	# check if the word position being drawn is below the marginbox
-	elif (cursor.y + run_dict['font_obj'].getbbox(word)[3]) > marginbox.bounds[3]:
+	elif shapely_word.bounds[3] > marginbox.bounds[3]:
 
-		log(str(cursor.y + run_dict['font_obj'].getbbox(word)[3]) + ' > ' + str(marginbox.bounds[3]))
-
-		#TODO: save the page with unique filename that dictates pagenumber
-		#TODO: create a new page and generate the marginbox
-		#TODO: reset the cursor position on the new page
-		#TODO: draw the word
+		if vehicle['args'].debug:
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+			log(str(cursor.y + shapely_word.bounds[3]) + ' > ' + str(marginbox.bounds[3]))
 
 		# save the current image
 		vehicle['image'].save(outpath('output.png'))
@@ -601,7 +644,7 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		log('saved page...')
 		
 		# make a new  image object to the vehicle
-		vehicle.update({'image': Image.open(args.template)})
+		vehicle.update({'image': Image.open(vehicle['args'].template)})
 
 		vehicle.update({'draw': ImageDraw.Draw(vehicle['image'])})
 
@@ -626,20 +669,9 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		cursor = step_word(word, line_height, cursor, run_dict)	
 
 		log('new cursor: x' + str(cursor.x) + ' y' + str(cursor.y))
-		log('new line_height: ' + str(line_height))			
-	
-	# if the word surpases the edge of the marginbox
-	else:		
+		log('new line_height: ' + str(line_height))
 
-		log(str((cursor.x + run_dict['font_obj'].getbbox(word)[2])) + ' >= ' + str(marginbox.bounds[2]))		
-		
-		# add new line with current word
-		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
-
-		cursor = step_word(word, line_height, cursor, run_dict)
-
-	# return appropriate values
-	return line_height, cursor
+	return line_height, cursor	
 
 # function for writing lines on an instruction manual page
 def write_line(paragraph, cursor, marginbox, font_dict):
@@ -669,7 +701,6 @@ def write_line(paragraph, cursor, marginbox, font_dict):
 
 		# iterate through the words in each run
 		for word in (run.text).split(" "):
-
 			line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)
 
 	# this is the number that indicates line spacing.
@@ -710,17 +741,17 @@ respective site that the eventual game will be hosted on.
 """
 
 # tiller function to determine how to run the convert_to_pdf function
-def tiller_convert_to_pdf(args):
+def tiller_convert_to_pdf():
 
 	# check if file argument wasa called
-	if args.file:
+	if vehicle['args'].file:
 
 		#TODO: add code for telling the script how to print a pdf with only a single image file
 		# for now, just run the under_construction function that logs this activity, and exit
 		under_construction()
 	
 	# check if a file needs to be pulled using google-api
-	if args.glink:
+	if vehicle['args'].glink:
 	
 		#TODO: add code for telling the script how to print a pdf with only a single image file
 		# file that needs to be pulled from google drive using the google-api
@@ -728,19 +759,19 @@ def tiller_convert_to_pdf(args):
 		under_construction()
 
 	# check if the glob argument was called
-	if args.glob:
+	if vehicle['args'].glob:
 	
 		# run the convert_to_pdf using the glob argument
-		convert_to_pdf(args.glob, outpath("output.pdf"), args.title, args.author, args.subject)
+		convert_to_pdf(outpath("output.pdf"))
 
 # function to handle pdf files
-def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
+def convert_to_pdf(outpath):
 
 	# initialize the pages list
 	pages = []
 
 	# glob through the filepath provided to start iterate through files found
-	for file in glob.glob(glob_path):
+	for file in glob.glob(vehicle['glob']):
 
 		# log activity - found file to add to pdf
 		log(file + " was found, and will be added to the created pdf.")
@@ -749,7 +780,14 @@ def convert_to_pdf(glob_path, outpath, pdf_title, pdf_author, pdf_subject):
 		pages.append(Image.open(file))
 	
 	# save the collected pdf files as a pdf
-	pages[0].save(outpath, save_all=True, append_images=pages[1:], title=pdf_title, author=pdf_author, subject=pdf_subject)
+	pages[0].save(
+		outpath, 
+		save_all=True, 
+		append_images=pages[1:], 
+		title=vehicle['args'].title, 
+		author=vehicle['args'].author, 
+		subject=vehicle['args'].subject
+	)
 
 #endregion
 #region instruction_manual_tiller_processing_functions
@@ -764,32 +802,22 @@ by the user.
 """
 
 # tiller function to help determine how to collect and process data to make instruction manuals
-def tiller_make_manual(args):
+def tiller_make_manual():
 
 	# check if a google api link is provided
-	if args.glink:
+	if vehicle['args'].glink:
 
 		# pull a file object from a google drive
-		file = retrieve_google_drive_file((args.glink).split('/')[-2], args)
+		file = retrieve_google_drive_file((vehicle['args'].glink).split('/')[-2])
 
 		# assign the collected file to the right variable
 		#TODO add more robust way to determine which type of file format was collected
 		doc = docx.Document(file)
 
-	# once the text is collected, make an image object for the page
-	if not args.template:
-
-		# default image for making a manual
-		#TODO identify a better way default setup for manual pages than the below
-		vehicle.update({'image': Image.new(mode="RGBA", size=(640,480), color='orange')})
-	
-	else:
-
-		# create the image object out of the user inputted template path
-		vehicle.update({'image': Image.open(args.template)})
+	get_manual_page()
 
 	# adjust the marginbox with offset values if the user provided any
-	offsetx, offsety = args.margin_offset.split(',')
+	offsetx, offsety = vehicle['args'].margin_offset.split(',')
 
 	vehicle.update({'draw': ImageDraw.Draw(vehicle['image'])})
 
@@ -808,16 +836,14 @@ def tiller_make_manual(args):
 	make_manual(
 		doc,
 		setup_marginbox(
-			vehicle['image'],
-			int(vehicle['image'].width * args.margin + int(offsetx)), 
-			int(vehicle['image'].height * args.margin + int(offsety)),
-				
+			int(vehicle['image'].width * vehicle['args'].margin + int(offsetx)), 
+			int(vehicle['image'].height * vehicle['args'].margin + int(offsety))
 		), 
 		{
-			'font_name'		:	args.font_name,
-			'font_size'		:	args.font_size,
-			'font_color'	:	args.font_color,
-			'line_spacing'	:	args.spacing 
+			'font_name'		:	vehicle['args'].font_name,
+			'font_size'		:	vehicle['args'].font_size,
+			'font_color'	:	vehicle['args'].font_color,
+			'line_spacing'	:	vehicle['args'].spacing 
 		}
 	)
 
@@ -841,49 +867,49 @@ focus.
 """
 
 # function for tilling out exactly how the tt_builddeck function should work
-def tiller_builddeck(args):
+def tiller_builddeck():
 
 	# check for reference optional argument
-	if args.reference:
+	if vehicle['args'].reference:
 
 		# inspect the reference image
-		altered, reference = inspect_image(Image.open(args.reference))
+		altered, reference = inspect_image(Image.open(vehicle['args'].reference))
 
 		# check if the image was altered
 		if altered:
 
 			# assign the new outpath to the args.reference variable
-			args.reference = outpath(args.reference)
+			vehicle['args'].reference = outpath(vehicle['args'].reference)
 
-			# save the image to the destination assigned to the args.reference variable
-			reference.save(args.reference)
+			# save the image to the destination assigned to the vehicle['args'].reference variable
+			reference.save(vehicle['args'].reference)
 
 			# log activity
 			log('- reference image provided was altered and saved to the same directory')
 
 	# check if "-i" arguement is called
-	if args.file:
+	if vehicle['args'].file:
 
 		# log the action
-		log('image path provided: ' + str(args.file))
+		log('image path provided: ' + str(vehicle['args'].file))
 
 		# if so, then run tts_builddeck with the provided output path
-		tts_builddeck(args.file)
+		tts_builddeck(vehicle['args'].file)
 
 	# check if user provided glob argument
-	if args.glob:
+	if vehicle['args'].glob:
 
 		# log the action
-		log('glob regex provided: ' + str(args.glob))
+		log('glob regex provided: ' + str(vehicle['args'].glob))
 
 		# iterate recursively through the glob regex provided
-		for file in glob.glob(args.glob):
+		for file in glob.glob(vehicle['args'].glob):
 			
 			# place the outputted image in the same directory as the provided image
 			tts_builddeck(file, outpath(os.path.basename(file)))
 	
 	# check if a google link is provided
-	if args.glink:
+	if vehicle['args'].glink:
 
 		#TODO: add code here to deal with a google_link
 		# for now, just point to under_construction function
@@ -899,16 +925,16 @@ def tts_builddeck(file, deck_coef=[10,7]):
 	log('- opened file: ' + file)
 
 	# check if a card back image is provided
-	if args.reference:
+	if vehicle['args'].reference:
 
 		# upload the reference image
-		reference = Image.open(args.reference)
+		reference = Image.open(vehicle['args'].reference)
 
 		# resize the image to the size of the reference
 		image = image.resize(reference.size)
 
 		# log activity
-		log(' - image resized based on reference: ' + args.reference)
+		log(' - image resized based on reference: ' + vehicle['args'].reference)
 	
 	# get specs of uploaded image
 	width, height = image.size
@@ -923,16 +949,16 @@ def tts_builddeck(file, deck_coef=[10,7]):
 	log('- initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']', 'METR')
 
 	# start a while loop that continues as long as the resulting image has attributes above 10k pixels
-	while any(x > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
+	while any(x > vehicle['args'].TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
 	
 		# check if width of new image will be above 10k pixels
-		if nwidth*width > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
+		if nwidth*width > vehicle['args'].TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
 
 			# reduce the nwidth value by 1
 			nwidth = nwidth - 1
 		
 		# if the width is not above 10k pixels, check the height
-		elif nheight*height > args.TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
+		elif nheight*height > vehicle['args'].TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE:
 
 			# reduce the nheight value by 1
 			nheight = nheight - 1
@@ -976,23 +1002,23 @@ asset icons around the map.
 """
 
 # tiller function for the tts_buildmap subparser function
-def tiller_buildmap(args):
+def tiller_buildmap():
 
 	# check if a file is provided
-	if args.file:
+	if vehicle['args'].file:
 
 		# run the mapbuilder function
-		tts_buildmap(args.file, args.assets)
+		tts_buildmap(vehicle['args'].file, vehicle['args'].assets)
 	
 	# check if a glob is provided
-	if args.glob:
+	if vehicle['args'].glob:
 
 		#TODO: add code to provide the necessary information to tt_buildmap function
 		# for now, just add the under_construction function, and exit
 		under_construction()
 	
 	# check if a google_link is provided
-	if args.glink:
+	if vehicle['args'].glink:
 
 		# TODO: add code to provide the necessary information to tt_buildmap function
 		# for now, just add the under_construction function, and exit
@@ -1051,31 +1077,31 @@ making sure the output of the script is as the user expects it to look
 def main():
 
 	# setup the jobs folder
-	vehicle.update({"jobsfolder":setup_jobsfolder(args)})
+	vehicle.update({"jobsfolder":setup_jobsfolder()})
 
 	# check if mapbuilder or deckbuilder is called
-	if args.sub == "mosaic":
+	if vehicle['args'].sub == "mosaic":
 
 		# run the tiller function for the deck builder
-		tiller_builddeck(args)
+		tiller_builddeck()
 
 	# check if mapbuilder is called
-	if args.sub == "mapbuilder":
+	if vehicle['args'].sub == "mapbuilder":
 
 		# send the args attribute to the tiller_buildmap function
-		tiller_buildmap(args)
+		tiller_buildmap()
 	
 	# check if pdf is called
-	if args.sub == "pdf":
+	if vehicle['args'].sub == "pdf":
 
 		# send the args attributes to the tiller pdf function
-		tiller_convert_to_pdf(args)
+		tiller_convert_to_pdf()
 	
 	# check if instruction_manual is called
-	if args.sub == "instruction_manual":
+	if vehicle['args'].sub == "instruction_manual":
 
 		# run the tiller function for the instruction_manual subparser
-		tiller_make_manual(args)
+		tiller_make_manual()
 
 #endregion
 
