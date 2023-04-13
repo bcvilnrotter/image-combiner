@@ -182,11 +182,49 @@ instruction_manual.add_argument('--font_name', default={
 	'bolditalic':	'arialbi.ttf',
 	'regular'	:	'arial.ttf'
 }, dest='font_name', help='the font that the script will use to add text to pages')
-instruction_manual.add_argument('--font_size', default=12, dest='font_size', help='the number of lines per page')
-instruction_manual.add_argument('--spacing', default=3, dest='spacing', help='the number of pixel spacing between lines')
-instruction_manual.add_argument('--font_color', default='black', dest='font_color', help='the color of the text to be added to the page')
-instruction_manual.add_argument('--margin', default=0.1, dest='margin', help='the % of the image the margin should take up')
-instruction_manual.add_argument('--margin_offset', default='0,0', dest='margin_offset', help='custom x, y offset values for custom margin placement')
+instruction_manual.add_argument(
+	'--font_size', 
+	default=12, 
+	dest='font_size', 
+	help='the number of lines per page'
+)
+instruction_manual.add_argument(
+	'--spacing', 
+	default=3, 
+	dest='spacing', 
+	help='the number of pixel spacing between lines'
+)
+instruction_manual.add_argument(
+	'--font_color', 
+	default='black', 
+	dest='font_color', 
+	help='the color of the text to be added to the page'
+)
+instruction_manual.add_argument(
+	'--margin', 
+	default=0.1, 
+	dest='margin', 
+	help='the % of the image the margin should take up'
+)
+instruction_manual.add_argument(
+	'--margin_offset', 
+	default='0,0', 
+	dest='margin_offset', 
+	help='custom x, y offset values for custom margin placement'
+)
+instruction_manual.add_argument(
+	'--title_page',
+	dest='title_page',
+	help='the title page to use when created the pdf'
+)
+instruction_manual.add_argument(
+	'--dont_build_pdf',
+	default=False,
+	action='store_true',
+	dest='dont_build_pdf',
+	help='a flag to tell the script not to build the individual \
+		pages into a pdf'
+)
 #TODO the segment for creating the instruction manual during the next coding session
 
 #endregion
@@ -732,6 +770,27 @@ def write_pages(doc, marginbox, user_input):
 	#TODO this image.save function may need to be put in a different part of the script
 	vehicle['image'].save(outpath("output.png"))
 
+# function to compile pages into pdf once complete
+def build_pdf_manual():
+
+	log('compiling the page files into a pdf...')
+	
+	# create list of file paths to make into a pdf
+	pages = []
+
+	# check if a title page is given
+	if vehicle['args'].title_page and os.path.isfile(vehicle['args'].title_page):
+		
+		# add the title page to the pages list
+		pages.append(Image.open(vehicle['args'].title_page))
+
+	# glob through the jobs folder, and add the pages to the pages list
+	for page in glob.glob(vehicle['jobsfolder'] + '\*.png'):
+		pages.append(Image.open(page))
+
+	# save the collected pages to pdf
+	save_to_pdf(pages, outpath('output.pdf'))
+
 #endregion
 #region pdf_tiller_processor_functions
 
@@ -766,6 +825,24 @@ def tiller_convert_to_pdf():
 		# run the convert_to_pdf using the glob argument
 		convert_to_pdf(outpath("output.pdf"))
 
+# function to save a list of pages to pdf
+def save_to_pdf(pages, outpath):
+	
+	title = vehicle['args'].title if 'title' in vehicle['args'] else "default"
+
+	author = vehicle['args'].author if 'author' in vehicle['args'] else "default"
+	
+	subject = vehicle['args'].subject if 'subject' in vehicle['args'] else "default"
+
+	pages[0].save(
+		outpath, 
+		save_all=True, 
+		append_images=pages[1:], 
+		title=title, 
+		author=author, 
+		subject=subject
+	)
+
 # function to handle pdf files
 def convert_to_pdf(outpath):
 
@@ -782,14 +859,7 @@ def convert_to_pdf(outpath):
 		pages.append(Image.open(file))
 	
 	# save the collected pdf files as a pdf
-	pages[0].save(
-		outpath, 
-		save_all=True, 
-		append_images=pages[1:], 
-		title=vehicle['args'].title, 
-		author=vehicle['args'].author, 
-		subject=vehicle['args'].subject
-	)
+	save_to_pdf(pages, outpath)
 
 #endregion
 #region instruction_manual_tiller_processing_functions
@@ -855,7 +925,10 @@ def make_manual(doc, marginbox, user_input):
 	# create the different images needed for the pages of the manual
 	write_pages(doc, marginbox, user_input)
 
-	#TODO combine pages into a pdf
+	# once the pages are made, check to see if pdf should be made
+	if vehicle['args'].dont_build_pdf == False:
+
+		build_pdf_manual()
 
 #endregion
 #region tiller_mosaic_tiller_processor_functions
