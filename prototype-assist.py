@@ -29,6 +29,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor
 # extra 3rd party import modules
 import shapely
 import numpy as np
+import yaml
 
 # docx import
 import docx
@@ -176,12 +177,22 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 
 # initialize the subparser arguments for instruction_manual
 instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
+
+"""
 instruction_manual.add_argument('--font_name', default={
 	'bold'		:	'arialbd.tff',
 	'italic'	:	'ariali.tff',
 	'bolditalic':	'arialbi.ttf',
-	'regular'	:	'arial.ttf'
+	'regular'	:	'C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf' #'arial.ttf'
 }, dest='font_name', help='the font that the script will use to add text to pages')
+"""
+
+instruction_manual.add_argument(
+	'--config',
+	dest='config',
+	help='the config file used for formatting and stylizing information.'
+)
+"""
 instruction_manual.add_argument(
 	'--font_size', 
 	default=12, 
@@ -200,6 +211,7 @@ instruction_manual.add_argument(
 	dest='font_color', 
 	help='the color of the text to be added to the page'
 )
+"""
 instruction_manual.add_argument(
 	'--margin', 
 	default=0.1, 
@@ -503,43 +515,29 @@ def setup_marginbox(width, height):
 		]
 	)
 
-def collect_font_details(paragraph, user_input):
+def collect_font_details(paragraph):
 
-	style = paragraph.style
+	font_dict = {}
 
-	if style is not None:
+	# cycle through the config parameters to see if the style fit
+	for style in vehicle['config']['styles']:
 
-		font_dict = {
-			'style_name'	:	style.name
-		}
+		log("Paragraph Style: " + paragraph.style.name + " Style: " + style['name'])
 		
-		font_dict['font_name'] = user_input['font_name']
+		if style['name'] == paragraph.style.name:
 
-		if style.font.size is not None:
-			font_dict['font_size'] = style.font.size.pt
-		else:
-			font_dict['font_size'] = user_input['font_size']
-		
-		if style.font.color is not None:
-			font_dict['font_color'] = style.font.color.rgb
-		else:
-			font_dict['font_color'] = user_input['font_color']			
+			font_dict['style_name']		= style['name']
+			font_dict['font_size']		= style['size']
+			font_dict['font_color']		= style['color']
+			font_dict['line_spacing']	= style['spacing']
+			font_dict['bold']			= style['bold']
+			font_dict['italic']			= style['italic']
+			font_dict['bolditalic']		= style['bolditalic']
+			font_dict['regular']		= style['regular']
 
-		font_dict['line_spacing'] = user_input['line_spacing']
-		
-	else:
-
-		# create a font dictionary to send to the write_line function
-		font_dict = {
-			'style_name'	:	None,
-			'font_name' 	: 	user_input['font_name'],
-			'font_size'		:	user_input['font_size'],
-			'font_color'	: 	user_input['font_color'],
-			'line_spacing' 	: 	user_input['line_spacing']
-		}
-
+	log(str(font_dict))	
 	font_dict['font_obj'] = ImageFont.truetype(
-		font_dict['font_name']['regular'], 
+		font_dict['regular'], 
 		size=int(font_dict['font_size'])
 	)
 
@@ -585,19 +583,16 @@ def collect_run_details(run, font_dict):
 
 	# cycle through the values collected to determine which font file to use
 	if [run.font.bold,run.font.italic] == [True, True]:
-		run_dict['run_name'] = font_dict['font_name']['bolditalic']
+		run_dict['run_name'] = font_dict['bolditalic']
 	elif [run.font.bold,run.font.italic] == (True,False):
-		run_dict['run_name'] = font_dict['font_name']['bold']
+		run_dict['run_name'] = font_dict['bold']
 	elif [run.font.bold,run.font.italic] == (False,True):
-		run_dict['run_name'] == font_dict['font_name']['italic']
+		run_dict['run_name'] = font_dict['italic']
 	else:
-		run_dict['run_name'] = font_dict['font_name']['regular']
+		run_dict['run_name'] = font_dict['regular']
 	log('run_name: ' + run_dict['run_name'])
 	
-	if run.font.color.rgb is None:
-		run_dict['run_color'] = font_dict['font_color']
-	else:
-		run_dict['run_color'] = run.font.color.rgb
+	run_dict['run_color'] = font_dict['font_color']
 	log('run_color: ' + str(run_dict['run_color']))
 	
 	# assign a font object for the specific word
@@ -669,7 +664,8 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		# add new line with current word
 		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
-		cursor = step_word(word, line_height, cursor, run_dict)		
+		# rerun the write_word function
+		line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)		
 
 	# check if the word position being drawn is below the marginbox
 	elif line_height > marginbox.bounds[3]:
@@ -706,7 +702,8 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		#TODO expand on new_line so that it resets the cursor value, and makes a new page
 		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
-		cursor = step_word(word, line_height, cursor, run_dict)	
+		# rerun the write_word function
+		line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)		
 
 		log('new cursor: x' + str(cursor.x) + ' y' + str(cursor.y))
 		log('new line_height: ' + str(line_height))
@@ -744,13 +741,14 @@ def write_line(paragraph, cursor, marginbox, font_dict):
 			line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)
 
 	# this is the number that indicates line spacing.
-	line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
+	#line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
+	line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)	
 
 	# return an up-to-date cursor shapely object so that the cursor object can be updated for then ext paragraph
 	return shapely.Point(marginbox.bounds[0], line_height)
 
 # function which makes pages while iterating through paragraph objects
-def write_pages(doc, marginbox, user_input):
+def write_pages(doc, marginbox):
 
 	# setup the initial cursor point to send to the write_line function
 	cursor = shapely.Point(marginbox.bounds[0], marginbox.bounds[1])
@@ -763,7 +761,7 @@ def write_pages(doc, marginbox, user_input):
 			paragraph, 
 			cursor,
 			marginbox, 
-			collect_font_details(paragraph, user_input)
+			collect_font_details(paragraph)
 		)
 	
 	# afterwards save the image
@@ -893,6 +891,10 @@ def tiller_make_manual():
 
 	vehicle.update({'draw': ImageDraw.Draw(vehicle['image'])})
 
+	# collect the style information provided in the config file
+	with open(vehicle['args'].config, 'r') as f:
+		vehicle.update({'config' : yaml.safe_load(f)})
+
 	# create the marginbox based on the created page image and user input
 	# marginbox has a object called .bounds that contains 4 values.
 	# (min x value, min y value, max x value, max y value) in that order
@@ -905,6 +907,7 @@ def tiller_make_manual():
 	# this marginbox is created with the function setup_marginbox within the
 	# make_manual function for clean coding.
 
+	"""
 	make_manual(
 		doc,
 		setup_marginbox(
@@ -918,12 +921,20 @@ def tiller_make_manual():
 			'line_spacing'	:	vehicle['args'].spacing 
 		}
 	)
+	"""
+	make_manual(
+		doc,
+		setup_marginbox(
+			int(vehicle['image'].width * vehicle['args'].margin + int(offsetx)), 
+			int(vehicle['image'].height * vehicle['args'].margin + int(offsety))			
+		)
+	)
 
 # function to add text to images
-def make_manual(doc, marginbox, user_input):
+def make_manual(doc, marginbox):
 			
 	# create the different images needed for the pages of the manual
-	write_pages(doc, marginbox, user_input)
+	write_pages(doc, marginbox)
 
 	# once the pages are made, check to see if pdf should be made
 	if vehicle['args'].dont_build_pdf == False:
