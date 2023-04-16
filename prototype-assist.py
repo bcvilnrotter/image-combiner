@@ -178,40 +178,11 @@ pdf_actions.add_argument('--subject', default='https://github.com/bcvilnrotter/b
 # initialize the subparser arguments for instruction_manual
 instruction_manual.add_argument('--template', default=None, dest='template', help='path to page image')
 
-"""
-instruction_manual.add_argument('--font_name', default={
-	'bold'		:	'arialbd.tff',
-	'italic'	:	'ariali.tff',
-	'bolditalic':	'arialbi.ttf',
-	'regular'	:	'C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf' #'arial.ttf'
-}, dest='font_name', help='the font that the script will use to add text to pages')
-"""
-
 instruction_manual.add_argument(
 	'--config',
 	dest='config',
 	help='the config file used for formatting and stylizing information.'
 )
-"""
-instruction_manual.add_argument(
-	'--font_size', 
-	default=12, 
-	dest='font_size', 
-	help='the number of lines per page'
-)
-instruction_manual.add_argument(
-	'--spacing', 
-	default=3, 
-	dest='spacing', 
-	help='the number of pixel spacing between lines'
-)
-instruction_manual.add_argument(
-	'--font_color', 
-	default='black', 
-	dest='font_color', 
-	help='the color of the text to be added to the page'
-)
-"""
 instruction_manual.add_argument(
 	'--margin', 
 	default=0.1, 
@@ -574,12 +545,8 @@ def collect_run_details(run, font_dict):
 	# initialize run_dict object to return at end of function
 	run_dict = {}
 	
-	# determine whether basic word values have None value, if so use presented values
-	if run.font.size is None:
-		run_dict['run_size'] = font_dict['font_size']
-	else:
-		run_dict['run_size'] = run.font.size.pt
-	log('run_size: ' + str(run_dict['run_size']))
+	# give font size
+	run_dict['run_size'] = font_dict['font_size']
 
 	# cycle through the values collected to determine which font file to use
 	if [run.font.bold,run.font.italic] == [True, True]:
@@ -907,21 +874,6 @@ def tiller_make_manual():
 	# this marginbox is created with the function setup_marginbox within the
 	# make_manual function for clean coding.
 
-	"""
-	make_manual(
-		doc,
-		setup_marginbox(
-			int(vehicle['image'].width * vehicle['args'].margin + int(offsetx)), 
-			int(vehicle['image'].height * vehicle['args'].margin + int(offsety))
-		), 
-		{
-			'font_name'		:	vehicle['args'].font_name,
-			'font_size'		:	vehicle['args'].font_size,
-			'font_color'	:	vehicle['args'].font_color,
-			'line_spacing'	:	vehicle['args'].spacing 
-		}
-	)
-	"""
 	make_manual(
 		doc,
 		setup_marginbox(
