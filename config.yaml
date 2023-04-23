@@ -1,41 +1,53 @@
+marginbox:
+  - x:            82.0
+    y:            112.0
+  - x:            743.0
+    y:            112.0
+  - x:            743.0
+    y:            1013.0
+  - x:            82.0
+    y:            1013.0
+  - x:            82.0
+    y:            112.0
+
 styles:
-    - name:         "Title"
-      color:        'black'
-      size:         28
-      spacing:      3
-      bold:         'arialbd.ttf'
-      italic:       'ariali.ttf'
-      bolditalic:   'arialbi.ttf'
-      regular:      'arial.ttf'
-    - name:         "Heading 1"
-      color:        'black'
-      size:         28
-      spacing:      3
-      bold:         'arialbd.ttf'
-      italic:       'ariali.ttf'
-      bolditalic:   'arialbi.ttf'
-      regular:      'arial.ttf'
-    - name:         "Heading 2"
-      color:        'black'
-      size:         28
-      spacing:      3
-      bold:         'arialbd.ttf'
-      italic:       'ariali.ttf'
-      bolditalic:   'arialbi.ttf'
-      regular:      'arial.ttf'
-    - name:         'normal'
-      color:        'black'
-      size:         28
-      spacing:      3
-      bold:         'arialbd.ttf'
-      italic:       'ariali.ttf'
-      bolditalic:   'arialbi.ttf'
-      regular:      'C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf'
-    - name:         None
-      color:        'black'
-      size:         28
-      spacing:      3
-      bold:         'arialbd.ttf'
-      italic:       'ariali.ttf'
-      bolditalic:   'arialbi.ttf'
-      regular:      'arial.ttf'
+  - name:         "Title"
+    color:        'black'
+    size:         28
+    spacing:      3
+    bold:         'arialbd.ttf'
+    italic:       'ariali.ttf'
+    bolditalic:   'arialbi.ttf'
+    regular:      'arial.ttf'
+  - name:         "Heading 1"
+    color:        'black'
+    size:         28
+    spacing:      3
+    bold:         'arialbd.ttf'
+    italic:       'ariali.ttf'
+    bolditalic:   'arialbi.ttf'
+    regular:      'arial.ttf'
+  - name:         "Heading 2"
+    color:        'black'
+    size:         28
+    spacing:      3
+    bold:         'arialbd.ttf'
+    italic:       'ariali.ttf'
+    bolditalic:   'arialbi.ttf'
+    regular:      'arial.ttf'
+  - name:         'normal'
+    color:        'black'
+    size:         28
+    spacing:      3
+    bold:         'arialbd.ttf'
+    italic:       'ariali.ttf'
+    bolditalic:   'arialbi.ttf'
+    regular:      'C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf'
+  - name:         None
+    color:        'black'
+    size:         28
+    spacing:      3
+    bold:         'arialbd.ttf'
+    italic:       'ariali.ttf'
+    bolditalic:   'arialbi.ttf'
+    regular:      'arial.ttf'
