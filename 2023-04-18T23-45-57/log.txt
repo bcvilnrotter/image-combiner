@@ -1,0 +1,1432 @@
+2023-04-18T23-45-57 [INFO]  - checking if a previously made token exists in jobs path
+2023-04-18T23-45-57 [INFO]  - checking if google-api creds are useable
+2023-04-18T23-45-57 [INFO]  - creds found do not work, troubleshooting...
+2023-04-18T23-46-05 [INFO]  - writing token contents
+2023-04-18T23-46-05 [INFO]  - attempting to download the file with file_id:12sLRGrSptHpQ03siyIqPcXh1IXPSbuU_
+2023-04-18T23-46-07 [INFO]  - Download 100%.
+2023-04-18T23-46-07 [INFO] added template object to vehicle dictionary.
+2023-04-18T23-46-07 [INFO] Paragraph Style: Title Style: Title
+2023-04-18T23-46-07 [INFO] Paragraph Style: Title Style: Heading 1
+2023-04-18T23-46-07 [INFO] Paragraph Style: Title Style: Heading 2
+2023-04-18T23-46-07 [INFO] Paragraph Style: Title Style: normal
+2023-04-18T23-46-07 [INFO] Paragraph Style: Title Style: None
+2023-04-18T23-46-07 [INFO] {'style_name': 'Title', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-07 [INFO] style_name: Title
+2023-04-18T23-46-07 [INFO] line_spacing: 3
+2023-04-18T23-46-07 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-07 [INFO] cursor: POINT (82 112)
+2023-04-18T23-46-07 [INFO] run_name: arial.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: STEAMPUNK
+2023-04-18T23-46-07 [INFO] word drawn: PROJECT
+2023-04-18T23-46-07 [INFO] word drawn: MANAGEMENT
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-07 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-07 [INFO] style_name: normal
+2023-04-18T23-46-07 [INFO] line_spacing: 3
+2023-04-18T23-46-07 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-07 [INFO] cursor: POINT (82 143)
+2023-04-18T23-46-07 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: In
+2023-04-18T23-46-07 [INFO] word drawn: this
+2023-04-18T23-46-07 [INFO] word drawn: fast-paced
+2023-04-18T23-46-07 [INFO] word drawn: game
+2023-04-18T23-46-07 [INFO] word drawn: of
+2023-04-18T23-46-07 [INFO] word drawn: head-to-head
+2023-04-18T23-46-07 [INFO] word drawn: competition,
+2023-04-18T23-46-07 [INFO] word drawn: two
+2023-04-18T23-46-07 [INFO] word drawn: (or
+2023-04-18T23-46-07 [INFO] word drawn: virtually!),
+2023-04-18T23-46-07 [INFO] word drawn: compete
+2023-04-18T23-46-07 [INFO] word drawn: to
+2023-04-18T23-46-07 [INFO] word drawn: use
+2023-04-18T23-46-07 [INFO] word drawn: up
+2023-04-18T23-46-07 [INFO] word drawn: all
+2023-04-18T23-46-07 [INFO] word drawn: the
+2023-04-18T23-46-07 [INFO] word drawn: cards
+2023-04-18T23-46-07 [INFO] word drawn: in
+2023-04-18T23-46-07 [INFO] word drawn: their
+2023-04-18T23-46-07 [INFO] word drawn: Each
+2023-04-18T23-46-07 [INFO] word drawn: team
+2023-04-18T23-46-07 [INFO] word drawn: is
+2023-04-18T23-46-07 [INFO] word drawn: defined
+2023-04-18T23-46-07 [INFO] word drawn: by
+2023-04-18T23-46-07 [INFO] word drawn: its
+2023-04-18T23-46-07 [INFO] word drawn: deck
+2023-04-18T23-46-07 [INFO] word drawn: color
+2023-04-18T23-46-07 [INFO] word drawn: -
+2023-04-18T23-46-07 [INFO] word drawn: red
+2023-04-18T23-46-07 [INFO] word drawn: or
+2023-04-18T23-46-07 [INFO] word drawn: blue.
+2023-04-18T23-46-07 [INFO] word drawn: There
+2023-04-18T23-46-07 [INFO] word drawn: is
+2023-04-18T23-46-07 [INFO] word drawn: This
+2023-04-18T23-46-07 [INFO] word drawn: is
+2023-04-18T23-46-07 [INFO] word drawn: a
+2023-04-18T23-46-07 [INFO] word drawn: fast-moving
+2023-04-18T23-46-07 [INFO] word drawn: game
+2023-04-18T23-46-07 [INFO] word drawn: where
+2023-04-18T23-46-07 [INFO] word drawn: all
+2023-04-18T23-46-07 [INFO] word drawn: players
+2023-04-18T23-46-07 [INFO] word drawn: play
+2023-04-18T23-46-07 [INFO] word drawn: at
+2023-04-18T23-46-07 [INFO] word drawn: the
+2023-04-18T23-46-07 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: 
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-07 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-07 [INFO] style_name: Heading 1
+2023-04-18T23-46-07 [INFO] line_spacing: 3
+2023-04-18T23-46-07 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-07 [INFO] cursor: POINT (82 298)
+2023-04-18T23-46-07 [INFO] run_name: arial.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: OBJECTIVE
+2023-04-18T23-46-07 [INFO] run_name: arial.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: 
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-07 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-07 [INFO] style_name: normal
+2023-04-18T23-46-07 [INFO] line_spacing: 3
+2023-04-18T23-46-07 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-07 [INFO] cursor: POINT (82 329)
+2023-04-18T23-46-07 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: The
+2023-04-18T23-46-07 [INFO] word drawn: game
+2023-04-18T23-46-07 [INFO] word drawn: ends
+2023-04-18T23-46-07 [INFO] word drawn: when
+2023-04-18T23-46-07 [INFO] word drawn: each
+2023-04-18T23-46-07 [INFO] word drawn: player
+2023-04-18T23-46-07 [INFO] word drawn: of
+2023-04-18T23-46-07 [INFO] word drawn: a
+2023-04-18T23-46-07 [INFO] word drawn: team
+2023-04-18T23-46-07 [INFO] word drawn: has
+2023-04-18T23-46-07 [INFO] word drawn: used
+2023-04-18T23-46-07 [INFO] word drawn: all
+2023-04-18T23-46-07 [INFO] word drawn: the
+2023-04-18T23-46-07 [INFO] word drawn: Once
+2023-04-18T23-46-07 [INFO] word drawn: the
+2023-04-18T23-46-07 [INFO] word drawn: game
+2023-04-18T23-46-07 [INFO] word drawn: is
+2023-04-18T23-46-07 [INFO] word drawn: done,
+2023-04-18T23-46-07 [INFO] word drawn: points
+2023-04-18T23-46-07 [INFO] word drawn: are
+2023-04-18T23-46-07 [INFO] word drawn: tallied
+2023-04-18T23-46-07 [INFO] word drawn: and
+2023-04-18T23-46-07 [INFO] word drawn: the
+2023-04-18T23-46-07 [INFO] word drawn: winning
+2023-04-18T23-46-07 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: 
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-07 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-07 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-07 [INFO] style_name: Heading 1
+2023-04-18T23-46-07 [INFO] line_spacing: 3
+2023-04-18T23-46-07 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-07 [INFO] cursor: POINT (82 422)
+2023-04-18T23-46-07 [INFO] run_name: arial.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: EQUIPMENT
+2023-04-18T23-46-07 [INFO] run_name: arial.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: 
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-07 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-07 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-07 [INFO] style_name: normal
+2023-04-18T23-46-07 [INFO] line_spacing: 3
+2023-04-18T23-46-07 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-07 [INFO] cursor: POINT (82 453)
+2023-04-18T23-46-07 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-07 [INFO] run_color: black
+2023-04-18T23-46-07 [INFO] word drawn: There
+2023-04-18T23-46-07 [INFO] word drawn: are
+2023-04-18T23-46-07 [INFO] word drawn: 2
+2023-04-18T23-46-07 [INFO] word drawn: teams
+2023-04-18T23-46-07 [INFO] word drawn: situated
+2023-04-18T23-46-07 [INFO] word drawn: in
+2023-04-18T23-46-07 [INFO] word drawn: 2
+2023-04-18T23-46-07 [INFO] word drawn: separate
+2023-04-18T23-46-07 [INFO] word drawn: circles
+2023-04-18T23-46-07 [INFO] word drawn: adjacent
+2023-04-18T23-46-07 [INFO] word drawn: to
+2023-04-18T23-46-07 [INFO] word drawn: (or
+2023-04-18T23-46-07 [INFO] word drawn: virtually!).
+2023-04-18T23-46-07 [INFO] word drawn: 
+2023-04-18T23-46-07 [INFO] word drawn: The
+2023-04-18T23-46-07 [INFO] word drawn: 2
+2023-04-18T23-46-08 [INFO] word drawn: teams
+2023-04-18T23-46-08 [INFO] word drawn: are
+2023-04-18T23-46-08 [INFO] word drawn: competing
+2023-04-18T23-46-08 [INFO] word drawn: against
+2023-04-18T23-46-08 [INFO] word drawn: each
+2023-04-18T23-46-08 [INFO] word drawn: -
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: red
+2023-04-18T23-46-08 [INFO] word drawn: team
+2023-04-18T23-46-08 [INFO] word drawn: and
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: blue
+2023-04-18T23-46-08 [INFO] word drawn: team.
+2023-04-18T23-46-08 [INFO] word drawn: 
+2023-04-18T23-46-08 [INFO] word drawn: There
+2023-04-18T23-46-08 [INFO] word drawn: is
+2023-04-18T23-46-08 [INFO] word drawn: no
+2023-04-18T23-46-08 [INFO] word drawn: cross-team
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-08 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-08 [INFO] style_name: normal
+2023-04-18T23-46-08 [INFO] line_spacing: 3
+2023-04-18T23-46-08 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-08 [INFO] cursor: POINT (82 577)
+2023-04-18T23-46-08 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-08 [INFO] run_color: black
+2023-04-18T23-46-08 [INFO] word drawn: Each
+2023-04-18T23-46-08 [INFO] word drawn: team
+2023-04-18T23-46-08 [INFO] word drawn: has
+2023-04-18T23-46-08 [INFO] word drawn: their
+2023-04-18T23-46-08 [INFO] word drawn: own
+2023-04-18T23-46-08 [INFO] word drawn: deck
+2023-04-18T23-46-08 [INFO] word drawn: of
+2023-04-18T23-46-08 [INFO] word drawn: 40
+2023-04-18T23-46-08 [INFO] word drawn: cards
+2023-04-18T23-46-08 [INFO] word drawn: that
+2023-04-18T23-46-08 [INFO] word drawn: are
+2023-04-18T23-46-08 [INFO] word drawn: used
+2023-04-18T23-46-08 [INFO] word drawn: for
+2023-04-18T23-46-08 [INFO] word drawn: This
+2023-04-18T23-46-08 [INFO] word drawn: deck
+2023-04-18T23-46-08 [INFO] word drawn: is
+2023-04-18T23-46-08 [INFO] word drawn: called
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: team’s
+2023-04-18T23-46-08 [INFO] word drawn: “Caseload”.
+2023-04-18T23-46-08 [INFO] word drawn: There
+2023-04-18T23-46-08 [INFO] word drawn: is
+2023-04-18T23-46-08 [INFO] word drawn: a
+2023-04-18T23-46-08 [INFO] word drawn: (blue
+2023-04-18T23-46-08 [INFO] word drawn: deck),
+2023-04-18T23-46-08 [INFO] word drawn: and
+2023-04-18T23-46-08 [INFO] word drawn: Caseload
+2023-04-18T23-46-08 [INFO] word drawn: for
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: red
+2023-04-18T23-46-08 [INFO] word drawn: team
+2023-04-18T23-46-08 [INFO] word drawn: (red
+2023-04-18T23-46-08 [INFO] word drawn: deck).
+2023-04-18T23-46-08 [INFO] word drawn: One
+2023-04-18T23-46-08 [INFO] word drawn: (5)
+2023-04-18T23-46-08 [INFO] word drawn: cards
+2023-04-18T23-46-08 [INFO] word drawn: to
+2023-04-18T23-46-08 [INFO] word drawn: each
+2023-04-18T23-46-08 [INFO] word drawn: player
+2023-04-18T23-46-08 [INFO] word drawn: on
+2023-04-18T23-46-08 [INFO] word drawn: their
+2023-04-18T23-46-08 [INFO] word drawn: team
+2023-04-18T23-46-08 [INFO] word drawn: face
+2023-04-18T23-46-08 [INFO] word drawn: down
+2023-04-18T23-46-08 [INFO] word drawn: to
+2023-04-18T23-46-08 [INFO] word drawn: set
+2023-04-18T23-46-08 [INFO] word drawn: up
+2023-04-18T23-46-08 [INFO] word drawn: These
+2023-04-18T23-46-08 [INFO] word drawn: cards
+2023-04-18T23-46-08 [INFO] word drawn: cannot
+2023-04-18T23-46-08 [INFO] word drawn: be
+2023-04-18T23-46-08 [INFO] word drawn: viewed
+2023-04-18T23-46-08 [INFO] word drawn: by
+2023-04-18T23-46-08 [INFO] word drawn: anyone
+2023-04-18T23-46-08 [INFO] word drawn: until
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: game
+2023-04-18T23-46-08 [INFO] word drawn: The
+2023-04-18T23-46-08 [INFO] word drawn: cards
+2023-04-18T23-46-08 [INFO] word drawn: in
+2023-04-18T23-46-08 [INFO] word drawn: each
+2023-04-18T23-46-08 [INFO] word drawn: player's
+2023-04-18T23-46-08 [INFO] word drawn: hands
+2023-04-18T23-46-08 [INFO] word drawn: are
+2023-04-18T23-46-08 [INFO] word drawn: called
+2023-04-18T23-46-08 [INFO] word drawn: “tasks”.
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-08 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-08 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-08 [INFO] style_name: normal
+2023-04-18T23-46-08 [INFO] line_spacing: 3
+2023-04-18T23-46-08 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-08 [INFO] cursor: POINT (82 763)
+2023-04-18T23-46-08 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-08 [INFO] run_color: black
+2023-04-18T23-46-08 [INFO] word drawn: The
+2023-04-18T23-46-08 [INFO] word drawn: dealer
+2023-04-18T23-46-08 [INFO] word drawn: of
+2023-04-18T23-46-08 [INFO] word drawn: each
+2023-04-18T23-46-08 [INFO] word drawn: team
+2023-04-18T23-46-08 [INFO] word drawn: must
+2023-04-18T23-46-08 [INFO] word drawn: then
+2023-04-18T23-46-08 [INFO] word drawn: place
+2023-04-18T23-46-08 [INFO] word drawn: 3
+2023-04-18T23-46-08 [INFO] word drawn: cards
+2023-04-18T23-46-08 [INFO] word drawn: face
+2023-04-18T23-46-08 [INFO] word drawn: up
+2023-04-18T23-46-08 [INFO] word drawn: in
+2023-04-18T23-46-08 [INFO] word drawn: 
+2023-04-18T23-46-08 [INFO] word drawn: The
+2023-04-18T23-46-08 [INFO] word drawn: game
+2023-04-18T23-46-08 [INFO] word drawn: can
+2023-04-18T23-46-08 [INFO] word drawn: begin
+2023-04-18T23-46-08 [INFO] word drawn: once
+2023-04-18T23-46-08 [INFO] word drawn: everyone
+2023-04-18T23-46-08 [INFO] word drawn: is
+2023-04-18T23-46-08 [INFO] word drawn: dealt
+2023-04-18T23-46-08 [INFO] word drawn: their
+2023-04-18T23-46-08 [INFO] word drawn: hand
+2023-04-18T23-46-08 [INFO] word drawn: and
+2023-04-18T23-46-08 [INFO] word drawn: 3
+2023-04-18T23-46-08 [INFO] word drawn: cards
+2023-04-18T23-46-08 [INFO] word drawn: are
+2023-04-18T23-46-08 [INFO] word drawn: face
+2023-04-18T23-46-08 [INFO] word drawn: up
+2023-04-18T23-46-08 [INFO] word drawn: between
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: players
+2023-04-18T23-46-08 [INFO] word drawn: of
+2023-04-18T23-46-08 [INFO] word drawn: each
+2023-04-18T23-46-08 [INFO] word drawn: team.
+2023-04-18T23-46-08 [INFO] word drawn: Each
+2023-04-18T23-46-08 [INFO] word drawn: The
+2023-04-18T23-46-08 [INFO] word drawn: columns
+2023-04-18T23-46-08 [INFO] word drawn: are
+2023-04-18T23-46-08 [INFO] word drawn: a
+2023-04-18T23-46-08 [INFO] word drawn: crucial
+2023-04-18T23-46-08 [INFO] word drawn: part
+2023-04-18T23-46-08 [INFO] word drawn: of
+2023-04-18T23-46-08 [INFO] word drawn: play
+2023-04-18T23-46-08 [INFO] word drawn: and
+2023-04-18T23-46-08 [INFO] word drawn: will
+2023-04-18T23-46-08 [INFO] word drawn: be
+2023-04-18T23-46-08 [INFO] word drawn: defined
+2023-04-18T23-46-08 [INFO] word drawn: Once
+2023-04-18T23-46-08 [INFO] word drawn: everyone
+2023-04-18T23-46-08 [INFO] word drawn: is
+2023-04-18T23-46-08 [INFO] word drawn: ready
+2023-04-18T23-46-08 [INFO] word drawn: on
+2023-04-18T23-46-08 [INFO] word drawn: both
+2023-04-18T23-46-08 [INFO] word drawn: teams
+2023-04-18T23-46-08 [INFO] word drawn: and
+2023-04-18T23-46-08 [INFO] word drawn: the
+2023-04-18T23-46-08 [INFO] word drawn: players
+2023-04-18T23-46-08 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-08 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-08 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-08 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-08 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-08 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-09 [INFO] style_name: Heading 1
+2023-04-18T23-46-09 [INFO] line_spacing: 3
+2023-04-18T23-46-09 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-09 [INFO] cursor: POINT (82 949)
+2023-04-18T23-46-09 [INFO] run_name: arial.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] word drawn: PLAY
+2023-04-18T23-46-09 [INFO] run_name: arial.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-09 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-09 [INFO] style_name: normal
+2023-04-18T23-46-09 [INFO] line_spacing: 3
+2023-04-18T23-46-09 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-09 [INFO] cursor: POINT (82 980)
+2023-04-18T23-46-09 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] word drawn: This
+2023-04-18T23-46-09 [INFO] word drawn: is
+2023-04-18T23-46-09 [INFO] word drawn: a
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] word drawn: All
+2023-04-18T23-46-09 [INFO] word drawn: at
+2023-04-18T23-46-09 [INFO] word drawn: the
+2023-04-18T23-46-09 [INFO] word drawn: same
+2023-04-18T23-46-09 [INFO] word drawn: time.
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] word drawn: One
+2023-04-18T23-46-09 [INFO] word drawn: a
+2023-04-18T23-46-09 [INFO] word drawn: task
+2023-04-18T23-46-09 [INFO] word drawn: in
+2023-04-18T23-46-09 [INFO] word drawn: their
+2023-04-18T23-46-09 [INFO] word drawn: hand
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-09 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-09 [INFO] style_name: normal
+2023-04-18T23-46-09 [INFO] line_spacing: 3
+2023-04-18T23-46-09 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-09 [INFO] cursor: POINT (82 1042)
+2023-04-18T23-46-09 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] saved page...
+2023-04-18T23-46-09 [INFO] created new page...
+2023-04-18T23-46-09 [INFO] new cursor: x82.0 y112.0
+2023-04-18T23-46-09 [INFO] new line_height: 112.0
+2023-04-18T23-46-09 [INFO] word drawn: When
+2023-04-18T23-46-09 [INFO] new cursor: x156.0 y143.0
+2023-04-18T23-46-09 [INFO] new line_height: 143.0
+2023-04-18T23-46-09 [INFO] word drawn: combining
+2023-04-18T23-46-09 [INFO] word drawn: multiple
+2023-04-18T23-46-09 [INFO] word drawn: tasks
+2023-04-18T23-46-09 [INFO] word drawn: from
+2023-04-18T23-46-09 [INFO] word drawn: teammates
+2023-04-18T23-46-09 [INFO] word drawn: hands
+2023-04-18T23-46-09 [INFO] word drawn: a
+2023-04-18T23-46-09 [INFO] word drawn: 1
+2023-04-18T23-46-09 [INFO] word drawn: kind
+2023-04-18T23-46-09 [INFO] word drawn: of
+2023-04-18T23-46-09 [INFO] word drawn: operation
+2023-04-18T23-46-09 [INFO] word drawn: can
+2023-04-18T23-46-09 [INFO] word drawn: be
+2023-04-18T23-46-09 [INFO] word drawn: used
+2023-04-18T23-46-09 [INFO] word drawn: to
+2023-04-18T23-46-09 [INFO] word drawn: satisfy
+2023-04-18T23-46-09 [INFO] word drawn: one
+2023-04-18T23-46-09 [INFO] word drawn: defined
+2023-04-18T23-46-09 [INFO] word drawn: 
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-09 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-09 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-09 [INFO] style_name: normal
+2023-04-18T23-46-09 [INFO] line_spacing: 3
+2023-04-18T23-46-09 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-09 [INFO] cursor: POINT (82 236)
+2023-04-18T23-46-09 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-09 [INFO] run_color: black
+2023-04-18T23-46-09 [INFO] word drawn: If
+2023-04-18T23-46-09 [INFO] word drawn: no
+2023-04-18T23-46-09 [INFO] word drawn: player
+2023-04-18T23-46-09 [INFO] word drawn: from
+2023-04-18T23-46-09 [INFO] word drawn: a
+2023-04-18T23-46-09 [INFO] word drawn: team
+2023-04-18T23-46-09 [INFO] word drawn: can
+2023-04-18T23-46-09 [INFO] word drawn: complete
+2023-04-18T23-46-09 [INFO] word drawn: any
+2023-04-18T23-46-09 [INFO] word drawn: tasks,
+2023-04-18T23-46-09 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: team
+2023-04-18T23-46-10 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: Heading 1
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 298)
+2023-04-18T23-46-10 [INFO] run_name: arial.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: DEFINED
+2023-04-18T23-46-10 [INFO] word drawn: CRITERIA
+2023-04-18T23-46-10 [INFO] run_name: arial.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: 
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: normal
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 329)
+2023-04-18T23-46-10 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: When
+2023-04-18T23-46-10 [INFO] word drawn: players
+2023-04-18T23-46-10 [INFO] word drawn: play
+2023-04-18T23-46-10 [INFO] word drawn: tasks
+2023-04-18T23-46-10 [INFO] word drawn: from
+2023-04-18T23-46-10 [INFO] word drawn: their
+2023-04-18T23-46-10 [INFO] word drawn: hands,
+2023-04-18T23-46-10 [INFO] word drawn: they
+2023-04-18T23-46-10 [INFO] word drawn: must
+2023-04-18T23-46-10 [INFO] word drawn: do
+2023-04-18T23-46-10 [INFO] word drawn: so
+2023-04-18T23-46-10 [INFO] word drawn: The
+2023-04-18T23-46-10 [INFO] word drawn: criteria
+2023-04-18T23-46-10 [INFO] word drawn: are
+2023-04-18T23-46-10 [INFO] word drawn: listed
+2023-04-18T23-46-10 [INFO] word drawn: below.
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: normal
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 391)
+2023-04-18T23-46-10 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: The
+2023-04-18T23-46-10 [INFO] word drawn: task
+2023-04-18T23-46-10 [INFO] word drawn: must
+2023-04-18T23-46-10 [INFO] word drawn: have
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: value
+2023-04-18T23-46-10 [INFO] word drawn: equal
+2023-04-18T23-46-10 [INFO] word drawn: to
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: card
+2023-04-18T23-46-10 [INFO] word drawn: on
+2023-04-18T23-46-10 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: board
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: normal
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 453)
+2023-04-18T23-46-10 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: The
+2023-04-18T23-46-10 [INFO] word drawn: task
+2023-04-18T23-46-10 [INFO] word drawn: or
+2023-04-18T23-46-10 [INFO] word drawn: combined
+2023-04-18T23-46-10 [INFO] word drawn: tasks
+2023-04-18T23-46-10 [INFO] word drawn: must
+2023-04-18T23-46-10 [INFO] word drawn: have
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: value
+2023-04-18T23-46-10 [INFO] word drawn: equal
+2023-04-18T23-46-10 [INFO] word drawn: to
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: (as
+2023-04-18T23-46-10 [INFO] word drawn: mentioned
+2023-04-18T23-46-10 [INFO] word drawn: earlier,
+2023-04-18T23-46-10 [INFO] word drawn: only
+2023-04-18T23-46-10 [INFO] word drawn: one
+2023-04-18T23-46-10 [INFO] word drawn: operation
+2023-04-18T23-46-10 [INFO] word drawn: at
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: time)
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: normal
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 515)
+2023-04-18T23-46-10 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: Players
+2023-04-18T23-46-10 [INFO] word drawn: can
+2023-04-18T23-46-10 [INFO] word drawn: use
+2023-04-18T23-46-10 [INFO] word drawn: multiple
+2023-04-18T23-46-10 [INFO] word drawn: tasks
+2023-04-18T23-46-10 [INFO] word drawn: in
+2023-04-18T23-46-10 [INFO] word drawn: their
+2023-04-18T23-46-10 [INFO] word drawn: hand
+2023-04-18T23-46-10 [INFO] word drawn: to
+2023-04-18T23-46-10 [INFO] word drawn: satisfy
+2023-04-18T23-46-10 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: (only
+2023-04-18T23-46-10 [INFO] word drawn: one
+2023-04-18T23-46-10 [INFO] word drawn: operation
+2023-04-18T23-46-10 [INFO] word drawn: can
+2023-04-18T23-46-10 [INFO] word drawn: be
+2023-04-18T23-46-10 [INFO] word drawn: used
+2023-04-18T23-46-10 [INFO] word drawn: at
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: time,
+2023-04-18T23-46-10 [INFO] word drawn: addition
+2023-04-18T23-46-10 [INFO] word drawn: “+”,
+2023-04-18T23-46-10 [INFO] word drawn: or
+2023-04-18T23-46-10 [INFO] word drawn: “-”).
+2023-04-18T23-46-10 [INFO] word drawn: 
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: normal
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 608)
+2023-04-18T23-46-10 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: Players
+2023-04-18T23-46-10 [INFO] word drawn: can
+2023-04-18T23-46-10 [INFO] word drawn: also
+2023-04-18T23-46-10 [INFO] word drawn: combine
+2023-04-18T23-46-10 [INFO] word drawn: their
+2023-04-18T23-46-10 [INFO] word drawn: tasks
+2023-04-18T23-46-10 [INFO] word drawn: with
+2023-04-18T23-46-10 [INFO] word drawn: a
+2023-04-18T23-46-10 [INFO] word drawn: teammate
+2023-04-18T23-46-10 [INFO] word drawn: to
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-10 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-10 [INFO] style_name: normal
+2023-04-18T23-46-10 [INFO] line_spacing: 3
+2023-04-18T23-46-10 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-10 [INFO] cursor: POINT (82 670)
+2023-04-18T23-46-10 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-10 [INFO] run_color: black
+2023-04-18T23-46-10 [INFO] word drawn: When
+2023-04-18T23-46-10 [INFO] word drawn: one
+2023-04-18T23-46-10 [INFO] word drawn: of
+2023-04-18T23-46-10 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: above
+2023-04-18T23-46-10 [INFO] word drawn: criteria
+2023-04-18T23-46-10 [INFO] word drawn: is
+2023-04-18T23-46-10 [INFO] word drawn: met,
+2023-04-18T23-46-10 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: cards
+2023-04-18T23-46-10 [INFO] word drawn: on
+2023-04-18T23-46-10 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: (completed
+2023-04-18T23-46-10 [INFO] word drawn: tasks
+2023-04-18T23-46-10 [INFO] word drawn: pile)
+2023-04-18T23-46-10 [INFO] word drawn: and
+2023-04-18T23-46-10 [INFO] word drawn: the
+2023-04-18T23-46-10 [INFO] word drawn: cards
+2023-04-18T23-46-10 [INFO] word drawn: that
+2023-04-18T23-46-10 [INFO] word drawn: meet
+2023-04-18T23-46-10 [INFO] word drawn: that
+2023-04-18T23-46-10 [INFO] word drawn: criteria
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-10 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-11 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-11 [INFO] style_name: normal
+2023-04-18T23-46-11 [INFO] line_spacing: 3
+2023-04-18T23-46-11 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-11 [INFO] cursor: POINT (82 763)
+2023-04-18T23-46-11 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-11 [INFO] run_color: black
+2023-04-18T23-46-11 [INFO] word drawn: (Ex-
+2023-04-18T23-46-11 [INFO] word drawn: There
+2023-04-18T23-46-11 [INFO] word drawn: is
+2023-04-18T23-46-11 [INFO] word drawn: a
+2023-04-18T23-46-11 [INFO] word drawn: 9
+2023-04-18T23-46-11 [INFO] word drawn: face
+2023-04-18T23-46-11 [INFO] word drawn: up
+2023-04-18T23-46-11 [INFO] word drawn: on
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: board,
+2023-04-18T23-46-11 [INFO] word drawn: meaning
+2023-04-18T23-46-11 [INFO] word drawn: that
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: 1
+2023-04-18T23-46-11 [INFO] word drawn: card
+2023-04-18T23-46-11 [INFO] word drawn: in
+2023-04-18T23-46-11 [INFO] word drawn: it.
+2023-04-18T23-46-11 [INFO] word drawn: 
+2023-04-18T23-46-11 [INFO] word drawn: Let’s
+2023-04-18T23-46-11 [INFO] word drawn: say
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: players
+2023-04-18T23-46-11 [INFO] word drawn: can
+2023-04-18T23-46-11 [INFO] word drawn: come
+2023-04-18T23-46-11 [INFO] word drawn: up
+2023-04-18T23-46-11 [INFO] word drawn: with
+2023-04-18T23-46-11 [INFO] word drawn: a
+2023-04-18T23-46-11 [INFO] word drawn: 3
+2023-04-18T23-46-11 [INFO] word drawn: task
+2023-04-18T23-46-11 [INFO] word drawn: 3+3+3
+2023-04-18T23-46-11 [INFO] word drawn: to
+2023-04-18T23-46-11 [INFO] word drawn: equal
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: 9
+2023-04-18T23-46-11 [INFO] word drawn: on
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: board.
+2023-04-18T23-46-11 [INFO] word drawn: 
+2023-04-18T23-46-11 [INFO] word drawn: The
+2023-04-18T23-46-11 [INFO] word drawn: 9
+2023-04-18T23-46-11 [INFO] word drawn: card
+2023-04-18T23-46-11 [INFO] word drawn: would
+2023-04-18T23-46-11 [INFO] word drawn: be
+2023-04-18T23-46-11 [INFO] word drawn: 3
+2023-04-18T23-46-11 [INFO] word drawn: cards
+2023-04-18T23-46-11 [INFO] word drawn: would
+2023-04-18T23-46-11 [INFO] word drawn: be
+2023-04-18T23-46-11 [INFO] word drawn: placed
+2023-04-18T23-46-11 [INFO] word drawn: on
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: board
+2023-04-18T23-46-11 [INFO] word drawn: in
+2023-04-18T23-46-11 [INFO] word drawn: place
+2023-04-18T23-46-11 [INFO] word drawn: of
+2023-04-18T23-46-11 [INFO] word drawn: the
+2023-04-18T23-46-11 [INFO] word drawn: 9,
+2023-04-18T23-46-11 [INFO] word drawn: 3
+2023-04-18T23-46-11 [INFO] word drawn: cards.)
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-11 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-11 [INFO] style_name: normal
+2023-04-18T23-46-11 [INFO] line_spacing: 3
+2023-04-18T23-46-11 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-11 [INFO] cursor: POINT (82 918)
+2023-04-18T23-46-11 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-11 [INFO] run_color: black
+2023-04-18T23-46-11 [INFO] word drawn: Please
+2023-04-18T23-46-11 [INFO] word drawn: observe
+2023-04-18T23-46-11 [INFO] word drawn: diagram
+2023-04-18T23-46-11 [INFO] word drawn: cards
+2023-04-18T23-46-11 [INFO] word drawn: for
+2023-04-18T23-46-11 [INFO] word drawn: more
+2023-04-18T23-46-11 [INFO] word drawn: examples.
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-11 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-11 [INFO] style_name: Heading 1
+2023-04-18T23-46-11 [INFO] line_spacing: 3
+2023-04-18T23-46-11 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-11 [INFO] cursor: POINT (82 949)
+2023-04-18T23-46-11 [INFO] run_name: arial.ttf
+2023-04-18T23-46-11 [INFO] run_color: black
+2023-04-18T23-46-11 [INFO] word drawn: COLUMNS
+2023-04-18T23-46-11 [INFO] run_name: arial.ttf
+2023-04-18T23-46-11 [INFO] run_color: black
+2023-04-18T23-46-11 [INFO] word drawn: 
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-11 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-11 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-11 [INFO] style_name: normal
+2023-04-18T23-46-11 [INFO] line_spacing: 3
+2023-04-18T23-46-11 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-11 [INFO] cursor: POINT (82 980)
+2023-04-18T23-46-11 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-11 [INFO] run_color: black
+2023-04-18T23-46-11 [INFO] word drawn: There
+2023-04-18T23-46-11 [INFO] word drawn: must
+2023-04-18T23-46-11 [INFO] word drawn: be
+2023-04-18T23-46-11 [INFO] word drawn: a
+2023-04-18T23-46-11 [INFO] word drawn: row
+2023-04-18T23-46-11 [INFO] word drawn: three
+2023-04-18T23-46-11 [INFO] word drawn: cards
+2023-04-18T23-46-11 [INFO] word drawn: which,
+2023-04-18T23-46-11 [INFO] word drawn: once
+2023-04-18T23-46-11 [INFO] word drawn: can
+2023-04-18T23-46-11 [INFO] word drawn: become
+2023-04-18T23-46-11 [INFO] word drawn: 3
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-11 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-11 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-11 [INFO] style_name: Heading 1
+2023-04-18T23-46-11 [INFO] line_spacing: 3
+2023-04-18T23-46-11 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-11 [INFO] cursor: POINT (82 1042)
+2023-04-18T23-46-11 [INFO] run_name: arial.ttf
+2023-04-18T23-46-11 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] saved page...
+2023-04-18T23-46-12 [INFO] created new page...
+2023-04-18T23-46-12 [INFO] new cursor: x82.0 y112.0
+2023-04-18T23-46-12 [INFO] new line_height: 112.0
+2023-04-18T23-46-12 [INFO] word drawn: HAZARD
+2023-04-18T23-46-12 [INFO] new cursor: x205.0 y143.0
+2023-04-18T23-46-12 [INFO] new line_height: 143.0
+2023-04-18T23-46-12 [INFO] word drawn: TASKS
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: 
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: normal
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 174)
+2023-04-18T23-46-12 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: When
+2023-04-18T23-46-12 [INFO] word drawn: removed
+2023-04-18T23-46-12 [INFO] word drawn: from
+2023-04-18T23-46-12 [INFO] word drawn: a
+2023-04-18T23-46-12 [INFO] word drawn: column,
+2023-04-18T23-46-12 [INFO] word drawn: The
+2023-04-18T23-46-12 [INFO] word drawn: card
+2023-04-18T23-46-12 [INFO] word drawn: is
+2023-04-18T23-46-12 [INFO] word drawn: passed
+2023-04-18T23-46-12 [INFO] word drawn: to
+2023-04-18T23-46-12 [INFO] word drawn: the
+2023-04-18T23-46-12 [INFO] word drawn: That
+2023-04-18T23-46-12 [INFO] word drawn: team
+2023-04-18T23-46-12 [INFO] word drawn: must
+2023-04-18T23-46-12 [INFO] word drawn: decide
+2023-04-18T23-46-12 [INFO] word drawn: which
+2023-04-18T23-46-12 [INFO] word drawn: column
+2023-04-18T23-46-12 [INFO] word drawn: the
+2023-04-18T23-46-12 [INFO] word drawn: hazard
+2023-04-18T23-46-12 [INFO] word drawn: goes
+2023-04-18T23-46-12 [INFO] word drawn: in
+2023-04-18T23-46-12 [INFO] word drawn: This
+2023-04-18T23-46-12 [INFO] word drawn: card
+2023-04-18T23-46-12 [INFO] word drawn: never
+2023-04-18T23-46-12 [INFO] word drawn: enters
+2023-04-18T23-46-12 [INFO] word drawn: any
+2023-04-18T23-46-12 [INFO] word drawn: team's
+2023-04-18T23-46-12 [INFO] word drawn: completed
+2023-04-18T23-46-12 [INFO] word drawn: task
+2023-04-18T23-46-12 [INFO] word drawn: pile.
+2023-04-18T23-46-12 [INFO] word drawn: At
+2023-04-18T23-46-12 [INFO] word drawn: Hazard
+2023-04-18T23-46-12 [INFO] word drawn: card
+2023-04-18T23-46-12 [INFO] word drawn: in
+2023-04-18T23-46-12 [INFO] word drawn: their
+2023-04-18T23-46-12 [INFO] word drawn: teams
+2023-04-18T23-46-12 [INFO] word drawn: column
+2023-04-18T23-46-12 [INFO] word drawn: gets
+2023-04-18T23-46-12 [INFO] word drawn: -2
+2023-04-18T23-46-12 [INFO] word drawn: points
+2023-04-18T23-46-12 [INFO] word drawn: per
+2023-04-18T23-46-12 [INFO] word drawn: Hazard
+2023-04-18T23-46-12 [INFO] word drawn: card.
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: Heading 1
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 329)
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: EUREKA
+2023-04-18T23-46-12 [INFO] word drawn: TASKS
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: 
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: normal
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 360)
+2023-04-18T23-46-12 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: When
+2023-04-18T23-46-12 [INFO] word drawn: this
+2023-04-18T23-46-12 [INFO] word drawn: task
+2023-04-18T23-46-12 [INFO] word drawn: is
+2023-04-18T23-46-12 [INFO] word drawn: completed,
+2023-04-18T23-46-12 [INFO] word drawn: each
+2023-04-18T23-46-12 [INFO] word drawn: player
+2023-04-18T23-46-12 [INFO] word drawn: on
+2023-04-18T23-46-12 [INFO] word drawn: the
+2023-04-18T23-46-12 [INFO] word drawn: opposing
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: Heading 1
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 422)
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: ENDING
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: 
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: normal
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 453)
+2023-04-18T23-46-12 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: The
+2023-04-18T23-46-12 [INFO] word drawn: game
+2023-04-18T23-46-12 [INFO] word drawn: ends
+2023-04-18T23-46-12 [INFO] word drawn: when
+2023-04-18T23-46-12 [INFO] word drawn: all
+2023-04-18T23-46-12 [INFO] word drawn: of
+2023-04-18T23-46-12 [INFO] word drawn: one
+2023-04-18T23-46-12 [INFO] word drawn: team's
+2023-04-18T23-46-12 [INFO] word drawn: players
+2023-04-18T23-46-12 [INFO] word drawn: have
+2023-04-18T23-46-12 [INFO] word drawn: no
+2023-04-18T23-46-12 [INFO] word drawn: Once
+2023-04-18T23-46-12 [INFO] word drawn: done,
+2023-04-18T23-46-12 [INFO] word drawn: both
+2023-04-18T23-46-12 [INFO] word drawn: teams
+2023-04-18T23-46-12 [INFO] word drawn: count
+2023-04-18T23-46-12 [INFO] word drawn: the
+2023-04-18T23-46-12 [INFO] word drawn: number
+2023-04-18T23-46-12 [INFO] word drawn: of
+2023-04-18T23-46-12 [INFO] word drawn: cards
+2023-04-18T23-46-12 [INFO] word drawn: in
+2023-04-18T23-46-12 [INFO] word drawn: their
+2023-04-18T23-46-12 [INFO] word drawn: The
+2023-04-18T23-46-12 [INFO] word drawn: final
+2023-04-18T23-46-12 [INFO] word drawn: score
+2023-04-18T23-46-12 [INFO] word drawn: for
+2023-04-18T23-46-12 [INFO] word drawn: each
+2023-04-18T23-46-12 [INFO] word drawn: team
+2023-04-18T23-46-12 [INFO] word drawn: is
+2023-04-18T23-46-12 [INFO] word drawn: the
+2023-04-18T23-46-12 [INFO] word drawn: number
+2023-04-18T23-46-12 [INFO] word drawn: of
+2023-04-18T23-46-12 [INFO] word drawn: cards
+2023-04-18T23-46-12 [INFO] word drawn: in
+2023-04-18T23-46-12 [INFO] word drawn: their
+2023-04-18T23-46-12 [INFO] word drawn: (-2)
+2023-04-18T23-46-12 [INFO] word drawn: points
+2023-04-18T23-46-12 [INFO] word drawn: for
+2023-04-18T23-46-12 [INFO] word drawn: each
+2023-04-18T23-46-12 [INFO] word drawn: hazard
+2023-04-18T23-46-12 [INFO] word drawn: card
+2023-04-18T23-46-12 [INFO] word drawn: in
+2023-04-18T23-46-12 [INFO] word drawn: their
+2023-04-18T23-46-12 [INFO] word drawn: teams
+2023-04-18T23-46-12 [INFO] word drawn: columns.
+2023-04-18T23-46-12 [INFO] word drawn: 
+2023-04-18T23-46-12 [INFO] word drawn: The
+2023-04-18T23-46-12 [INFO] word drawn: team
+2023-04-18T23-46-12 [INFO] word drawn: with
+2023-04-18T23-46-12 [INFO] word drawn: the
+2023-04-18T23-46-12 [INFO] word drawn: most
+2023-04-18T23-46-12 [INFO] word drawn: points
+2023-04-18T23-46-12 [INFO] word drawn: wins!
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: Heading 1
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 608)
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: MODES
+2023-04-18T23-46-12 [INFO] word drawn: OF
+2023-04-18T23-46-12 [INFO] word drawn: PLAY
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: 
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: normal
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 639)
+2023-04-18T23-46-12 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: Although
+2023-04-18T23-46-12 [INFO] word drawn: this
+2023-04-18T23-46-12 [INFO] word drawn: game
+2023-04-18T23-46-12 [INFO] word drawn: can
+2023-04-18T23-46-12 [INFO] word drawn: be
+2023-04-18T23-46-12 [INFO] word drawn: played
+2023-04-18T23-46-12 [INFO] word drawn: with
+2023-04-18T23-46-12 [INFO] word drawn: 2
+2023-04-18T23-46-12 [INFO] word drawn: teams
+2023-04-18T23-46-12 [INFO] word drawn: of
+2023-04-18T23-46-12 [INFO] word drawn: 2-4
+2023-04-18T23-46-12 [INFO] word drawn: Some
+2023-04-18T23-46-12 [INFO] word drawn: examples
+2023-04-18T23-46-12 [INFO] word drawn: are
+2023-04-18T23-46-12 [INFO] word drawn: included
+2023-04-18T23-46-12 [INFO] word drawn: below,
+2023-04-18T23-46-12 [INFO] word drawn: more
+2023-04-18T23-46-12 [INFO] word drawn: may
+2023-04-18T23-46-12 [INFO] word drawn: exist,
+2023-04-18T23-46-12 [INFO] word drawn: be
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: Heading 1
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 732)
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: REMOTE
+2023-04-18T23-46-12 [INFO] word drawn: TEAM
+2023-04-18T23-46-12 [INFO] word drawn: RACE
+2023-04-18T23-46-12 [INFO] run_name: arial.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: 
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-12 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-12 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-12 [INFO] style_name: normal
+2023-04-18T23-46-12 [INFO] line_spacing: 3
+2023-04-18T23-46-12 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-12 [INFO] cursor: POINT (82 763)
+2023-04-18T23-46-12 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-12 [INFO] run_color: black
+2023-04-18T23-46-12 [INFO] word drawn: If
+2023-04-18T23-46-12 [INFO] word drawn: there
+2023-04-18T23-46-12 [INFO] word drawn: are
+2023-04-18T23-46-12 [INFO] word drawn: multiple
+2023-04-18T23-46-12 [INFO] word drawn: teams
+2023-04-18T23-46-12 [INFO] word drawn: that
+2023-04-18T23-46-12 [INFO] word drawn: are
+2023-04-18T23-46-12 [INFO] word drawn: connected
+2023-04-18T23-46-12 [INFO] word drawn: through
+2023-04-18T23-46-12 [INFO] word drawn: a
+2023-04-18T23-46-12 [INFO] word drawn: Skype
+2023-04-18T23-46-12 [INFO] word drawn: or
+2023-04-18T23-46-12 [INFO] word drawn: Zoom,
+2023-04-18T23-46-12 [INFO] word drawn: this
+2023-04-18T23-46-12 [INFO] word drawn: game
+2023-04-18T23-46-12 [INFO] word drawn: can
+2023-04-18T23-46-12 [INFO] word drawn: be
+2023-04-18T23-46-12 [INFO] word drawn: played
+2023-04-18T23-46-12 [INFO] word drawn: as
+2023-04-18T23-46-12 [INFO] word drawn: a
+2023-04-18T23-46-12 [INFO] word drawn: Race
+2023-04-18T23-46-12 [INFO] word drawn: between
+2023-04-18T23-46-12 [INFO] word drawn: Each
+2023-04-18T23-46-12 [INFO] word drawn: team
+2023-04-18T23-46-12 [INFO] word drawn: would
+2023-04-18T23-46-12 [INFO] word drawn: need
+2023-04-18T23-46-12 [INFO] word drawn: to
+2023-04-18T23-46-12 [INFO] word drawn: be
+2023-04-18T23-46-12 [INFO] word drawn: local
+2023-04-18T23-46-12 [INFO] word drawn: and
+2023-04-18T23-46-12 [INFO] word drawn: share
+2023-04-18T23-46-12 [INFO] word drawn: a
+2023-04-18T23-46-12 [INFO] word drawn: platform
+2023-04-18T23-46-12 [INFO] word drawn: (recommended
+2023-04-18T23-46-12 [INFO] word drawn: 2-4
+2023-04-18T23-46-12 [INFO] word drawn: players
+2023-04-18T23-46-12 [INFO] word drawn: per
+2023-04-18T23-46-12 [INFO] word drawn: platform
+2023-04-18T23-46-12 [INFO] word drawn: caller).
+2023-04-18T23-46-12 [INFO] word drawn: Any
+2023-04-18T23-46-12 [INFO] word drawn: Hazard
+2023-04-18T23-46-12 [INFO] word drawn: card
+2023-04-18T23-46-12 [INFO] word drawn: effects
+2023-04-18T23-46-12 [INFO] word drawn: would
+2023-04-18T23-46-12 [INFO] word drawn: have
+2023-04-18T23-46-12 [INFO] word drawn: to
+2023-04-18T23-46-12 [INFO] word drawn: be
+2023-04-18T23-46-13 [INFO] word drawn: avoided
+2023-04-18T23-46-13 [INFO] word drawn: for
+2023-04-18T23-46-13 [INFO] word drawn: play.
+2023-04-18T23-46-13 [INFO] word drawn: The
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: Heading 1
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 949)
+2023-04-18T23-46-13 [INFO] run_name: arial.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: THE
+2023-04-18T23-46-13 [INFO] word drawn: DECK
+2023-04-18T23-46-13 [INFO] run_name: arial.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: 
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 980)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: This
+2023-04-18T23-46-13 [INFO] word drawn: mode
+2023-04-18T23-46-13 [INFO] word drawn: can
+2023-04-18T23-46-13 [INFO] word drawn: be
+2023-04-18T23-46-13 [INFO] word drawn: with
+2023-04-18T23-46-13 [INFO] word drawn: recommended
+2023-04-18T23-46-13 [INFO] word drawn: 1-3
+2023-04-18T23-46-13 [INFO] word drawn: at
+2023-04-18T23-46-13 [INFO] word drawn: a
+2023-04-18T23-46-13 [INFO] word drawn: time.
+2023-04-18T23-46-13 [INFO] word drawn: Instead
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 1042)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] saved page...
+2023-04-18T23-46-13 [INFO] created new page...
+2023-04-18T23-46-13 [INFO] new cursor: x82.0 y112.0
+2023-04-18T23-46-13 [INFO] new line_height: 112.0
+2023-04-18T23-46-13 [INFO] word drawn: If
+2023-04-18T23-46-13 [INFO] new cursor: x110.0 y143.0
+2023-04-18T23-46-13 [INFO] new line_height: 143.0
+2023-04-18T23-46-13 [INFO] word drawn: there
+2023-04-18T23-46-13 [INFO] word drawn: is
+2023-04-18T23-46-13 [INFO] word drawn: only
+2023-04-18T23-46-13 [INFO] word drawn: one
+2023-04-18T23-46-13 [INFO] word drawn: player,
+2023-04-18T23-46-13 [INFO] word drawn: once
+2023-04-18T23-46-13 [INFO] word drawn: 3
+2023-04-18T23-46-13 [INFO] word drawn: cases
+2023-04-18T23-46-13 [INFO] word drawn: go
+2023-04-18T23-46-13 [INFO] word drawn: sideways
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] word drawn: For
+2023-04-18T23-46-13 [INFO] word drawn: each
+2023-04-18T23-46-13 [INFO] word drawn: player
+2023-04-18T23-46-13 [INFO] word drawn: added
+2023-04-18T23-46-13 [INFO] word drawn: to
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] word drawn: team
+2023-04-18T23-46-13 [INFO] word drawn: to
+2023-04-18T23-46-13 [INFO] word drawn: go
+2023-04-18T23-46-13 [INFO] word drawn: against
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] word drawn: deck,
+2023-04-18T23-46-13 [INFO] word drawn: 1
+2023-04-18T23-46-13 [INFO] word drawn: max
+2023-04-18T23-46-13 [INFO] word drawn: number
+2023-04-18T23-46-13 [INFO] word drawn: of
+2023-04-18T23-46-13 [INFO] word drawn: acceptable
+2023-04-18T23-46-13 [INFO] word drawn: sideways
+2023-04-18T23-46-13 [INFO] word drawn: cases
+2023-04-18T23-46-13 [INFO] word drawn: before
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] word drawn: team
+2023-04-18T23-46-13 [INFO] word drawn: Below
+2023-04-18T23-46-13 [INFO] word drawn: is
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] word drawn: number
+2023-04-18T23-46-13 [INFO] word drawn: of
+2023-04-18T23-46-13 [INFO] word drawn: allowed
+2023-04-18T23-46-13 [INFO] word drawn: sideways
+2023-04-18T23-46-13 [INFO] word drawn: cases
+2023-04-18T23-46-13 [INFO] word drawn: before
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 298)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: 1
+2023-04-18T23-46-13 [INFO] word drawn: Players:
+2023-04-18T23-46-13 [INFO] word drawn: 3
+2023-04-18T23-46-13 [INFO] word drawn: Sideways
+2023-04-18T23-46-13 [INFO] word drawn: cases
+2023-04-18T23-46-13 [INFO] word drawn: before
+2023-04-18T23-46-13 [INFO] word drawn: failure;
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 329)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: Players:
+2023-04-18T23-46-13 [INFO] word drawn: 2
+2023-04-18T23-46-13 [INFO] word drawn: Sideways
+2023-04-18T23-46-13 [INFO] word drawn: cases
+2023-04-18T23-46-13 [INFO] word drawn: before
+2023-04-18T23-46-13 [INFO] word drawn: failure;
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 360)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: 3
+2023-04-18T23-46-13 [INFO] word drawn: Players:
+2023-04-18T23-46-13 [INFO] word drawn: 1
+2023-04-18T23-46-13 [INFO] word drawn: Sideways
+2023-04-18T23-46-13 [INFO] word drawn: case
+2023-04-18T23-46-13 [INFO] word drawn: before
+2023-04-18T23-46-13 [INFO] word drawn: failure.
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: 
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 1 Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'Heading 1', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: Heading 1
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 391)
+2023-04-18T23-46-13 [INFO] run_name: arial.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: SPECIAL
+2023-04-18T23-46-13 [INFO] word drawn: THANKS
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 422)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: Many
+2023-04-18T23-46-13 [INFO] word drawn: people
+2023-04-18T23-46-13 [INFO] word drawn: helped
+2023-04-18T23-46-13 [INFO] word drawn: make
+2023-04-18T23-46-13 [INFO] word drawn: this
+2023-04-18T23-46-13 [INFO] word drawn: project
+2023-04-18T23-46-13 [INFO] word drawn: a
+2023-04-18T23-46-13 [INFO] word drawn: reality.
+2023-04-18T23-46-13 [INFO] word drawn: Without
+2023-04-18T23-46-13 [INFO] word drawn: the
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'Heading 2', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: Heading 2
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 484)
+2023-04-18T23-46-13 [INFO] run_name: arial.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: CARD/BOX/DOCUMENT
+2023-04-18T23-46-13 [INFO] word drawn: DESIGN
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 515)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: Apex
+2023-04-18T23-46-13 [INFO] word drawn: Infinity
+2023-04-18T23-46-13 [INFO] word drawn: Games:
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 546)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'Heading 2', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: Heading 2
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 577)
+2023-04-18T23-46-13 [INFO] run_name: arial.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: SCENE
+2023-04-18T23-46-13 [INFO] word drawn: ILLUSTRATIONS
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 608)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: Doantrang:
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 639)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: Heading 2 Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'Heading 2', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'arial.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: Heading 2
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 670)
+2023-04-18T23-46-13 [INFO] run_name: arial.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: LOGO
+2023-04-18T23-46-13 [INFO] word drawn: DESIGN
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 701)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-13 [INFO] word drawn: Logomoko:
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Title
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 1
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: Heading 2
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: normal
+2023-04-18T23-46-13 [INFO] Paragraph Style: normal Style: None
+2023-04-18T23-46-13 [INFO] {'style_name': 'normal', 'font_size': 28, 'font_color': 'black', 'line_spacing': 3, 'bold': 'arialbd.ttf', 'italic': 'ariali.ttf', 'bolditalic': 'arialbi.ttf', 'regular': 'C:\\\\Users\\\\bcvil\\\\AppData\\\\Local\\\\Microsoft\\\\Windows\\\\Fonts\\\\Lobster-Regular.ttf'}
+2023-04-18T23-46-13 [INFO] style_name: normal
+2023-04-18T23-46-13 [INFO] line_spacing: 3
+2023-04-18T23-46-13 [INFO] marginbox: (82.0, 112.0, 743.0, 1013.0)
+2023-04-18T23-46-13 [INFO] cursor: POINT (82 732)
+2023-04-18T23-46-13 [INFO] run_name: C:\\Users\\bcvil\\AppData\\Local\\Microsoft\\Windows\\Fonts\\Lobster-Regular.ttf
+2023-04-18T23-46-13 [INFO] run_color: black
+2023-04-18T23-46-14 [INFO] compiling the page files into a pdf...

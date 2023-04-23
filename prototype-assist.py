@@ -616,10 +616,12 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 	shapely_word = get_shapely_word(cursor, word, run_dict)
 
 	if shapely_word.within(marginbox):
-		vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+		if vehicle['args'].debug:
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
 		cursor = step_word(word, line_height, cursor, run_dict)
 	
-	vehicle['draw'].polygon(marginbox.exterior.coords, outline='blue')
+	if vehicle['args'].debug:
+		vehicle['draw'].polygon(marginbox.exterior.coords, outline='blue')
 
 	# check if the word position being drawn is inside the marginbox
 	if shapely_word.bounds[2] > marginbox.bounds[2]:
