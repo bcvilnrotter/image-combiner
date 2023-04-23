@@ -612,10 +612,13 @@ def get_shapely_word(cursor, word, run_dict):
 # function to draw the words within runs
 def write_word(word, line_height, cursor, marginbox, run_dict):
 
+	log("working with word: " + str(word))
+	
 	# get a shapely polygon box that is similar to marginbox for comparisons
 	shapely_word = get_shapely_word(cursor, word, run_dict)
 
-	if shapely_word.within(marginbox):
+	#if shapely_word.within(marginbox):
+	if (shapely_word.bounds[2] <= marginbox.bounds[2]) and (shapely_word.bounds[1] <= marginbox.bounds[3]):
 		if vehicle['args'].debug:
 			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
 		cursor = step_word(word, line_height, cursor, run_dict)
@@ -627,7 +630,7 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 	if shapely_word.bounds[2] > marginbox.bounds[2]:
 
 		if vehicle['args'].debug:
-			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='red')
 			log(str(shapely_word.bounds[2]) + ' > ' + str(marginbox.bounds[2]))
 		
 		# add new line with current word
@@ -637,10 +640,10 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)		
 
 	# check if the word position being drawn is below the marginbox
-	elif line_height > marginbox.bounds[3]:
+	elif shapely_word.bounds[1] > marginbox.bounds[3]:
 
 		if vehicle['args'].debug:
-			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='red')
 			log(str(line_height) + ' > ' + str(marginbox.bounds[3]))
 
 		# save the current image
@@ -669,7 +672,7 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 
 		# add new line with current word
 		#TODO expand on new_line so that it resets the cursor value, and makes a new page
-		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
+		#line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
 		# rerun the write_word function
 		line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)		
