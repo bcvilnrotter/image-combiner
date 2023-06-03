@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 #region imports 
 """
 The below section is specific to importing all libraries that are required
@@ -180,6 +182,7 @@ instruction_manual.add_argument('--template', default=None, dest='template', hel
 
 instruction_manual.add_argument(
 	'--config',
+	default='config.yaml',
 	dest='config',
 	help='the config file used for formatting and stylizing information.'
 )
@@ -263,7 +266,7 @@ def setup_jobsfolder():
 		if not os.path.exists(path):
 
 			# make the folder
-			os.mkdir(path)
+			os.makedirs(path)
 
 		# return the user inputted directory
 		return path
@@ -275,7 +278,7 @@ def setup_jobsfolder():
 		jobsfolder = os.path.join(os.getcwd(), get_now())
 		
 		# create the folder path
-		os.mkdir(jobsfolder)
+		os.makedirs(jobsfolder)
 
 		# return the folder path created
 		return jobsfolder
@@ -291,8 +294,6 @@ def log(message, type='INFO'):
 
 	# open or create a log file
 	with open(logpath, "a") as f:
-
-		# write the entry to the file
 		f.write(entry + "\n")
 
 	# print the log entry
@@ -313,7 +314,7 @@ def under_construction():
 	log("This feature is not yet implemented. please go to https://github.com/bcvilnrotter/prototype-assist for more information")
 	
 	# exit the script
-	exit()
+	sys.exit(-1)
 
 # function to make output path
 def outpath(path, dated=True):
@@ -378,7 +379,7 @@ def retrieve_google_drive_file(file_id):
 		log("No google api credentials were found. Use the --gcreds flag. exiting.")
 
 		# exit
-		exit()
+		sys.exit(-1)
 	
 	# define the scope. May make this dynamic later
 	SCOPES=['https://www.googleapis.com/auth/drive']
