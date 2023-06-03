@@ -57,25 +57,37 @@ this is a good way to use out big toe to test the waters for this mode of data c
 The below are the different subcommands the script currently supports, as well as their intended purpose.
 
 ### Mosaic
+```
 // TODO: Revert Mosaic back to deckbuilder
 // TODO: Add description for this function
+```
 
 ### MapBuilder
+```
 // TODO: Add description for this function
+```
 
 ### PDF
+```
 // TODO: Add description for this function
+```
 
 ### Instruction_Manual
+```
 // TODO: Add description for this function
 // TODO: Add description of config.yaml
+```
 
 ### Usage
+```
 // TODO: Add description of how to use script
 // TODO: Add examples
+```
 
 # RAW last readme
+```
 // TODO: Remove the below once the full readme above is done.
+```
 
 BASE OPTIONS (help menu)
 
