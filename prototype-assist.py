@@ -184,6 +184,7 @@ instruction_manual.add_argument(
 	'--config',
 	default='config.yaml',
 	dest='config',
+	default='.\config.yaml',
 	help='the config file used for formatting and stylizing information.'
 )
 instruction_manual.add_argument(
@@ -474,18 +475,11 @@ def get_manual_page():
 		log('added template object to vehicle dictionary.')
 
 # function to return a shapely box
-def setup_marginbox(width, height):
+def setup_marginbox():
 
-	# make the shapely polygon for the marginbox
-	return shapely.Polygon(
-		[
-			(width, height), 
-			(vehicle['image'].width - width, height),
-			(vehicle['image'].width - width, vehicle['image'].height - height),
-			(width, vehicle['image'].height - height),
-			(width, height)
-		]
-	)
+	marginbox_coords = [(point['x'], point['y']) for point in vehicle['config']['marginbox']]
+	
+	return shapely.Polygon(marginbox_coords)
 
 def collect_font_details(paragraph):
 
@@ -612,21 +606,24 @@ def get_shapely_word(cursor, word, run_dict):
 
 # function to draw the words within runs
 def write_word(word, line_height, cursor, marginbox, run_dict):
-
+	
 	# get a shapely polygon box that is similar to marginbox for comparisons
 	shapely_word = get_shapely_word(cursor, word, run_dict)
 
-	if shapely_word.within(marginbox):
-		vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+	#if shapely_word.within(marginbox):
+	if (shapely_word.bounds[2] <= marginbox.bounds[2]) and (shapely_word.bounds[1] <= marginbox.bounds[3]):
+		if vehicle['args'].debug:
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
 		cursor = step_word(word, line_height, cursor, run_dict)
 	
-	vehicle['draw'].polygon(marginbox.exterior.coords, outline='blue')
+	if vehicle['args'].debug:
+		vehicle['draw'].polygon(marginbox.exterior.coords, outline='blue')
 
 	# check if the word position being drawn is inside the marginbox
 	if shapely_word.bounds[2] > marginbox.bounds[2]:
 
 		if vehicle['args'].debug:
-			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='red')
 			log(str(shapely_word.bounds[2]) + ' > ' + str(marginbox.bounds[2]))
 		
 		# add new line with current word
@@ -636,10 +633,10 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 		line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)		
 
 	# check if the word position being drawn is below the marginbox
-	elif line_height > marginbox.bounds[3]:
+	elif shapely_word.bounds[1] > marginbox.bounds[3]:
 
 		if vehicle['args'].debug:
-			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='green')
+			vehicle['draw'].polygon(shapely_word.exterior.coords, outline='red')
 			log(str(line_height) + ' > ' + str(marginbox.bounds[3]))
 
 		# save the current image
@@ -665,10 +662,6 @@ def write_word(word, line_height, cursor, marginbox, run_dict):
 
 		log('new cursor: x' + str(cursor.x) + ' y' + str(cursor.y))
 		log('new line_height: ' + str(line_height))
-
-		# add new line with current word
-		#TODO expand on new_line so that it resets the cursor value, and makes a new page
-		line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)
 
 		# rerun the write_word function
 		line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)		
@@ -708,8 +701,7 @@ def write_line(paragraph, cursor, marginbox, font_dict):
 		for word in (run.text).split(" "):
 			line_height, cursor = write_word(word, line_height, cursor, marginbox, run_dict)
 
-	# this is the number that indicates line spacing.
-	#line_height += (int(font_dict['font_size']) + font_dict['line_spacing'])
+	# make a newline once the paragraph run is finished
 	line_height, cursor = new_line(line_height, cursor, marginbox, run_dict)	
 
 	# return an up-to-date cursor shapely object so that the cursor object can be updated for then ext paragraph
@@ -733,7 +725,6 @@ def write_pages(doc, marginbox):
 		)
 	
 	# afterwards save the image
-	#TODO this image.save function may need to be put in a different part of the script
 	vehicle['image'].save(outpath("output.png"))
 
 # function to compile pages into pdf once complete
@@ -874,13 +865,10 @@ def tiller_make_manual():
 
 	# this marginbox is created with the function setup_marginbox within the
 	# make_manual function for clean coding.
-
+	
 	make_manual(
 		doc,
-		setup_marginbox(
-			int(vehicle['image'].width * vehicle['args'].margin + int(offsetx)), 
-			int(vehicle['image'].height * vehicle['args'].margin + int(offsety))			
-		)
+		setup_marginbox()
 	)
 
 # function to add text to images
