@@ -184,7 +184,6 @@ instruction_manual.add_argument(
 	'--config',
 	default='config.yaml',
 	dest='config',
-	default='.\config.yaml',
 	help='the config file used for formatting and stylizing information.'
 )
 instruction_manual.add_argument(
