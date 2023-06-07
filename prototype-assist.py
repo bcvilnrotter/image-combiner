@@ -21,7 +21,7 @@ Future:
 """
 
 # native imports
-import os, glob, io
+import sys, os, glob, io
 import argparse, random
 from datetime import datetime, timezone
 
@@ -328,13 +328,11 @@ def outpath(path, dated=True):
 	# check if the script call wants a unique date identifier in the filename
 	if dated == True:
 	
-		# return the output path
+		# return the output path with a date
 		return str(vehicle["jobsfolder"]) + "\\" + filename + "-" + get_now() + extension
 
-	# else, return a non-unique dated filename path string
-	else:
-
-		return str(vehicle["jobsfolder"] + "\\" + filename + extension)
+	# return the output path
+	return str(vehicle["jobsfolder"] + "\\" + filename + extension)
 
 #endregion
 #region secondary_functions
@@ -355,13 +353,13 @@ def inspect_image(image, check_value=vehicle['args'].TTS_DECK_IMAGE_MAX_REFERANC
 	if any(x > check_value for x in image.size):
 
 		# log activity
-		log('  - image provided was larger than maximum value ' + str(check_value))
+		log('  image provided was larger than maximum value ' + str(check_value))
 
 		# use the thumbnail function to reduce the size of the image while maintaining aspect ratio
 		image.thumbnail((check_value, check_value))
 
 		# log activity
-		log('  - image was altered to (' + str(image.size) + ')', 'METR')
+		log('  image was altered to (' + str(image.size) + ')', 'METR')
 
 		# create a flag that the image was altered
 		altered = True
@@ -391,25 +389,25 @@ def retrieve_google_drive_file(file_id):
 	token = outpath('token.json', dated=False)
 
 	# log activity
-	log(" - checking if a previously made token exists in jobs path")
+	log("  checking if a previously made token exists in jobs path")
 
 	# check if a token exists
 	if os.path.exists(token):
 
 		# log activity
-		log(" - token found, pulling credentials from token")
+		log("  token found, pulling credentials from token")
 
 		# grab the creds with the found token
 		creds = Credentials.from_authorized_user_file(token, SCOPES)
 	
 	# log activity
-	log(" - checking if google-api creds are useable")
+	log("  checking if google-api creds are useable")
 	
 	# check if creds is empty, and if creds are not valid
 	if not creds or not creds.valid:
 
 		# log activity
-		log(" - creds found do not work, troubleshooting...")
+		log("  creds found do not work, troubleshooting...")
 
 		# see if the creds just need a quick refresh
 		if creds and creds.expired and creds.refresh_token:
@@ -420,7 +418,7 @@ def retrieve_google_drive_file(file_id):
 			creds = flow.run_local_server(port=0)
 		
 		# log activity
-		log(" - writing token contents")
+		log("  writing token contents")
 
 		# save the token that was just created in the output location for later use
 		with open(token, 'w') as token:
@@ -433,7 +431,7 @@ def retrieve_google_drive_file(file_id):
 		service = build('drive', 'v3', credentials=creds)
 
 		# log the activity
-		log(" - attempting to download the file with file_id:" + str(file_id))
+		log("  attempting to download the file with file_id:" + str(file_id))
 		
 		# request data from drive api
 		request = service.files().get_media(fileId=file_id)
@@ -448,7 +446,7 @@ def retrieve_google_drive_file(file_id):
 		done = False
 		while done is False:
 			status, done = downloader.next_chunk()
-			log(" - Download %d%%." % int(status.progress() * 100))
+			log("  Download %d%%." % int(status.progress() * 100))
 		
 	except HttpError as error:
 		log(F'An error occurred downloading the file: {error}', 'ERROR')
@@ -911,7 +909,7 @@ def tiller_builddeck():
 			reference.save(vehicle['args'].reference)
 
 			# log activity
-			log('- reference image provided was altered and saved to the same directory')
+			log('  reference image provided was altered and saved to the same directory')
 
 	# check if "-i" arguement is called
 	if vehicle['args'].file:
@@ -932,7 +930,7 @@ def tiller_builddeck():
 		for file in glob.glob(vehicle['args'].glob):
 			
 			# place the outputted image in the same directory as the provided image
-			tts_builddeck(file, outpath(os.path.basename(file)))
+			tts_builddeck(file)
 	
 	# check if a google link is provided
 	if vehicle['args'].glink:
@@ -948,7 +946,7 @@ def tts_builddeck(file, deck_coef=[10,7]):
 	image = Image.open(file)
 
 	# log the action
-	log('- opened file: ' + file)
+	log('  opened file: ' + file)
 
 	# check if a card back image is provided
 	if vehicle['args'].reference:
@@ -960,19 +958,19 @@ def tts_builddeck(file, deck_coef=[10,7]):
 		image = image.resize(reference.size)
 
 		# log activity
-		log(' - image resized based on reference: ' + vehicle['args'].reference)
+		log('  image resized based on reference: ' + vehicle['args'].reference)
 	
 	# get specs of uploaded image
 	width, height = image.size
 
 	# log metrics
-	log('- adjusted file has width: ' + str(width) + ' height: ' + str(height), 'METR')
+	log('  adjusted file has width: ' + str(width) + ' height: ' + str(height), 'METR')
 
 	# create the coeficient dimensions of the new image to be created
 	nwidth, nheight = deck_coef
 
 	# log metrics
-	log('- initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']', 'METR')
+	log('  initial coefficient sizes for output image: [' + str(nwidth) + ',' + str(nheight) + ']', 'METR')
 
 	# start a while loop that continues as long as the resulting image has attributes above 10k pixels
 	while any(x > vehicle['args'].TTS_DECK_IMAGE_MAX_ATTRIBUTE_SIZE for x in [nwidth*width, nheight*height]):
@@ -993,7 +991,7 @@ def tts_builddeck(file, deck_coef=[10,7]):
 	new = Image.new(image.mode, (nwidth*width, nheight*height))
 	
 	# log action
-	log('- adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] \
+	log('  adjusted deck image was made [' + str(nwidth) + ',' + str(nheight) + '] \
     	that has width: ' + str(nwidth*width) + ' and height: ' + str(nheight*height), 'METR')
 
 	# iterate through the new images height
@@ -1006,16 +1004,16 @@ def tts_builddeck(file, deck_coef=[10,7]):
 			new.paste(image, (width*w_index, height*h_index))
 		 
 	# log action
-	log('- pasted images together')
+	log('  pasted images together')
 	
 	# get new outpath
-	output = outpath(vehicle['jobsfolder'])
-	
+	output = outpath('{}{}'.format(vehicle['jobsfolder'],file))
+
 	# save created image to the designated output path
 	new.save(output)
 	
 	# log action
-	log('- saved the created image to location: ' + str(output))
+	log('  saved the created image to location: ' + str(output))
 
 #endregion
 #region mapbuilder_tiller_processing_functions
@@ -1057,7 +1055,7 @@ def tts_buildmap(background, folder, assets = [], resize = (100,100)):
 	image = Image.open(background)
 
 	# log action
-	log('- load background image ' + background)
+	log('  load background image ' + background)
 
 	# iterate through the directory provided for the assets
 	for filename in os.listdir(folder):
